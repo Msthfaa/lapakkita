@@ -1,0 +1,36 @@
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import { Database } from '@/types/database'
+import { env } from '@/lib/env'
+import dns from 'node:dns'
+
+// Pastikan resolusi DNS IPv4 diprioritaskan di semua worker server untuk mencegah latency
+try {
+  dns.setDefaultResultOrder('ipv4first')
+} catch {}
+
+export async function createClient() {
+  const cookieStore = await cookies()
+
+  return createServerClient<Database>(
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {
+            // Dipanggil dari Server Component; hal ini normal dan diabaikan
+            // karena refresh token ditangani oleh proxy.
+          }
+        },
+      },
+    }
+  )
+}
