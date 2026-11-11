@@ -36,8 +36,8 @@ export function AdminModerationQuickQueue({
         <span
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
             pendingCount > 0
-              ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/70 dark:text-rose-300 animate-pulse'
-              : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300'
+              ? 'bg-[#D98327]/15 text-[#D98327] dark:bg-[#D98327]/25 animate-pulse'
+              : 'bg-[#ECE8AF]/60 text-[#186049] dark:bg-[#186049]/40 dark:text-[#ECE8AF]'
           }`}
         >
           {pendingCount > 0 ? (
@@ -46,7 +46,7 @@ export function AdminModerationQuickQueue({
             </>
           ) : (
             <>
-              <ShieldCheck className="h-3.5 w-3.5" /> Terkendali
+              <ShieldCheck className="h-3.5 w-3.5 text-[#4A943E]" /> Terkendali
             </>
           )}
         </span>
@@ -60,7 +60,7 @@ export function AdminModerationQuickQueue({
               Verifikasi: {latestPending.nama}
             </h4>
             <div className="mt-1.5 flex items-center gap-2.5 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
-              <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm sm:text-base">
+              <span className="font-bold text-[#186049] dark:text-[#4A943E] text-sm sm:text-base">
                 {formatRupiah(latestPending.harga)}
               </span>
               <span>&bull;</span>
@@ -92,7 +92,7 @@ export function AdminModerationQuickQueue({
           {pendingCount > 0 ? (
             <Link
               href="/admin/moderasi"
-              className="w-full h-12 flex items-center justify-center gap-2.5 rounded-2xl bg-[#0B3B2C] hover:bg-[#0D4433] dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold text-sm px-5 shadow-sm transition-colors"
+              className="w-full h-12 flex items-center justify-center gap-2.5 rounded-2xl bg-[#186049] hover:bg-[#124b39] text-white font-semibold text-sm px-5 shadow-sm transition-colors"
             >
               <CheckSquare className="h-4.5 w-4.5" />
               <span>Mulai Moderasi Produk</span>
@@ -103,7 +103,7 @@ export function AdminModerationQuickQueue({
               href="/admin/moderasi"
               className="w-full h-12 flex items-center justify-center gap-2.5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-800 dark:text-neutral-200 font-semibold text-sm px-5 transition-colors"
             >
-              <ShieldCheck className="h-4.5 w-4.5 text-emerald-600 dark:text-emerald-400" />
+              <ShieldCheck className="h-4.5 w-4.5 text-[#4A943E]" />
               <span>Kelola Riwayat Moderasi</span>
               <ArrowRight className="h-4 w-4 ml-auto" />
             </Link>

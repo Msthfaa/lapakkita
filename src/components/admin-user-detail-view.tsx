@@ -25,6 +25,7 @@ import {
   approveProductAction,
   rejectProductAction,
 } from '@/features/admin/actions'
+import { swalDeleteConfirm, swalSuccess, swalError, swalConfirm } from '@/lib/sweetalert'
 import { toast } from 'sonner'
 import {
   Store,
@@ -103,10 +104,6 @@ export function AdminUserDetailView({
   const [editRole, setEditRole] = useState<'seller' | 'admin'>(user.role)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  // Delete Modal State
-  const [deleteOpen, setDeleteOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-
   // Direct Moderation State
   const [rejectDialogProduct, setRejectDialogProduct] = useState<ProductDetailItem | null>(null)
   const [alasanTolak, setAlasanTolak] = useState('')
@@ -118,11 +115,14 @@ export function AdminUserDetailView({
     return p.status === activeTab
   })
 
-  // Simpan Edit User
+  // Simpan Edit User dengan SweetAlert
   async function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault()
     if (!editNama.trim() || editNama.trim().length < 2) {
-      toast.error('Nama minimal 2 karakter')
+      await swalError({
+        title: 'Nama Kurang Lengkap',
+        text: 'Nama pengguna atau usaha minimal 2 karakter.',
+      })
       return
     }
 
@@ -134,59 +134,105 @@ export function AdminUserDetailView({
       })
 
       if (!res.success) {
-        toast.error(res.error || 'Gagal mengubah data pengguna')
+        await swalError({
+          title: 'Gagal Menyimpan Data',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success('Data pengguna berhasil diperbarui!')
+        const saved = editNama.trim()
         setEditOpen(false)
+        await swalSuccess({
+          title: 'Akun Berhasil Diperbarui!',
+          text: `Data akun "${saved}" telah berhasil disimpan.`,
+        })
         router.refresh()
       }
     } catch {
-      toast.error('Terjadi kesalahan saat menyimpan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Gagal menyimpan perubahan pengguna.',
+      })
     } finally {
       setIsUpdating(false)
     }
   }
 
-  // Hapus User & Seluruh Produknya
-  async function handleConfirmDelete() {
+  // Hapus User Langsung dengan SweetAlert
+  async function handleDeletePrompt() {
     if (isCurrent) {
-      toast.error('Anda tidak dapat menghapus akun Anda sendiri.')
+      await swalError({
+        title: 'Aksi Tidak Diizinkan',
+        text: 'Anda tidak dapat menghapus akun Anda sendiri demi keamanan sistem.',
+      })
       return
     }
 
-    setIsDeleting(true)
+    const hasProducts = stats.totalProducts > 0
+    const confirmed = await swalDeleteConfirm({
+      title: `Hapus Akun "${user.nama}"?`,
+      text: hasProducts
+        ? `Perhatian: Mitra ini memiliki ${stats.totalProducts} produk jualan. Seluruh produk dan riwayat WhatsApp akan otomatis dihapus permanen.`
+        : `Akun ini akan dihapus permanen dari sistem LapakKita.`,
+      confirmButtonText: hasProducts ? 'Ya, Hapus Akun & Produk' : 'Ya, Hapus Akun',
+      cancelButtonText: 'Batal',
+    })
+
+    if (!confirmed) return
+
     try {
       const res = await adminDeleteUserAction(user.id)
-
       if (!res.success) {
-        toast.error(res.error || 'Gagal menghapus pengguna')
+        await swalError({
+          title: 'Gagal Menghapus Akun',
+          text: res.error || 'Terjadi kesalahan sistem saat menghapus data.',
+        })
       } else {
-        toast.success(
-          `Pengguna "${user.nama}" dan ${res.deletedProductsCount} produk jualan miliknya berhasil dihapus!`
-        )
-        setDeleteOpen(false)
+        await swalSuccess({
+          title: 'Akun Berhasil Dihapus!',
+          text: `Akun "${user.nama}" telah berhasil dibersihkan dari sistem.`,
+        })
         router.push('/admin/users')
       }
     } catch {
-      toast.error('Terjadi kesalahan saat menghapus')
-    } finally {
-      setIsDeleting(false)
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Gagal memproses penghapusan akun.',
+      })
     }
   }
 
-  // Cepat Approve Produk dari Halaman Ini
-  async function handleApprove(productId: string) {
+  // Cepat Approve Produk dengan SweetAlert
+  async function handleApprove(productId: string, productName?: string) {
+    const confirmed = await swalConfirm({
+      title: 'Setujui Produk Ini?',
+      text: `Produk "${productName || 'terpilih'}" akan diverifikasi dan tampil aktif di katalog publik LapakKita.`,
+      confirmButtonText: 'Ya, Setujui Sekarang',
+      cancelButtonText: 'Batal',
+      icon: 'question',
+    })
+
+    if (!confirmed) return
+
     setLoadingActionId(productId)
     try {
       const res = await approveProductAction(productId)
       if (!res.success) {
-        toast.error(res.error || 'Gagal menyetujui produk')
+        await swalError({
+          title: 'Gagal Menyetujui Produk',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success('Produk berhasil disetujui & tayang ke publik!')
+        await swalSuccess({
+          title: 'Produk Disetujui!',
+          text: `Produk "${productName || 'terpilih'}" berhasil disetujui & tayang ke etalase publik!`,
+        })
         router.refresh()
       }
     } catch {
-      toast.error('Terjadi kesalahan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat memproses persetujuan saat ini.',
+      })
     } finally {
       setLoadingActionId(null)
     }
@@ -196,7 +242,10 @@ export function AdminUserDetailView({
   async function handleRejectConfirm() {
     if (!rejectDialogProduct) return
     if (!alasanTolak.trim() || alasanTolak.trim().length < 3) {
-      toast.error('Alasan penolakan minimal 3 karakter')
+      await swalError({
+        title: 'Alasan Belum Lengkap',
+        text: 'Alasan penolakan minimal 3 karakter agar penjual tahu bagian mana yang harus diperbaiki.',
+      })
       return
     }
 
@@ -204,15 +253,24 @@ export function AdminUserDetailView({
     try {
       const res = await rejectProductAction(rejectDialogProduct.id, alasanTolak.trim())
       if (!res.success) {
-        toast.error(res.error || 'Gagal menolak produk')
+        await swalError({
+          title: 'Gagal Menolak Produk',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success('Produk ditolak dengan alasan yang tercatat')
         setRejectDialogProduct(null)
         setAlasanTolak('')
+        await swalSuccess({
+          title: 'Produk Telah Ditolak',
+          text: 'Catatan alasan perbaikan telah dikirim ke penjual.',
+        })
         router.refresh()
       }
     } catch {
-      toast.error('Terjadi kesalahan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat memproses penolakan produk.',
+      })
     } finally {
       setLoadingActionId(null)
     }
@@ -282,7 +340,7 @@ export function AdminUserDetailView({
           </div>
 
           {/* Tombol Aksi Profil */}
-          <div className="flex items-center gap-2 self-start md:self-center">
+          <div className="flex items-center gap-2.5 self-start md:self-center">
             <Button
               type="button"
               variant="outline"
@@ -292,10 +350,10 @@ export function AdminUserDetailView({
                 setEditRole(user.role)
                 setEditOpen(true)
               }}
-              className="gap-1.5 border-neutral-300 text-neutral-700 hover:bg-neutral-50"
+              className="rounded-2xl h-10 px-4 font-semibold text-xs sm:text-sm border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 gap-2"
             >
-              <Edit2 className="h-4 w-4" />
-              Edit Pengguna
+              <Edit2 className="h-4 w-4 text-[#186049] dark:text-[#4A943E]" />
+              <span>Edit Pengguna</span>
             </Button>
 
             <Button
@@ -303,12 +361,12 @@ export function AdminUserDetailView({
               variant="outline"
               size="sm"
               disabled={isCurrent}
-              onClick={() => setDeleteOpen(true)}
+              onClick={handleDeletePrompt}
               title={isCurrent ? 'Tidak bisa menghapus akun sendiri' : 'Hapus pengguna'}
-              className="gap-1.5 border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 disabled:opacity-40"
+              className="rounded-2xl h-10 px-4 font-semibold text-xs sm:text-sm border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 disabled:opacity-40 gap-2"
             >
               <Trash2 className="h-4 w-4" />
-              Hapus Pengguna
+              <span>Hapus Pengguna</span>
             </Button>
           </div>
         </div>
@@ -627,16 +685,16 @@ export function AdminUserDetailView({
                               type="button"
                               size="sm"
                               disabled={isLoading}
-                              onClick={() => handleApprove(product.id)}
-                              className="h-8 text-xs bg-emerald-600 hover:bg-emerald-700 text-white"
+                              onClick={() => handleApprove(product.id, product.nama)}
+                              className="h-8 text-xs bg-[#186049] hover:bg-[#124b39] text-white rounded-xl"
                             >
                               {isLoading ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                               ) : (
                                 <>
-                              <Check className="mr-1 h-3.5 w-3.5" />
-                              Setujui
-                            </>
+                                  <Check className="mr-1 h-3.5 w-3.5" />
+                                  Setujui
+                                </>
                               )}
                             </Button>
                           </div>
@@ -651,22 +709,28 @@ export function AdminUserDetailView({
         </>
       )}
 
-      {/* ================= MODAL EDIT PENGGUNA ================= */}
+      {/* ================= MODAL EDIT PENGGUNA (Palette: #186049, #4A943E, #D98327, #ECE8AF) ================= */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-neutral-900">
-              <Edit2 className="h-5 w-5 text-blue-600" />
-              Edit Data Pengguna
-            </DialogTitle>
-            <DialogDescription>
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-md">
+          <DialogHeader className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#ECE8AF] text-[#186049] font-bold">
+                <Edit2 className="h-4 w-4" />
+              </div>
+              <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                Edit Data Pengguna
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
               Ubah nama tampilan atau hak akses role akun {user.nama}.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSaveEdit} className="space-y-4 py-2">
             <div className="space-y-1.5">
-              <Label htmlFor="detail-edit-nama">Nama Pengguna / Usaha</Label>
+              <Label htmlFor="detail-edit-nama" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Nama Pengguna / Usaha *
+              </Label>
               <Input
                 id="detail-edit-nama"
                 value={editNama}
@@ -674,41 +738,45 @@ export function AdminUserDetailView({
                 placeholder="Nama pengguna"
                 disabled={isUpdating}
                 required
+                className="h-12 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#4A943E]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="detail-edit-role">Peran (Role)</Label>
+              <Label htmlFor="detail-edit-role" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Peran (Role)
+              </Label>
               <select
                 id="detail-edit-role"
                 value={editRole}
                 onChange={(e) => setEditRole(e.target.value as 'seller' | 'admin')}
                 disabled={isUpdating || isCurrent}
-                className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500 disabled:bg-neutral-100 disabled:cursor-not-allowed"
+                className="w-full h-12 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 px-3.5 py-2 text-sm text-neutral-900 dark:text-white shadow-2xs focus:ring-2 focus:ring-[#4A943E] disabled:bg-neutral-100 dark:disabled:bg-neutral-800/40 disabled:cursor-not-allowed"
               >
                 <option value="seller">Penjual UMKM (seller)</option>
                 <option value="admin">Administrator (admin)</option>
               </select>
               {isCurrent && (
-                <p className="text-xs text-amber-600">
+                <p className="text-xs text-[#D98327]">
                   Role akun Anda sendiri tidak dapat diubah demi keamanan sesi.
                 </p>
               )}
             </div>
 
-            <DialogFooter className="pt-2">
+            <DialogFooter className="gap-2 sm:gap-3 pt-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setEditOpen(false)}
                 disabled={isUpdating}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
               <Button
                 type="submit"
                 disabled={isUpdating}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                className="rounded-2xl h-11 px-6 bg-[#186049] hover:bg-[#124b39] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
               >
                 {isUpdating ? (
                   <>
@@ -724,120 +792,48 @@ export function AdminUserDetailView({
         </DialogContent>
       </Dialog>
 
-      {/* ================= MODAL KONFIRMASI HAPUS PENGGUNA ================= */}
-      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="sm:max-w-lg border-rose-200">
-          <DialogHeader>
-            <div className="mx-auto sm:mx-0 flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-rose-600 mb-2">
-              <AlertTriangle className="h-6 w-6" />
-            </div>
-            <DialogTitle className="text-lg font-bold text-rose-950">
-              Konfirmasi Hapus Akun {user.nama}
-            </DialogTitle>
-            <DialogDescription className="text-neutral-600">
-              Apakah Anda yakin ingin menghapus akun ini secara permanen dari sistem?
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 py-2">
-            {user.role === 'admin' ? (
-              <div className="rounded-lg border border-purple-200 bg-purple-50/70 p-3.5 text-xs text-purple-900 space-y-1">
-                <div className="font-bold flex items-center gap-1.5 text-purple-800">
-                  <Shield className="h-4 w-4 shrink-0 text-purple-600" />
-                  Penghapusan Akun Administrator
-                </div>
-                <p className="leading-relaxed">
-                  Akun ini bertindak sebagai administrator sistem dan <strong>tidak memiliki katalog produk/iklan jualan</strong>. Menghapus akun ini hanya akan mencabut akses admin.
-                </p>
-              </div>
-            ) : stats.totalProducts > 0 ? (
-              <div className="rounded-lg border border-amber-200 bg-amber-50/80 p-3.5 text-xs text-amber-900 space-y-2">
-                <div className="font-bold flex items-center gap-1.5 text-amber-800">
-                  <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
-                  Peringatan: Ada {stats.totalProducts} Produk Jualan Terkait!
-                </div>
-                <p className="leading-relaxed">
-                  Pengguna ini adalah penjual dengan <strong>{stats.totalProducts} produk jualan</strong> yang
-                  saat ini tersimpan di platform LapakKita.
-                </p>
-                <p className="leading-relaxed font-semibold text-amber-950">
-                  Menghapus akun ini akan <u>otomatis menghapus seluruh {stats.totalProducts} produk jualan</u> dan
-                  riwayat klik WhatsApp miliknya secara bersih (cascading) agar data tidak rusak dan tidak terjadi error di etalase.
-                </p>
-              </div>
-            ) : (
-              <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-900 flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0" />
-                <span>Penjual ini belum memiliki produk jualan yang terdaftar.</span>
-              </div>
-            )}
-
-            <DialogFooter className="pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setDeleteOpen(false)}
-                disabled={isDeleting}
-              >
-                Batal
-              </Button>
-              <Button
-                type="button"
-                onClick={handleConfirmDelete}
-                disabled={isDeleting}
-                className="bg-rose-600 hover:bg-rose-700 text-white font-medium gap-1.5"
-              >
-                {isDeleting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Sedang Menghapus...
-                  </>
-                ) : (
-                  <>
-                    <Trash2 className="h-4 w-4" />
-                    Hapus Akun {user.role === 'seller' && stats.totalProducts > 0 ? `& ${stats.totalProducts} Produk` : ''}
-                  </>
-                )}
-              </Button>
-            </DialogFooter>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* ================= MODAL ALASAN PENOLAKAN PRODUK ================= */}
+      {/* ================= MODAL ALASAN PENOLAKAN PRODUK (Palette: #D98327, #186049) ================= */}
       <Dialog
         open={!!rejectDialogProduct}
         onOpenChange={(open) => !open && setRejectDialogProduct(null)}
       >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-rose-900 flex items-center gap-2">
-              <XCircle className="h-5 w-5 text-rose-600" />
-              Tolak Produk: {rejectDialogProduct?.nama}
-            </DialogTitle>
-            <DialogDescription>
-              Tuliskan alasan penolakan secara jelas agar penjual dapat memperbaiki informasinya.
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-md">
+          <DialogHeader className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#D98327]/20 text-[#D98327] font-bold">
+                <XCircle className="h-5 w-5" />
+              </div>
+              <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                Tolak Produk: {rejectDialogProduct?.nama}
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Tuliskan alasan penolakan secara jelas dan ramah agar penjual dapat memperbaiki informasinya.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-1.5">
-              <Label htmlFor="alasan-tolak-detail">Alasan Penolakan</Label>
+              <Label htmlFor="alasan-tolak-detail" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Alasan Penolakan / Catatan Revisi *
+              </Label>
               <Textarea
                 id="alasan-tolak-detail"
                 value={alasanTolak}
                 onChange={(e) => setAlasanTolak(e.target.value)}
                 placeholder="Contoh: Foto produk buram, nomor WhatsApp tidak aktif, atau deskripsi kurang lengkap."
-                rows={4}
+                rows={3}
+                className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#D98327] resize-none"
               />
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setRejectDialogProduct(null)}
                 disabled={loadingActionId === rejectDialogProduct?.id}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
@@ -848,7 +844,7 @@ export function AdminUserDetailView({
                   loadingActionId === rejectDialogProduct?.id ||
                   alasanTolak.trim().length < 3
                 }
-                className="bg-rose-600 hover:bg-rose-700 text-white font-medium"
+                className="rounded-2xl h-11 px-6 bg-[#D98327] hover:bg-[#bd6e1b] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
               >
                 {loadingActionId === rejectDialogProduct?.id ? (
                   <>

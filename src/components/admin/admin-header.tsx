@@ -54,7 +54,7 @@ export function AdminHeader({ user, profile, pendingCount = 0 }: AdminHeaderProp
             value={searchVal}
             onChange={(e) => setSearchVal(e.target.value)}
             placeholder="Cari produk, penjual UMKM, kategori, nomor izin..."
-            className="w-full h-12 pl-11 pr-14 rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 shadow-2xs focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 dark:focus:border-emerald-500 transition-all"
+            className="w-full h-12 pl-11 pr-14 rounded-2xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#4A943E]/20 focus:border-[#186049] dark:focus:border-[#4A943E] transition-all"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
             <kbd className="hidden sm:inline-flex items-center rounded-md border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 px-2 py-0.5 text-[10px] font-mono text-neutral-400 dark:text-neutral-500">
@@ -122,7 +122,7 @@ export function AdminHeader({ user, profile, pendingCount = 0 }: AdminHeaderProp
 
           {/* Profil Chip Administrator */}
           <div className="flex items-center gap-3 rounded-2xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 py-1.5 pl-2 pr-4 shadow-2xs h-12">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-white font-bold text-xs shadow-xs">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#186049] to-[#4A943E] text-white font-bold text-xs shadow-xs">
               {initials}
             </div>
             <div className="text-left hidden xs:block">

@@ -69,8 +69,8 @@ export function AdminApprovalGauge({
 
           <defs>
             <linearGradient id="emeraldGaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#10B981" />
-              <stop offset="100%" stopColor="#0B3B2C" />
+              <stop offset="0%" stopColor="#4A943E" />
+              <stop offset="100%" stopColor="#186049" />
             </linearGradient>
           </defs>
         </svg>
@@ -89,13 +89,13 @@ export function AdminApprovalGauge({
       {/* Legend Dots */}
       <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-around text-xs font-medium">
         <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-[#0B3B2C] dark:bg-emerald-400" />
+          <span className="h-2 w-2 rounded-full bg-[#186049] dark:bg-[#4A943E]" />
           <span className="text-neutral-700 dark:text-neutral-300">
             Setuju ({approvedCount})
           </span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-amber-500" />
+          <span className="h-2 w-2 rounded-full bg-[#D98327]" />
           <span className="text-neutral-700 dark:text-neutral-300">
             Pending ({pendingCount})
           </span>

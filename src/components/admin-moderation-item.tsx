@@ -21,6 +21,7 @@ import {
   rejectProductAction,
   toggleFeaturedAction,
 } from '@/features/admin/actions'
+import { swalConfirm, swalSuccess, swalError } from '@/lib/sweetalert'
 import { toast } from 'sonner'
 import {
   Check,
@@ -92,16 +93,35 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
   const currentPhoto = allImages[activePhotoIdx] || product.foto_url
 
   async function handleApprove() {
+    const confirmed = await swalConfirm({
+      title: 'Setujui Produk Ini?',
+      text: `Produk "${product.nama}" akan disetujui dan langsung siap tampil di etalase katalog publik LapakKita.`,
+      confirmButtonText: 'Ya, Setujui Sekarang',
+      cancelButtonText: 'Periksa Lagi',
+      icon: 'question',
+    })
+
+    if (!confirmed) return
+
     setLoadingApprove(true)
     try {
       const res = await approveProductAction(product.id)
       if (!res.success) {
-        toast.error(res.error || 'Gagal menyetujui produk')
+        await swalError({
+          title: 'Gagal Menyetujui Produk',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success(`Produk "${product.nama}" berhasil disetujui!`)
+        await swalSuccess({
+          title: 'Produk Berhasil Disetujui!',
+          text: `"${product.nama}" kini berstatus disetujui dan aktif.`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan saat menyetujui produk')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat memproses persetujuan produk saat ini.',
+      })
     } finally {
       setLoadingApprove(false)
     }
@@ -110,22 +130,34 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
   async function handleRejectSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!alasan.trim() || alasan.trim().length < 3) {
-      toast.error('Alasan penolakan wajib diisi minimal 3 karakter.')
+      await swalError({
+        title: 'Alasan Belum Lengkap',
+        text: 'Alasan penolakan wajib diisi minimal 3 karakter agar penjual dapat memperbaiki produknya.',
+      })
       return
     }
 
     setLoadingReject(true)
     try {
-      const res = await rejectProductAction(product.id, alasan)
+      const res = await rejectProductAction(product.id, alasan.trim())
       if (!res.success) {
-        toast.error(res.error || 'Gagal menolak produk')
+        await swalError({
+          title: 'Gagal Menolak Produk',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success(`Produk "${product.nama}" telah ditolak dengan alasan yang dicatat.`)
         setRejectDialogOpen(false)
         setAlasan('')
+        await swalSuccess({
+          title: 'Produk Telah Ditolak',
+          text: `Catatan revisi telah dikirimkan untuk diperbaiki oleh penjual.`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan saat menolak produk')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat memproses penolakan produk.',
+      })
     } finally {
       setLoadingReject(false)
     }
@@ -137,16 +169,23 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
       const nextFeatured = !product.is_featured
       const res = await toggleFeaturedAction(product.id, nextFeatured)
       if (!res.success) {
-        toast.error(res.error || 'Gagal mengubah status unggulan')
+        await swalError({
+          title: 'Gagal Mengubah Status',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success(
-          nextFeatured
-            ? `"${product.nama}" ditandai sebagai produk unggulan`
-            : `"${product.nama}" dihapus dari produk unggulan`
-        )
+        await swalSuccess({
+          title: nextFeatured ? 'Produk Dijadikan Unggulan!' : 'Dihapus dari Unggulan',
+          text: nextFeatured
+            ? `"${product.nama}" kini tampil di bagian produk unggulan rekomendasi.`
+            : `"${product.nama}" kembali ke etalase biasa.`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan saat mengubah status unggulan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat mengubah status produk unggulan.',
+      })
     } finally {
       setLoadingFeatured(false)
     }
@@ -399,42 +438,53 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
         </div>
       </div>
 
-      {/* Dialog Alasan Tolak */}
+      {/* Dialog Pop-up Tolak Produk (Palette: #D98327, #186049, #ECE8AF) */}
       <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
-        <DialogContent>
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-lg">
           <form onSubmit={handleRejectSubmit}>
-            <DialogHeader>
-              <DialogTitle>Tolak Produk: {product.nama}</DialogTitle>
-              <DialogDescription>
-                Tuliskan alasan penolakan secara jelas agar penjual tahu bagian mana yang perlu diperbaiki sebelum produk dapat disetujui.
+            <DialogHeader className="space-y-2">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#D98327]/20 text-[#D98327] font-bold">
+                  <AlertCircle className="h-5 w-5" />
+                </div>
+                <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                  Tolak Produk: {product.nama}
+                </DialogTitle>
+              </div>
+              <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Tuliskan alasan penolakan secara jelas dan ramah agar penjual tahu bagian mana yang perlu diperbaiki sebelum produk dapat disetujui.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="my-4 space-y-2">
-              <Label htmlFor="alasan">Alasan Penolakan (Wajib diisi) *</Label>
+            <div className="my-5 space-y-2">
+              <Label htmlFor="alasan" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Alasan Penolakan / Catatan Perbaikan (Wajib diisi) *
+              </Label>
               <Textarea
                 id="alasan"
                 value={alasan}
                 onChange={(e) => setAlasan(e.target.value)}
-                placeholder="Contoh: Foto produk buram, mohon unggah foto produk asli yang jelas dan terang..."
+                placeholder="Contoh: Foto produk tampak buram, mohon unggah ulang foto asli dengan pencahayaan terang dan sertakan izin usaha PIRT/BPOM jika ada..."
                 rows={3}
                 required
                 disabled={loadingReject}
+                className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#D98327] resize-none"
               />
             </div>
 
-            <DialogFooter className="gap-2 sm:gap-0">
+            <DialogFooter className="gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setRejectDialogOpen(false)}
                 disabled={loadingReject}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
               <Button
                 type="submit"
-                variant="destructive"
+                className="rounded-2xl h-11 px-6 bg-[#D98327] hover:bg-[#bd6e1b] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
                 disabled={loadingReject}
               >
                 {loadingReject ? (

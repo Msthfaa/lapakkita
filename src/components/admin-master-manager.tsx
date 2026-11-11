@@ -20,8 +20,8 @@ import {
   updateRegionAction,
   deleteRegionAction,
 } from '@/features/admin/actions'
-import { toast } from 'sonner'
-import { Plus, Edit2, Trash2, Tag, MapPin, Loader2, AlertTriangle } from 'lucide-react'
+import { swalDeleteConfirm, swalSuccess, swalError } from '@/lib/sweetalert'
+import { Plus, Edit2, Trash2, Tag, MapPin, Loader2, AlertTriangle, Sparkles } from 'lucide-react'
 
 interface ItemData {
   id: number
@@ -46,11 +46,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
   const [editName, setEditName] = useState('')
   const [savingEdit, setSavingEdit] = useState(false)
 
-  // State Dialog Delete
-  const [deleteItem, setDeleteItem] = useState<ItemData | null>(null)
-  const [savingDelete, setSavingDelete] = useState(false)
-
-  // Handle Tambah
+  // Handle Tambah dengan SweetAlert
   async function handleAddSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!newName.trim()) return
@@ -63,22 +59,30 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           : await createRegionAction(newName)
 
       if (!res.success) {
-        toast.error(res.error || `Gagal menambah ${activeTab}`)
+        await swalError({
+          title: `Gagal Menambah ${activeTab === 'kategori' ? 'Kategori' : 'Daerah'}`,
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success(
-          `${activeTab === 'kategori' ? 'Kategori' : 'Daerah'} "${newName}" berhasil ditambahkan!`
-        )
+        const added = newName
         setAddDialogOpen(false)
         setNewName('')
+        await swalSuccess({
+          title: `${activeTab === 'kategori' ? 'Kategori' : 'Daerah'} Berhasil Ditambahkan!`,
+          text: `"${added}" kini siap digunakan oleh mitra UMKM dan calon pembeli.`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat menambahkan data saat ini.',
+      })
     } finally {
       setSavingAdd(false)
     }
   }
 
-  // Handle Edit
+  // Handle Edit dengan SweetAlert
   async function handleEditSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!editItem || !editName.trim()) return
@@ -91,39 +95,62 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           : await updateRegionAction(editItem.id, editName)
 
       if (!res.success) {
-        toast.error(res.error || `Gagal mengubah ${activeTab}`)
+        await swalError({
+          title: 'Gagal Menyimpan Perubahan',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success(`Data berhasil diubah menjadi "${editName}"`)
+        const updated = editName
         setEditItem(null)
+        await swalSuccess({
+          title: 'Perubahan Berhasil Disimpan!',
+          text: `Nama telah diperbarui menjadi "${updated}".`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Gagal memperbarui data.',
+      })
     } finally {
       setSavingEdit(false)
     }
   }
 
-  // Handle Delete
-  async function handleDeleteConfirm() {
-    if (!deleteItem) return
+  // Handle Delete Langsung dengan SweetAlert Interaktif
+  async function handleDeletePrompt(item: ItemData) {
+    const label = activeTab === 'kategori' ? 'Kategori' : 'Daerah'
+    const confirmed = await swalDeleteConfirm({
+      title: `Hapus ${label} "${item.nama}"?`,
+      text: `Data ${label.toLowerCase()} ini akan dihapus permanen. Produk yang sudah ada tetap aman tetapi kategorinya perlu disesuaikan.`,
+      confirmButtonText: 'Ya, Hapus Data',
+      cancelButtonText: 'Batal',
+    })
 
-    setSavingDelete(true)
+    if (!confirmed) return
+
     try {
       const res =
         activeTab === 'kategori'
-          ? await deleteCategoryAction(deleteItem.id)
-          : await deleteRegionAction(deleteItem.id)
+          ? await deleteCategoryAction(item.id)
+          : await deleteRegionAction(item.id)
 
       if (!res.success) {
-        toast.error(res.error || `Gagal menghapus ${activeTab}`)
+        await swalError({
+          title: `Gagal Menghapus ${label}`,
+          text: res.error || `Terjadi kendala saat menghapus ${label.toLowerCase()}.`,
+        })
       } else {
-        toast.success(`"${deleteItem.nama}" berhasil dihapus`)
-        setDeleteItem(null)
+        await swalSuccess({
+          title: `${label} Berhasil Dihapus!`,
+          text: `Data "${item.nama}" telah berhasil dibersihkan dari sistem.`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan')
-    } finally {
-      setSavingDelete(false)
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat menghapus data saat ini.',
+      })
     }
   }
 
@@ -142,7 +169,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            <Tag className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <Tag className="h-4 w-4 text-[#4A943E]" />
             <span>Kategori Produk ({categories.length})</span>
           </button>
           <button
@@ -153,7 +180,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <MapPin className="h-4 w-4 text-[#D98327]" />
             <span>Daerah / Wilayah ({regions.length})</span>
           </button>
         </div>
@@ -163,7 +190,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
             setNewName('')
             setAddDialogOpen(true)
           }}
-          className="rounded-2xl bg-[#0B3B2C] hover:bg-[#0D4433] dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm px-5 h-11 shadow-xs gap-2 self-start sm:self-auto"
+          className="rounded-2xl bg-[#186049] hover:bg-[#124b39] text-white font-semibold text-xs sm:text-sm px-5 h-11 shadow-xs gap-2 self-start sm:self-auto transition-transform hover:scale-102"
         >
           <Plus className="h-4 w-4" />
           <span>Tambah {activeTab === 'kategori' ? 'Kategori Baru' : 'Daerah Baru'}</span>
@@ -171,14 +198,14 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
       </div>
 
       {activeTab === 'daerah' && regions.length === 0 && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900 space-y-1.5 shadow-xs">
-          <p className="font-bold flex items-center gap-1.5 text-amber-800">
-            <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
+        <div className="rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-[#ECE8AF]/30 dark:bg-amber-950/40 p-4 text-xs sm:text-sm text-amber-900 dark:text-amber-300 space-y-1.5 shadow-xs">
+          <p className="font-bold flex items-center gap-2 text-[#D98327]">
+            <AlertTriangle className="h-4 w-4 text-[#D98327] shrink-0" />
             Tabel &quot;regions&quot; Belum Dibuat di Database Supabase
           </p>
           <p className="leading-relaxed">
             Untuk mengaktifkan pengelolaan daerah/wilayah, jalankan skrip migrasi{' '}
-            <code className="rounded bg-amber-100 px-1.5 py-0.5 font-mono font-semibold text-amber-950">
+            <code className="rounded-md bg-amber-100 dark:bg-amber-900/60 px-1.5 py-0.5 font-mono font-semibold text-amber-950 dark:text-amber-200">
               supabase/migrations/0002_add_regions.sql
             </code>{' '}
             di <strong>Supabase Dashboard &gt; SQL Editor</strong>.
@@ -196,10 +223,10 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 shadow-2xs hover:border-emerald-300 dark:hover:border-emerald-800 transition-all group"
+              className="flex items-center justify-between p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 shadow-2xs hover:border-[#4A943E]/50 dark:hover:border-[#4A943E]/40 transition-all group"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#ECE8AF]/50 dark:bg-[#186049]/40 text-[#186049] dark:text-[#ECE8AF]">
                   {activeTab === 'kategori' ? (
                     <Tag className="h-4 w-4" />
                   ) : (
@@ -215,7 +242,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                  className="h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-[#186049] dark:hover:text-[#4A943E]"
                   onClick={() => {
                     setEditItem(item)
                     setEditName(item.nama)
@@ -227,8 +254,8 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400"
-                  onClick={() => setDeleteItem(item)}
+                  className="h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-[#D98327] dark:hover:text-[#D98327]"
+                  onClick={() => handleDeletePrompt(item)}
                   title="Hapus"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -239,21 +266,26 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
         </div>
       )}
 
-      {/* Dialog Tambah Data */}
+      {/* Dialog Pop-Up Tambah Data (Palette: #186049, #4A943E, #D98327, #ECE8AF) */}
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
-        <DialogContent>
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-md">
           <form onSubmit={handleAddSubmit}>
-            <DialogHeader>
-              <DialogTitle>
-                Tambah {activeTab === 'kategori' ? 'Kategori Produk' : 'Daerah Baru'}
-              </DialogTitle>
-              <DialogDescription>
-                Masukkan nama {activeTab} baru yang akan langsung muncul di formulir produk dan filter pencarian.
+            <DialogHeader className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#ECE8AF] text-[#186049] font-bold">
+                  <Sparkles className="h-4 w-4" />
+                </div>
+                <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                  Tambah {activeTab === 'kategori' ? 'Kategori Produk' : 'Daerah Baru'}
+                </DialogTitle>
+              </div>
+              <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Masukkan nama {activeTab} baru yang akan langsung muncul di formulir pendaftaran produk dan filter katalog publik.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="my-4 space-y-2">
-              <Label htmlFor="new-name">
+            <div className="my-5 space-y-2">
+              <Label htmlFor="new-name" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                 Nama {activeTab === 'kategori' ? 'Kategori' : 'Daerah'} *
               </Label>
               <Input
@@ -262,27 +294,29 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder={
                   activeTab === 'kategori'
-                    ? 'Contoh: Elektronik / Gadget'
-                    : 'Contoh: Banyuwangi'
+                    ? 'Contoh: Kerajinan Anyaman, Kuliner Basah'
+                    : 'Contoh: Banyuwangi, Malang'
                 }
                 autoFocus
                 required
                 disabled={savingAdd}
+                className="h-12 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#4A943E]"
               />
             </div>
 
-            <DialogFooter className="gap-2 sm:gap-0">
+            <DialogFooter className="gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setAddDialogOpen(false)}
                 disabled={savingAdd}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
               <Button
                 type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+                className="rounded-2xl h-11 px-6 bg-[#186049] hover:bg-[#124b39] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
                 disabled={savingAdd}
               >
                 {savingAdd ? (
@@ -299,19 +333,28 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
         </DialogContent>
       </Dialog>
 
-      {/* Dialog Edit Data */}
+      {/* Dialog Pop-Up Edit Data */}
       <Dialog open={Boolean(editItem)} onOpenChange={(open) => !open && setEditItem(null)}>
-        <DialogContent>
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-md">
           <form onSubmit={handleEditSubmit}>
-            <DialogHeader>
-              <DialogTitle>Ubah Nama {activeTab === 'kategori' ? 'Kategori' : 'Daerah'}</DialogTitle>
-              <DialogDescription>
-                Perubahan ini akan langsung berlaku pada seluruh produk terkait.
+            <DialogHeader className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#D98327]/20 text-[#D98327] font-bold">
+                  <Edit2 className="h-4 w-4" />
+                </div>
+                <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                  Ubah Nama {activeTab === 'kategori' ? 'Kategori' : 'Daerah'}
+                </DialogTitle>
+              </div>
+              <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                Perubahan nama ini akan langsung sinkron pada seluruh produk UMKM yang menggunakan {activeTab} ini.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="my-4 space-y-2">
-              <Label htmlFor="edit-name">Nama {activeTab === 'kategori' ? 'Kategori' : 'Daerah'} *</Label>
+            <div className="my-5 space-y-2">
+              <Label htmlFor="edit-name" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Nama {activeTab === 'kategori' ? 'Kategori' : 'Daerah'} *
+              </Label>
               <Input
                 id="edit-name"
                 value={editName}
@@ -319,21 +362,23 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 autoFocus
                 required
                 disabled={savingEdit}
+                className="h-12 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#4A943E]"
               />
             </div>
 
-            <DialogFooter className="gap-2 sm:gap-0">
+            <DialogFooter className="gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setEditItem(null)}
                 disabled={savingEdit}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
               <Button
                 type="submit"
-                className="bg-purple-600 hover:bg-purple-700 text-white font-medium"
+                className="rounded-2xl h-11 px-6 bg-[#186049] hover:bg-[#124b39] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
                 disabled={savingEdit}
               >
                 {savingEdit ? (
@@ -347,44 +392,6 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Dialog Hapus Konfirmasi */}
-      <Dialog open={Boolean(deleteItem)} onOpenChange={(open) => !open && setDeleteItem(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Hapus {activeTab === 'kategori' ? 'Kategori' : 'Daerah'}?</DialogTitle>
-            <DialogDescription>
-              Apakah Anda yakin ingin menghapus <strong>&quot;{deleteItem?.nama}&quot;</strong>? Produk yang menggunakan {activeTab} ini akan tetap tersimpan.
-            </DialogDescription>
-          </DialogHeader>
-
-          <DialogFooter className="gap-2 sm:gap-0">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setDeleteItem(null)}
-              disabled={savingDelete}
-            >
-              Batal
-            </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={handleDeleteConfirm}
-              disabled={savingDelete}
-            >
-              {savingDelete ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Menghapus...
-                </>
-              ) : (
-                'Ya, Hapus'
-              )}
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

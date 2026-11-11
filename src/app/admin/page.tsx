@@ -41,7 +41,7 @@ export default async function AdminDashboardPage() {
           {data.stats.pendingCount > 0 ? (
             <Button
               asChild
-              className="rounded-full bg-[#0B3B2C] hover:bg-[#0D4433] dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold text-sm px-5 py-2.5 h-11 shadow-sm hover:shadow-md transition-all gap-2"
+              className="rounded-full bg-[#186049] hover:bg-[#124b39] text-white font-semibold text-sm px-5 py-2.5 h-11 shadow-sm hover:shadow-md transition-all gap-2"
             >
               <Link href="/admin/moderasi">
                 <CheckSquare className="h-4 w-4" />

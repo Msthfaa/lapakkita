@@ -16,18 +16,18 @@ interface AdminKpiCardsProps {
 export function AdminKpiCards({ stats }: AdminKpiCardsProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      {/* 1. KARTU FOKAL UTAMA: Menunggu Moderasi (Donezo Hero Green Card) */}
+      {/* 1. KARTU FOKAL UTAMA: Menunggu Moderasi (Palette: #186049, #ECE8AF, #D98327) */}
       <motion.div
         whileHover={{ y: -3, transition: { duration: 0.2 } }}
-        className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0B3B2C] via-[#0D4433] to-[#12533F] p-6 sm:p-7 text-white shadow-md flex flex-col justify-between min-h-[175px]"
+        className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#186049] via-[#1e6f56] to-[#247d62] p-6 sm:p-7 text-white shadow-md flex flex-col justify-between min-h-[175px]"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-emerald-300">
+            <span className="text-sm font-bold text-[#ECE8AF]">
               Antrean Moderasi
             </span>
             {stats.pendingCount > 0 && (
-              <span className="flex h-2.5 w-2.5 rounded-full bg-rose-400 animate-ping" />
+              <span className="flex h-2.5 w-2.5 rounded-full bg-[#D98327] animate-ping" />
             )}
           </div>
           <Link
@@ -46,14 +46,14 @@ export function AdminKpiCards({ stats }: AdminKpiCardsProps) {
         </div>
 
         <div className="flex items-center gap-2 text-xs text-white/80 font-medium">
-          <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/15 px-2.5 py-1 text-xs font-semibold text-emerald-200 backdrop-blur-xs">
+          <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#ECE8AF]/20 px-2.5 py-1 text-xs font-semibold text-[#ECE8AF] backdrop-blur-xs">
             {stats.pendingCount > 0 ? (
               <>
-                <Clock className="h-3.5 w-3.5 text-rose-300" /> Butuh Aksi
+                <Clock className="h-3.5 w-3.5 text-[#D98327]" /> Butuh Tindakan
               </>
             ) : (
               <>
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" /> Antrean Bersih
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#4A943E]" /> Antrean Bersih
               </>
             )}
           </span>
@@ -62,7 +62,7 @@ export function AdminKpiCards({ stats }: AdminKpiCardsProps) {
           </span>
         </div>
 
-        <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-emerald-400/15 blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-[#4A943E]/20 blur-2xl pointer-events-none" />
       </motion.div>
 
       {/* 2. Produk Disetujui (Aktif di Etalase) */}
@@ -154,7 +154,7 @@ export function AdminKpiCards({ stats }: AdminKpiCardsProps) {
         </div>
 
         <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
-          <span className="inline-flex items-center gap-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/60 px-2.5 py-1 text-xs font-semibold text-rose-700 dark:text-rose-400">
+          <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#D98327]/15 dark:bg-[#D98327]/25 border border-[#D98327]/30 px-2.5 py-1 text-xs font-semibold text-[#D98327]">
             <AlertOctagon className="h-3.5 w-3.5" /> Butuh Revisi
           </span>
           <span className="text-xs">Menunggu perbaikan seller</span>
