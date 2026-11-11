@@ -7,6 +7,7 @@ import { getUserAndProfile } from '@/features/auth/actions'
 import { Toaster } from 'sonner'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
 import { Suspense } from 'react'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,24 +38,40 @@ export default function RootLayout({
   return (
     <html
       lang="id"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-neutral-50 text-neutral-900 font-sans">
-        <Suspense fallback={null}>
-          <TopLoadingBar />
-        </Suspense>
-        <Suspense fallback={<div className="h-16 w-full border-b border-neutral-200 bg-white" />}>
-          <NavbarSlot />
-        </Suspense>
-        <main className="flex-1">{children}</main>
-        <footer className="border-t border-neutral-200 bg-white py-6 text-center text-xs text-neutral-500">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p>
-              &copy; 2026 <strong>{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
-            </p>
-          </div>
-        </footer>
-        <Toaster richColors position="top-right" />
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="flex min-h-full flex-col bg-white dark:bg-black text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <Suspense fallback={null}>
+            <TopLoadingBar />
+          </Suspense>
+          <Suspense
+            fallback={
+              <div className="h-16 w-full border-b border-neutral-200 dark:border-neutral-900 bg-white dark:bg-black" />
+            }
+          >
+            <NavbarSlot />
+          </Suspense>
+          <main className="flex-1">{children}</main>
+          <footer className="border-t border-neutral-200 dark:border-neutral-900 bg-white dark:bg-black py-8 text-center text-xs text-neutral-500 dark:text-neutral-500">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <p>
+                &copy; 2026 <strong className="text-neutral-700 dark:text-neutral-300">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
+              </p>
+            </div>
+          </footer>
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   )
