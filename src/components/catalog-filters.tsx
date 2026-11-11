@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { Search, X } from 'lucide-react'
 
 interface OptionItem {
@@ -37,7 +36,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
     params.set('page', '1')
 
     startTransition(() => {
-      router.push(`/?${params.toString()}`, { scroll: false })
+      router.push(`/?${params.toString()}#katalog`, { scroll: false })
     })
   }
 
@@ -70,16 +69,16 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
   const hasFilter = Boolean(currentQ || currentCategory || currentRegion)
 
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-xs">
+    <div className="rounded-2xl border border-neutral-200 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-3 sm:p-4 shadow-sm transition-colors duration-300">
       <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-3">
         {/* Kolom Pencarian */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-neutral-400" />
+          <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-neutral-400 dark:text-neutral-500" />
           <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Cari produk UMKM (nama atau deskripsi)..."
-            className="pl-9 pr-9"
+            placeholder="Cari produk UMKM..."
+            className="h-11 rounded-xl pl-10 pr-9 border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600"
           />
           {q && (
             <button
@@ -88,7 +87,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
                 setQ('')
                 applyFilters('', kategori, daerah)
               }}
-              className="absolute right-3 top-3 text-neutral-400 hover:text-neutral-600"
+              className="absolute right-3.5 top-3.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200"
             >
               <X className="h-4 w-4" />
             </button>
@@ -100,7 +99,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           <select
             value={kategori}
             onChange={handleCategoryChange}
-            className="flex h-10 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 cursor-pointer"
           >
             <option value="">Semua Kategori</option>
             {categories.map((cat) => (
@@ -116,7 +115,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           <select
             value={daerah}
             onChange={handleRegionChange}
-            className="flex h-10 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 cursor-pointer"
           >
             <option value="">Semua Daerah</option>
             {regions.map((reg) => (
@@ -127,25 +126,24 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           </select>
         </div>
 
-        {/* Tombol Cari */}
+        {/* Tombol Aksi */}
         <div className="flex gap-2">
-          <Button
+          <button
             type="submit"
-            className="bg-emerald-600 hover:bg-emerald-700 font-medium"
             disabled={isPending}
+            className="h-11 px-6 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-medium transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
           >
-            Cari
-          </Button>
+            {isPending ? 'Mencari...' : 'Cari'}
+          </button>
 
           {hasFilter && (
-            <Button
+            <button
               type="button"
-              variant="outline"
               onClick={handleReset}
-              className="text-neutral-600"
+              className="h-11 px-4 rounded-xl border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 text-sm hover:text-black dark:hover:text-white transition-colors"
             >
               Reset
-            </Button>
+            </button>
           )}
         </div>
       </form>

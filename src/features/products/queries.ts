@@ -329,3 +329,48 @@ export async function getProductDetail(id: string) {
 
   return product
 }
+
+/**
+ * Mengambil produk terpopuler berdasarkan jumlah klik WhatsApp (carousel hero).
+ */
+export const getPopularProducts = unstable_cache(
+  async (limit = 12) => {
+    const supabase = getPublicClient()
+    const [productsRes, regions] = await Promise.all([
+      supabase
+        .from('products')
+        .select(
+          `
+          *,
+          category:categories(id, nama),
+          seller:profiles(id, nama),
+          wa_clicks(count)
+        `
+        )
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false })
+        .limit(limit),
+      getRegions().catch(() => []),
+    ])
+
+    if (productsRes.error) {
+      console.error('Error fetching popular products:', productsRes.error.message)
+      return []
+    }
+
+    const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+
+    return (productsRes.data || [])
+      .map((prod) => ({
+        ...prod,
+        total_clicks: (prod.wa_clicks as unknown as Array<{ count: number }>)?.[0]?.count ?? 0,
+        region: prod.region_id ? regionMap.get(prod.region_id) || null : null,
+      }))
+      .sort((a, b) => b.total_clicks - a.total_clicks)
+  },
+  ['popular-products-cache'],
+  {
+    revalidate: 60,
+    tags: ['products', 'popular-products'],
+  }
+)

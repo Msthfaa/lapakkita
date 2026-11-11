@@ -13,11 +13,12 @@ const buttonVariants = cva(
         destructive:
           "bg-rose-600 text-white shadow-sm hover:bg-rose-700",
         outline:
-          "border border-neutral-200 bg-white shadow-sm hover:bg-neutral-100 hover:text-neutral-900",
+          "border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100",
         secondary:
-          "bg-neutral-100 text-neutral-900 shadow-sm hover:bg-neutral-200",
-        ghost: "hover:bg-neutral-100 hover:text-neutral-900",
-        link: "text-emerald-600 underline-offset-4 hover:underline",
+          "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-sm hover:bg-neutral-200 dark:hover:bg-neutral-700",
+        ghost:
+          "hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-neutral-100 text-neutral-700 dark:text-neutral-300",
+        link: "text-emerald-600 dark:text-emerald-400 underline-offset-4 hover:underline",
         whatsapp:
           "bg-[#25D366] text-white shadow hover:bg-[#1EBE5D] font-semibold",
       },

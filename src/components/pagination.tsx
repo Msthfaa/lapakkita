@@ -19,42 +19,42 @@ export function Pagination({ currentPage, totalPages, q, kategori, daerah }: Pag
     if (kategori) params.set('kategori', kategori)
     if (daerah) params.set('daerah', daerah)
     params.set('page', page.toString())
-    return `/?${params.toString()}`
+    return `/?${params.toString()}#katalog`
   }
 
   return (
-    <div className="flex items-center justify-center gap-2 pt-8">
+    <div className="flex items-center justify-center gap-3 pt-10">
       {/* Tombol Sebelumnya */}
       {currentPage > 1 ? (
-        <Button asChild variant="outline" size="sm" className="gap-1">
+        <Button asChild variant="outline" size="sm" className="gap-1 rounded-xl dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-200 dark:hover:bg-neutral-900">
           <Link href={buildUrl(currentPage - 1)}>
             <ChevronLeft className="h-4 w-4" />
             Sebelumnya
           </Link>
         </Button>
       ) : (
-        <Button variant="outline" size="sm" disabled className="gap-1">
+        <Button variant="outline" size="sm" disabled className="gap-1 rounded-xl dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-600">
           <ChevronLeft className="h-4 w-4" />
           Sebelumnya
         </Button>
       )}
 
       {/* Indikator Halaman */}
-      <div className="flex items-center gap-1 px-2 text-sm text-neutral-600 font-medium">
-        Halaman <span className="font-bold text-neutral-900">{currentPage}</span> dari{' '}
-        <span className="font-bold text-neutral-900">{totalPages}</span>
+      <div className="flex items-center gap-1.5 px-3 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-light">
+        Halaman <span className="font-semibold text-neutral-900 dark:text-white">{currentPage}</span> dari{' '}
+        <span className="font-semibold text-neutral-900 dark:text-white">{totalPages}</span>
       </div>
 
       {/* Tombol Selanjutnya */}
       {currentPage < totalPages ? (
-        <Button asChild variant="outline" size="sm" className="gap-1">
+        <Button asChild variant="outline" size="sm" className="gap-1 rounded-xl dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-200 dark:hover:bg-neutral-900">
           <Link href={buildUrl(currentPage + 1)}>
             Selanjutnya
             <ChevronRight className="h-4 w-4" />
           </Link>
         </Button>
       ) : (
-        <Button variant="outline" size="sm" disabled className="gap-1">
+        <Button variant="outline" size="sm" disabled className="gap-1 rounded-xl dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-600">
           Selanjutnya
           <ChevronRight className="h-4 w-4" />
         </Button>
