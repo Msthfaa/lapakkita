@@ -129,9 +129,13 @@ export async function createCategoryAction(nama: string) {
 
     const { supabase } = await checkIsAdmin()
 
-    const { error } = await supabase.from('categories').insert({
-      nama: nama.trim(),
-    })
+    const { data, error } = await supabase
+      .from('categories')
+      .insert({
+        nama: nama.trim(),
+      })
+      .select('id, nama')
+      .single()
 
     if (error) {
       if (error.code === '23505') {
@@ -144,7 +148,7 @@ export async function createCategoryAction(nama: string) {
     revalidatePath('/')
     revalidatePath('/dashboard/produk/baru')
     revalidateTag('categories', 'max')
-    return { success: true }
+    return { success: true, item: data }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Gagal menambah kategori'
     return { success: false, error: message }
@@ -208,9 +212,13 @@ export async function createRegionAction(nama: string) {
 
     const { supabase } = await checkIsAdmin()
 
-    const { error } = await supabase.from('regions').insert({
-      nama: nama.trim(),
-    })
+    const { data, error } = await supabase
+      .from('regions')
+      .insert({
+        nama: nama.trim(),
+      })
+      .select('id, nama')
+      .single()
 
     if (error) {
       if (error.code === '23505') {
@@ -230,7 +238,7 @@ export async function createRegionAction(nama: string) {
     revalidatePath('/')
     revalidatePath('/dashboard/produk/baru')
     revalidateTag('regions', 'max')
-    return { success: true }
+    return { success: true, item: data }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Gagal menambah daerah'
     return { success: false, error: message }

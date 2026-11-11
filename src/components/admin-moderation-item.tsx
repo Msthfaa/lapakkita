@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { formatRupiah, formatTanggal } from '@/lib/format'
 import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/status-badge'
@@ -76,11 +77,14 @@ const SHIPPING_LABELS: Record<string, string> = {
 }
 
 export function AdminModerationItem({ product }: AdminModerationItemProps) {
+  const router = useRouter()
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false)
   const [alasan, setAlasan] = useState('')
   const [loadingApprove, setLoadingApprove] = useState(false)
   const [loadingReject, setLoadingReject] = useState(false)
   const [loadingFeatured, setLoadingFeatured] = useState(false)
+  const [dismissed, setDismissed] = useState(false)
+  const [localFeatured, setLocalFeatured] = useState(product.is_featured)
 
   // Galeri foto untuk admin
   const allImages =
@@ -112,7 +116,9 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
           text: res.error || 'Terjadi kesalahan sistem.',
         })
       } else {
-        await swalSuccess({
+        setDismissed(true)
+        router.refresh()
+        swalSuccess({
           title: 'Produk Berhasil Disetujui!',
           text: `"${product.nama}" kini berstatus disetujui dan aktif.`,
         })
@@ -148,7 +154,9 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
       } else {
         setRejectDialogOpen(false)
         setAlasan('')
-        await swalSuccess({
+        setDismissed(true)
+        router.refresh()
+        swalSuccess({
           title: 'Produk Telah Ditolak',
           text: `Catatan revisi telah dikirimkan untuk diperbaiki oleh penjual.`,
         })
@@ -166,7 +174,7 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
   async function handleToggleFeatured() {
     setLoadingFeatured(true)
     try {
-      const nextFeatured = !product.is_featured
+      const nextFeatured = !localFeatured
       const res = await toggleFeaturedAction(product.id, nextFeatured)
       if (!res.success) {
         await swalError({
@@ -174,7 +182,9 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
           text: res.error || 'Terjadi kesalahan sistem.',
         })
       } else {
-        await swalSuccess({
+        setLocalFeatured(nextFeatured)
+        router.refresh()
+        swalSuccess({
           title: nextFeatured ? 'Produk Dijadikan Unggulan!' : 'Dihapus dari Unggulan',
           text: nextFeatured
             ? `"${product.nama}" kini tampil di bagian produk unggulan rekomendasi.`
@@ -189,6 +199,10 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
     } finally {
       setLoadingFeatured(false)
     }
+  }
+
+  if (dismissed) {
+    return null
   }
 
   return (

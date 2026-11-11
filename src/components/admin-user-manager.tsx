@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { formatTanggal } from '@/lib/format'
@@ -39,8 +39,13 @@ interface AdminUserManagerProps {
 
 export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps) {
   const router = useRouter()
+  const [localUsers, setLocalUsers] = useState<AdminUserItem[]>(users)
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState<'all' | 'seller' | 'admin'>('all')
+
+  useEffect(() => {
+    setLocalUsers(users)
+  }, [users])
 
   // State untuk Dialog Edit
   const [editUser, setEditUser] = useState<AdminUserItem | null>(null)
@@ -48,21 +53,21 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
   const [editRole, setEditRole] = useState<'seller' | 'admin'>('seller')
   const [isUpdating, setIsUpdating] = useState(false)
 
-  // Filter Pengguna
+  // Filter Pengguna dari reactive localUsers
   const filteredUsers = useMemo(() => {
-    return users.filter((u) => {
+    return localUsers.filter((u) => {
       const matchSearch =
         u.nama.toLowerCase().includes(search.toLowerCase()) ||
         (u.email && u.email.toLowerCase().includes(search.toLowerCase()))
       const matchRole = roleFilter === 'all' || u.role === roleFilter
       return matchSearch && matchRole
     })
-  }, [users, search, roleFilter])
+  }, [localUsers, search, roleFilter])
 
   // Hitung ringkasan
-  const totalUsers = users.length
-  const totalSellers = users.filter((u) => u.role === 'seller').length
-  const totalAdmins = users.filter((u) => u.role === 'admin').length
+  const totalUsers = localUsers.length
+  const totalSellers = localUsers.filter((u) => u.role === 'seller').length
+  const totalAdmins = localUsers.filter((u) => u.role === 'admin').length
 
   // Buka Dialog Edit
   function handleOpenEdit(user: AdminUserItem) {
@@ -98,12 +103,16 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
         })
       } else {
         const savedName = editNama.trim()
+        setLocalUsers((prev) =>
+          prev.map((u) => (u.id === editUser.id ? { ...u, nama: savedName, role: editRole } : u))
+        )
         setEditUser(null)
-        await swalSuccess({
+        router.refresh()
+
+        swalSuccess({
           title: 'Akun Berhasil Diperbarui!',
           text: `Data akun "${savedName}" telah berhasil disimpan.`,
         })
-        router.refresh()
       }
     } catch {
       await swalError({
@@ -115,7 +124,7 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
     }
   }
 
-  // Hapus Pengguna Langsung dengan SweetAlert
+  // Hapus Pengguna Langsung dengan SweetAlert & Instant Auto-Reload
   async function handleDeleteUserPrompt(targetUser: AdminUserItem) {
     if (targetUser.id === currentUserId) {
       await swalError({
@@ -145,11 +154,14 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
           text: res.error || 'Terjadi kesalahan sistem saat menghapus akun.',
         })
       } else {
-        await swalSuccess({
+        // Hapus dari state lokal secara seketika (Instant Optimistic Update)
+        setLocalUsers((prev) => prev.filter((u) => u.id !== targetUser.id))
+        router.refresh()
+
+        swalSuccess({
           title: 'Akun Berhasil Dihapus!',
           text: `Akun "${targetUser.nama}" ${hasProducts ? `dan ${res.deletedProductsCount} produk jualan miliknya` : ''} telah dibersihkan.`,
         })
-        router.refresh()
       }
     } catch {
       await swalError({

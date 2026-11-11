@@ -141,11 +141,11 @@ export function AdminUserDetailView({
       } else {
         const saved = editNama.trim()
         setEditOpen(false)
-        await swalSuccess({
+        router.refresh()
+        swalSuccess({
           title: 'Akun Berhasil Diperbarui!',
           text: `Data akun "${saved}" telah berhasil disimpan.`,
         })
-        router.refresh()
       }
     } catch {
       await swalError({
@@ -222,11 +222,11 @@ export function AdminUserDetailView({
           text: res.error || 'Terjadi kesalahan sistem.',
         })
       } else {
-        await swalSuccess({
+        router.refresh()
+        swalSuccess({
           title: 'Produk Disetujui!',
           text: `Produk "${productName || 'terpilih'}" berhasil disetujui & tayang ke etalase publik!`,
         })
-        router.refresh()
       }
     } catch {
       await swalError({
@@ -260,11 +260,11 @@ export function AdminUserDetailView({
       } else {
         setRejectDialogProduct(null)
         setAlasanTolak('')
-        await swalSuccess({
+        router.refresh()
+        swalSuccess({
           title: 'Produk Telah Ditolak',
           text: 'Catatan alasan perbaikan telah dikirim ke penjual.',
         })
-        router.refresh()
       }
     } catch {
       await swalError({

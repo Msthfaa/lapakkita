@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -34,7 +35,21 @@ interface AdminMasterManagerProps {
 }
 
 export function AdminMasterManager({ categories, regions }: AdminMasterManagerProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<'kategori' | 'daerah'>('kategori')
+
+  // Reactive Local State untuk Instant Auto-Reload UI tanpa jeda
+  const [localCategories, setLocalCategories] = useState<ItemData[]>(categories)
+  const [localRegions, setLocalRegions] = useState<ItemData[]>(regions)
+
+  // Sinkronkan state lokal bila Server Component mengirim props terbaru
+  useEffect(() => {
+    setLocalCategories(categories)
+  }, [categories])
+
+  useEffect(() => {
+    setLocalRegions(regions)
+  }, [regions])
 
   // State Dialog Tambah
   const [addDialogOpen, setAddDialogOpen] = useState(false)
@@ -46,17 +61,18 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
   const [editName, setEditName] = useState('')
   const [savingEdit, setSavingEdit] = useState(false)
 
-  // Handle Tambah dengan SweetAlert
+  // Handle Tambah dengan Auto-Reload & SweetAlert
   async function handleAddSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!newName.trim()) return
+    const trimmed = newName.trim()
+    if (!trimmed) return
 
     setSavingAdd(true)
     try {
       const res =
         activeTab === 'kategori'
-          ? await createCategoryAction(newName)
-          : await createRegionAction(newName)
+          ? await createCategoryAction(trimmed)
+          : await createRegionAction(trimmed)
 
       if (!res.success) {
         await swalError({
@@ -64,12 +80,20 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           text: res.error || 'Terjadi kesalahan sistem.',
         })
       } else {
-        const added = newName
+        const addedItem: ItemData = res.item || { id: Date.now(), nama: trimmed }
+        if (activeTab === 'kategori') {
+          setLocalCategories((prev) => [addedItem, ...prev.filter((c) => c.id !== addedItem.id)])
+        } else {
+          setLocalRegions((prev) => [addedItem, ...prev.filter((r) => r.id !== addedItem.id)])
+        }
+
         setAddDialogOpen(false)
         setNewName('')
-        await swalSuccess({
+        router.refresh()
+
+        swalSuccess({
           title: `${activeTab === 'kategori' ? 'Kategori' : 'Daerah'} Berhasil Ditambahkan!`,
-          text: `"${added}" kini siap digunakan oleh mitra UMKM dan calon pembeli.`,
+          text: `"${trimmed}" telah tersimpan dan siap digunakan.`,
         })
       }
     } catch {
@@ -82,17 +106,18 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
     }
   }
 
-  // Handle Edit dengan SweetAlert
+  // Handle Edit dengan Auto-Reload & SweetAlert
   async function handleEditSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!editItem || !editName.trim()) return
+    const updatedName = editName.trim()
 
     setSavingEdit(true)
     try {
       const res =
         activeTab === 'kategori'
-          ? await updateCategoryAction(editItem.id, editName)
-          : await updateRegionAction(editItem.id, editName)
+          ? await updateCategoryAction(editItem.id, updatedName)
+          : await updateRegionAction(editItem.id, updatedName)
 
       if (!res.success) {
         await swalError({
@@ -100,11 +125,23 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           text: res.error || 'Terjadi kesalahan sistem.',
         })
       } else {
-        const updated = editName
+        if (activeTab === 'kategori') {
+          setLocalCategories((prev) =>
+            prev.map((c) => (c.id === editItem.id ? { ...c, nama: updatedName } : c))
+          )
+        } else {
+          setLocalRegions((prev) =>
+            prev.map((r) => (r.id === editItem.id ? { ...r, nama: updatedName } : r))
+          )
+        }
+
+        const targetName = updatedName
         setEditItem(null)
-        await swalSuccess({
+        router.refresh()
+
+        swalSuccess({
           title: 'Perubahan Berhasil Disimpan!',
-          text: `Nama telah diperbarui menjadi "${updated}".`,
+          text: `Nama telah diperbarui menjadi "${targetName}".`,
         })
       }
     } catch {
@@ -117,7 +154,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
     }
   }
 
-  // Handle Delete Langsung dengan SweetAlert Interaktif
+  // Handle Delete Langsung dengan SweetAlert Interaktif & Auto-Reload
   async function handleDeletePrompt(item: ItemData) {
     const label = activeTab === 'kategori' ? 'Kategori' : 'Daerah'
     const confirmed = await swalDeleteConfirm({
@@ -141,7 +178,16 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           text: res.error || `Terjadi kendala saat menghapus ${label.toLowerCase()}.`,
         })
       } else {
-        await swalSuccess({
+        // Hapus dari state lokal secara seketika (Instant Optimistic Update)
+        if (activeTab === 'kategori') {
+          setLocalCategories((prev) => prev.filter((c) => c.id !== item.id))
+        } else {
+          setLocalRegions((prev) => prev.filter((r) => r.id !== item.id))
+        }
+
+        router.refresh()
+
+        swalSuccess({
           title: `${label} Berhasil Dihapus!`,
           text: `Data "${item.nama}" telah berhasil dibersihkan dari sistem.`,
         })
@@ -154,7 +200,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
     }
   }
 
-  const items = activeTab === 'kategori' ? categories : regions
+  const items = activeTab === 'kategori' ? localCategories : localRegions
 
   return (
     <div className="space-y-6">
@@ -170,7 +216,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
             }`}
           >
             <Tag className="h-4 w-4 text-[#4A943E]" />
-            <span>Kategori Produk ({categories.length})</span>
+            <span>Kategori Produk ({localCategories.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('daerah')}
@@ -181,7 +227,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
             }`}
           >
             <MapPin className="h-4 w-4 text-[#D98327]" />
-            <span>Daerah / Wilayah ({regions.length})</span>
+            <span>Daerah / Wilayah ({localRegions.length})</span>
           </button>
         </div>
 
@@ -197,7 +243,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
         </Button>
       </div>
 
-      {activeTab === 'daerah' && regions.length === 0 && (
+      {activeTab === 'daerah' && localRegions.length === 0 && (
         <div className="rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-[#ECE8AF]/30 dark:bg-amber-950/40 p-4 text-xs sm:text-sm text-amber-900 dark:text-amber-300 space-y-1.5 shadow-xs">
           <p className="font-bold flex items-center gap-2 text-[#D98327]">
             <AlertTriangle className="h-4 w-4 text-[#D98327] shrink-0" />

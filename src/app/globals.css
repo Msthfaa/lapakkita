@@ -58,6 +58,7 @@ body {
   z-index: 99999 !important;
 }
 
+.swal2-popup,
 .lapak-swal-popup {
   border-radius: 1.75rem !important;
   padding: 2.25rem 2rem !important;
@@ -66,11 +67,13 @@ body {
   font-family: inherit !important;
 }
 
+.dark .swal2-popup,
 .dark .lapak-swal-popup {
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(74, 148, 62, 0.15) !important;
 }
 
+.swal2-title,
 .lapak-swal-title {
   font-size: 1.35rem !important;
   font-weight: 800 !important;
@@ -79,6 +82,7 @@ body {
   padding-bottom: 0.25rem !important;
 }
 
+.swal2-html-container,
 .lapak-swal-html {
   font-size: 0.925rem !important;
   line-height: 1.55 !important;
@@ -86,10 +90,12 @@ body {
   margin-top: 0.5rem !important;
 }
 
+.dark .swal2-html-container,
 .dark .lapak-swal-html {
   color: #9ca3af !important;
 }
 
+.swal2-actions,
 .lapak-swal-actions {
   display: flex !important;
   align-items: center !important;
@@ -99,80 +105,83 @@ body {
   width: 100% !important;
 }
 
+/* Base button rules to guarantee no unstyled buttons */
+.swal2-actions button {
+  border-radius: 1rem !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1.6rem !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  border: none !important;
+  outline: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
 /* Primary Pine Confirm Button (#186049) */
 .lapak-swal-btn-pine {
   background-color: #186049 !important;
   color: #ffffff !important;
-  border-radius: 1rem !important;
-  font-weight: 700 !important;
-  padding: 0.75rem 1.75rem !important;
-  font-size: 0.875rem !important;
-  box-shadow: 0 4px 12px rgba(24, 96, 73, 0.3) !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  border: none !important;
-  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(24, 96, 73, 0.35) !important;
 }
 
 .lapak-swal-btn-pine:hover {
   background-color: #124b39 !important;
   transform: translateY(-1px) scale(1.02) !important;
-  box-shadow: 0 6px 16px rgba(24, 96, 73, 0.4) !important;
+  box-shadow: 0 6px 18px rgba(24, 96, 73, 0.45) !important;
 }
 
-.lapak-swal-btn-pine:active {
-  transform: translateY(0) scale(0.98) !important;
+/* Leaf Green Accent (#4A943E) */
+.lapak-swal-btn-leaf {
+  background-color: #4A943E !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(74, 148, 62, 0.35) !important;
+}
+
+.lapak-swal-btn-leaf:hover {
+  background-color: #3b7b31 !important;
+  transform: translateY(-1px) scale(1.02) !important;
 }
 
 /* Danger / Delete Confirm Button (#D98327) */
-.lapak-swal-btn-danger {
+.lapak-swal-btn-danger,
+.swal2-confirm.swal2-styled[style*="217, 131, 39"] {
   background-color: #D98327 !important;
   color: #ffffff !important;
-  border-radius: 1rem !important;
-  font-weight: 700 !important;
-  padding: 0.75rem 1.75rem !important;
-  font-size: 0.875rem !important;
-  box-shadow: 0 4px 12px rgba(217, 131, 39, 0.35) !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  border: none !important;
-  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(217, 131, 39, 0.4) !important;
 }
 
 .lapak-swal-btn-danger:hover {
   background-color: #bd6e1b !important;
   transform: translateY(-1px) scale(1.02) !important;
-  box-shadow: 0 6px 16px rgba(217, 131, 39, 0.45) !important;
-}
-
-.lapak-swal-btn-danger:active {
-  transform: translateY(0) scale(0.98) !important;
+  box-shadow: 0 6px 18px rgba(217, 131, 39, 0.5) !important;
 }
 
 /* Secondary Cancel Button */
-.lapak-swal-btn-secondary {
+.lapak-swal-btn-secondary,
+.swal2-cancel {
   background-color: #f3f4f6 !important;
   color: #374151 !important;
-  border-radius: 1rem !important;
-  font-weight: 600 !important;
-  padding: 0.75rem 1.5rem !important;
-  font-size: 0.875rem !important;
-  transition: all 0.2s ease !important;
   border: 1px solid #e5e7eb !important;
-  cursor: pointer !important;
 }
 
-.dark .lapak-swal-btn-secondary {
-  background-color: #1a2420 !important;
+.dark .lapak-swal-btn-secondary,
+.dark .swal2-cancel {
+  background-color: #1f2923 !important;
   color: #e5e7eb !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.lapak-swal-btn-secondary:hover {
+.lapak-swal-btn-secondary:hover,
+.swal2-cancel:hover {
   background-color: #e5e7eb !important;
   color: #111827 !important;
 }
 
-.dark .lapak-swal-btn-secondary:hover {
-  background-color: #24342d !important;
+.dark .lapak-swal-btn-secondary:hover,
+.dark .swal2-cancel:hover {
+  background-color: #273830 !important;
   color: #ffffff !important;
 }
 
