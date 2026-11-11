@@ -8,12 +8,9 @@ import { Toaster } from 'sonner'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
 import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
-<<<<<<< HEAD
-import { connection } from 'next/server'
-=======
 import { NavbarWrapper } from '@/components/navbar-wrapper'
 import { LiquidBackground } from '@/components/liquid-background'
->>>>>>> 410a3ce (feat: revamp UI theme to forest green, modernize product detail layout, and showcase seller products)
+import { connection } from 'next/server'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -58,11 +55,7 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </head>
-<<<<<<< HEAD
-      <body className="flex min-h-full flex-col bg-[#fbfaf5] dark:bg-[#0a110e] text-[#111a16] dark:text-[#f4f5ef] font-sans transition-colors duration-300">
-=======
       <body className="relative flex min-h-full flex-col bg-[#FAF9F5] dark:bg-[#000000] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300 selection:bg-[#186049]/30">
->>>>>>> 410a3ce (feat: revamp UI theme to forest green, modernize product detail layout, and showcase seller products)
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {/* FULL VIEWPORT AMBIENT LIQUID GRADIENT (GRADASI HIJAU & OREN SEPERTI GAMBAR) */}
           <LiquidBackground />
@@ -70,18 +63,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <FloatingRouteLoader />
           </Suspense>
-<<<<<<< HEAD
-          <Suspense
-            fallback={
-              <div className="h-16 w-full border-b border-[#186049]/10 dark:border-[#186049]/20 bg-[#fbfaf5] dark:bg-[#0a110e]" />
-            }
-          >
-            <NavbarSlot />
-          </Suspense>
-          <main className="flex-1">{children}</main>
-=======
 
->>>>>>> 410a3ce (feat: revamp UI theme to forest green, modernize product detail layout, and showcase seller products)
           <Suspense fallback={null}>
             <NavbarWrapper>
               <Suspense

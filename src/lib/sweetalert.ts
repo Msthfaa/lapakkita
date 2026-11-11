@@ -119,7 +119,7 @@ export async function swalConfirm({
       confirmButton: 'lapak-swal-btn-pine',
       cancelButton: 'lapak-swal-btn-secondary',
     },
-    didOpen: (popup) => {
+    didOpen: (popup: HTMLElement) => {
       applyButtonStyles(popup, {
         confirmBg: '#186049',
         isDark: dark,
@@ -169,7 +169,7 @@ export async function swalDeleteConfirm({
       confirmButton: 'lapak-swal-btn-danger',
       cancelButton: 'lapak-swal-btn-secondary',
     },
-    didOpen: (popup) => {
+    didOpen: (popup: HTMLElement) => {
       applyButtonStyles(popup, {
         confirmBg: '#D98327',
         isDark: dark,
@@ -219,7 +219,7 @@ export async function swalSuccess({
       actions: 'lapak-swal-actions',
       confirmButton: 'lapak-swal-btn-leaf',
     },
-    didOpen: (popup) => {
+    didOpen: (popup: HTMLElement) => {
       applyButtonStyles(popup, {
         confirmBg: '#4A943E',
         isDark: dark,
@@ -257,7 +257,7 @@ export async function swalError({
       actions: 'lapak-swal-actions',
       confirmButton: 'lapak-swal-btn-pine',
     },
-    didOpen: (popup) => {
+    didOpen: (popup: HTMLElement) => {
       applyButtonStyles(popup, {
         confirmBg: '#186049',
         isDark: dark,
@@ -295,7 +295,7 @@ export async function swalInfo({
       actions: 'lapak-swal-actions',
       confirmButton: 'lapak-swal-btn-pine',
     },
-    didOpen: (popup) => {
+    didOpen: (popup: HTMLElement) => {
       applyButtonStyles(popup, {
         confirmBg: '#186049',
         isDark: dark,

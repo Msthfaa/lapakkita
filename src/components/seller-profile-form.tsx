@@ -259,8 +259,6 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
                   Koordinat Tersimpan: Latitude {currentLat.toFixed(5)}, Longitude {currentLng.toFixed(5)}
                 </span>
               </div>
-            ) : null}
-              </div>
             ) : (
               <div className="text-xs text-amber-800 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">
                 ⚠️ Belum ada koordinat peta. Tentukan titik di peta agar pembeli dapat melihat rute navigasi Google Maps ke toko Anda.
