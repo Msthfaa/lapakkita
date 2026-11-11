@@ -143,13 +143,6 @@ div {
   font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }
 
-/* ========================================================= */
-/* HEADER KHUSUS TAMPILAN WEB (TETAP UKURAN +3PX)            */
-/* ========================================================= */
-header.web-navbar,
-header.header-nav-boost {
-  font-size: 15px;
-}
 
 /* 3D perspective stage */
 .perspective-stage {
