@@ -27,11 +27,43 @@ export function normalizeWhatsappNumber(raw: string): string | null {
   return null
 }
 
+export interface WhatsappDetails {
+  harga?: number
+  satuan?: string
+  kondisiStok?: string
+}
+
 /**
- * Menghasilkan URL direct link WhatsApp dengan pesan otomatis.
+ * Menghasilkan URL direct link WhatsApp dengan format pemesanan resmi terstruktur.
  */
-export function buildWhatsappLink(nomor: string, namaProduk: string): string {
+export function buildWhatsappLink(
+  nomor: string,
+  namaProduk: string,
+  details?: WhatsappDetails
+): string {
   const normalized = normalizeWhatsappNumber(nomor) || nomor
-  const pesan = `Halo, saya tertarik dengan produk *${namaProduk}* yang saya lihat di LapakKita`
+  let pesan = `Halo, saya tertarik dengan produk *${namaProduk}* di LapakKita.`
+
+  if (details?.harga) {
+    const formattedHarga = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      maximumFractionDigits: 0,
+    }).format(details.harga)
+    const satuanText = details.satuan ? ` / ${details.satuan}` : ''
+    pesan += `\nHarga: ${formattedHarga}${satuanText}`
+  }
+
+  if (details?.kondisiStok) {
+    const stokText =
+      details.kondisiStok === 'pre_order'
+        ? 'Pre-Order (PO)'
+        : details.kondisiStok === 'stok_terbatas'
+          ? 'Stok Terbatas'
+          : 'Ready Stock'
+    pesan += `\nStatus: ${stokText}`
+  }
+
+  pesan += `\nApakah produk ini masih tersedia untuk pemesanan? Terima kasih.`
   return `https://wa.me/${normalized}?text=${encodeURIComponent(pesan)}`
 }

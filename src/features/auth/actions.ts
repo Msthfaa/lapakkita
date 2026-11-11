@@ -1,7 +1,15 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { registerSchema, loginSchema, type RegisterInput, type LoginInput } from './schema'
+import {
+  registerSchema,
+  loginSchema,
+  sellerProfileSchema,
+  type RegisterInput,
+  type LoginInput,
+  type SellerProfileInput,
+} from './schema'
+import { normalizeWhatsappNumber } from '@/lib/whatsapp'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
@@ -21,14 +29,27 @@ export async function signUpAction(data: RegisterInput): Promise<AuthActionResul
     }
   }
 
+  const normalizedWa = normalizeWhatsappNumber(parsed.data.no_wa)
+  if (!normalizedWa) {
+    return {
+      success: false,
+      error: 'Nomor WhatsApp tidak valid (contoh: 08123456789 atau 628123456789)',
+    }
+  }
+
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signUp({
+  const { data: authData, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
       data: {
         nama: parsed.data.nama,
+        region_id: parsed.data.region_id || null,
+        alamat: parsed.data.alamat || null,
+        latitude: parsed.data.latitude || null,
+        longitude: parsed.data.longitude || null,
+        no_wa: normalizedWa,
       },
     },
   })
@@ -38,6 +59,21 @@ export async function signUpAction(data: RegisterInput): Promise<AuthActionResul
       return { success: false, error: 'Email ini sudah terdaftar' }
     }
     return { success: false, error: error.message }
+  }
+
+  // Jika session langsung dibuat, pastikan kolom profiles terisi lengkap
+  if (authData.user?.id) {
+    await supabase
+      .from('profiles')
+      .update({
+        nama: parsed.data.nama,
+        region_id: parsed.data.region_id || null,
+        alamat: parsed.data.alamat || null,
+        latitude: parsed.data.latitude || null,
+        longitude: parsed.data.longitude || null,
+        no_wa: normalizedWa,
+      })
+      .eq('id', authData.user.id)
   }
 
   revalidatePath('/', 'layout')
@@ -77,6 +113,57 @@ export async function signInAction(data: LoginInput): Promise<AuthActionResult> 
   return { success: true, redirectTo: targetPath }
 }
 
+export async function updateSellerProfileAction(
+  data: SellerProfileInput
+): Promise<AuthActionResult> {
+  const parsed = sellerProfileSchema.safeParse(data)
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message || 'Data profil tidak valid',
+    }
+  }
+
+  const normalizedWa = normalizeWhatsappNumber(parsed.data.no_wa)
+  if (!normalizedWa) {
+    return {
+      success: false,
+      error: 'Nomor WhatsApp tidak valid (contoh: 08123456789 atau 628123456789)',
+    }
+  }
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: 'Silakan masuk terlebih dahulu' }
+  }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      nama: parsed.data.nama,
+      no_wa: normalizedWa,
+      region_id: parsed.data.region_id || null,
+      alamat: parsed.data.alamat || null,
+      latitude: parsed.data.latitude || null,
+      longitude: parsed.data.longitude || null,
+      deskripsi_toko: parsed.data.deskripsi_toko || null,
+    })
+    .eq('id', user.id)
+
+  if (error) {
+    return { success: false, error: error.message || 'Gagal menyimpan profil toko' }
+  }
+
+  revalidatePath('/dashboard')
+  revalidatePath('/dashboard/profil')
+  revalidatePath('/')
+  return { success: true }
+}
+
 export async function signOutAction() {
   const supabase = await createClient()
   await supabase.auth.signOut()
@@ -96,7 +183,10 @@ export const getUserAndProfile = cache(async () => {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select(`
+      *,
+      region:regions(id, nama)
+    `)
     .eq('id', user.id)
     .single()
 

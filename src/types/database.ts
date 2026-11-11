@@ -14,18 +14,36 @@ export interface Database {
           id: string
           nama: string
           role: 'seller' | 'admin'
+          region_id: number | null
+          alamat: string | null
+          latitude: number | null
+          longitude: number | null
+          no_wa: string | null
+          deskripsi_toko: string | null
           created_at: string
         }
         Insert: {
           id: string
           nama?: string
           role?: 'seller' | 'admin'
+          region_id?: number | null
+          alamat?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          no_wa?: string | null
+          deskripsi_toko?: string | null
           created_at?: string
         }
         Update: {
           id?: string
           nama?: string
           role?: 'seller' | 'admin'
+          region_id?: number | null
+          alamat?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          no_wa?: string | null
+          deskripsi_toko?: string | null
           created_at?: string
         }
         Relationships: []
@@ -70,11 +88,20 @@ export interface Database {
           deskripsi: string
           harga: number
           foto_url: string | null
+          foto_urls: string[]
+          satuan: string
+          kondisi_stok: 'ready_stock' | 'pre_order' | 'stok_terbatas'
+          metode_pengiriman: string[]
+          varian: string | null
+          no_izin: string | null
           no_wa: string
           alamat: string | null
+          latitude: number | null
+          longitude: number | null
           status: 'pending' | 'approved' | 'rejected'
           alasan_tolak: string | null
           is_featured: boolean
+          is_active: boolean
           created_at: string
         }
         Insert: {
@@ -86,11 +113,20 @@ export interface Database {
           deskripsi: string
           harga: number
           foto_url?: string | null
+          foto_urls?: string[]
+          satuan?: string
+          kondisi_stok?: 'ready_stock' | 'pre_order' | 'stok_terbatas'
+          metode_pengiriman?: string[]
+          varian?: string | null
+          no_izin?: string | null
           no_wa: string
           alamat?: string | null
+          latitude?: number | null
+          longitude?: number | null
           status?: 'pending' | 'approved' | 'rejected'
           alasan_tolak?: string | null
           is_featured?: boolean
+          is_active?: boolean
           created_at?: string
         }
         Update: {
@@ -102,11 +138,20 @@ export interface Database {
           deskripsi?: string
           harga?: number
           foto_url?: string | null
+          foto_urls?: string[]
+          satuan?: string
+          kondisi_stok?: 'ready_stock' | 'pre_order' | 'stok_terbatas'
+          metode_pengiriman?: string[]
+          varian?: string | null
+          no_izin?: string | null
           no_wa?: string
           alamat?: string | null
+          latitude?: number | null
+          longitude?: number | null
           status?: 'pending' | 'approved' | 'rejected'
           alasan_tolak?: string | null
           is_featured?: boolean
+          is_active?: boolean
           created_at?: string
         }
         Relationships: [

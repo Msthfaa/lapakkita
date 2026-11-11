@@ -1,6 +1,6 @@
 'use client'
 
-import { buildWhatsappLink } from '@/lib/whatsapp'
+import { buildWhatsappLink, WhatsappDetails } from '@/lib/whatsapp'
 import { recordWaClickAction } from '@/features/products/actions'
 import { Button } from '@/components/ui/button'
 import { MessageCircle } from 'lucide-react'
@@ -9,6 +9,7 @@ interface WaButtonProps {
   productId: string
   noWa: string
   namaProduk: string
+  details?: WhatsappDetails
   className?: string
   size?: 'default' | 'sm' | 'lg'
 }
@@ -17,10 +18,11 @@ export function WaButton({
   productId,
   noWa,
   namaProduk,
+  details,
   className,
   size = 'lg',
 }: WaButtonProps) {
-  const waUrl = buildWhatsappLink(noWa, namaProduk)
+  const waUrl = buildWhatsappLink(noWa, namaProduk, details)
 
   function handleClick() {
     // Jalankan pencatatan klik secara paralel tanpa menghalangi pembukaan WA

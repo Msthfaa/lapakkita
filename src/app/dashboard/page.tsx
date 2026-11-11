@@ -3,7 +3,7 @@ import { getUserAndProfile } from '@/features/auth/actions'
 import { SellerProductItem } from '@/components/seller-product-item'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { PlusCircle, PackageOpen, LayoutDashboard } from 'lucide-react'
+import { PlusCircle, PackageOpen, LayoutDashboard, Store, MapPin } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 export const metadata = {
@@ -36,12 +36,21 @@ export default async function DashboardPage() {
             Selamat datang, <strong>{profile?.nama || user.email}</strong>! Kelola produk UMKM Anda di sini.
           </p>
         </div>
-        <Button asChild className="bg-emerald-600 hover:bg-emerald-700 font-medium shrink-0 gap-2">
-          <Link href="/dashboard/produk/baru">
-            <PlusCircle className="h-4 w-4" />
-            Tambah Produk Baru
-          </Link>
-        </Button>
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <Button asChild variant="outline" className="font-medium gap-2">
+            <Link href="/dashboard/profil">
+              <Store className="h-4 w-4 text-emerald-600" />
+              Profil &amp; Lokasi Toko
+            </Link>
+          </Button>
+
+          <Button asChild className="bg-emerald-600 hover:bg-emerald-700 font-medium gap-2">
+            <Link href="/dashboard/produk/baru">
+              <PlusCircle className="h-4 w-4" />
+              Tambah Produk Baru
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Content */}

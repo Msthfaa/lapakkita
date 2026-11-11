@@ -51,6 +51,14 @@ export async function createProductAction(values: ProductFormValues): Promise<Ac
     }
   }
 
+  const coverPhoto = parsed.data.foto_url || parsed.data.foto_urls[0] || null
+  const photoList =
+    parsed.data.foto_urls.length > 0
+      ? parsed.data.foto_urls
+      : coverPhoto
+        ? [coverPhoto]
+        : []
+
   const { data, error } = await supabase
     .from('products')
     .insert({
@@ -58,11 +66,20 @@ export async function createProductAction(values: ProductFormValues): Promise<Ac
       nama: parsed.data.nama,
       deskripsi: parsed.data.deskripsi || '',
       harga: parsed.data.harga,
+      satuan: parsed.data.satuan || 'Pcs',
+      kondisi_stok: parsed.data.kondisi_stok || 'ready_stock',
+      metode_pengiriman: parsed.data.metode_pengiriman || ['Lokal'],
+      varian: parsed.data.varian || null,
+      no_izin: parsed.data.no_izin || null,
       category_id: parsed.data.category_id || null,
       region_id: parsed.data.region_id || null,
       no_wa: normalizedWa,
       alamat: parsed.data.alamat || null,
-      foto_url: parsed.data.foto_url || null,
+      latitude: parsed.data.latitude ?? null,
+      longitude: parsed.data.longitude ?? null,
+      foto_url: coverPhoto,
+      foto_urls: photoList,
+      is_active: parsed.data.is_active ?? true,
       status: 'pending',
       is_featured: false,
     })
@@ -123,6 +140,14 @@ export async function updateProductAction(
     }
   }
 
+  const coverPhoto = parsed.data.foto_url || parsed.data.foto_urls[0] || null
+  const photoList =
+    parsed.data.foto_urls.length > 0
+      ? parsed.data.foto_urls
+      : coverPhoto
+        ? [coverPhoto]
+        : []
+
   // Update data. Catatan: Trigger DB guard_product_update akan otomatis
   // mengembalikan status ke 'pending' dan mengosongkan alasan_tolak untuk non-admin.
   const { error } = await supabase
@@ -131,11 +156,20 @@ export async function updateProductAction(
       nama: parsed.data.nama,
       deskripsi: parsed.data.deskripsi || '',
       harga: parsed.data.harga,
+      satuan: parsed.data.satuan || 'Pcs',
+      kondisi_stok: parsed.data.kondisi_stok || 'ready_stock',
+      metode_pengiriman: parsed.data.metode_pengiriman || ['Lokal'],
+      varian: parsed.data.varian || null,
+      no_izin: parsed.data.no_izin || null,
       category_id: parsed.data.category_id || null,
       region_id: parsed.data.region_id || null,
       no_wa: normalizedWa,
       alamat: parsed.data.alamat || null,
-      foto_url: parsed.data.foto_url || null,
+      latitude: parsed.data.latitude ?? null,
+      longitude: parsed.data.longitude ?? null,
+      foto_url: coverPhoto,
+      foto_urls: photoList,
+      is_active: parsed.data.is_active,
     })
     .eq('id', productId)
     .eq('seller_id', user.id)
@@ -218,3 +252,60 @@ export async function recordWaClickAction(productId: string): Promise<ActionResu
 
   return { success: true }
 }
+
+/**
+ * Aksi bagi pedagang/penjual untuk mengaktifkan atau menonaktifkan produk di etalase.
+ * Toggling ini tidak mereset status 'approved' karena tidak ada perubahan isi konten.
+ */
+export async function toggleProductActiveAction(
+  productId: string,
+  nextActive: boolean
+): Promise<ActionResult> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: 'Silakan masuk terlebih dahulu' }
+  }
+
+  // Pastikan produk milik user yang sedang login
+  const { data: prod } = await supabase
+    .from('products')
+    .select('seller_id, nama')
+    .eq('id', productId)
+    .single()
+
+  if (!prod) {
+    return { success: false, error: 'Produk tidak ditemukan' }
+  }
+
+  if (prod.seller_id !== user.id) {
+    return {
+      success: false,
+      error: 'Anda hanya dapat mengubah status produk milik Anda sendiri.',
+    }
+  }
+
+  const { error } = await supabase
+    .from('products')
+    .update({ is_active: nextActive })
+    .eq('id', productId)
+    .eq('seller_id', user.id)
+
+  if (error) {
+    return { success: false, error: error.message || 'Gagal mengubah status etalase produk' }
+  }
+
+  revalidatePath('/dashboard')
+  revalidatePath(`/produk/${productId}`)
+  revalidatePath('/')
+  revalidateTag('products', 'max')
+  revalidateTag('approved-products', 'max')
+  revalidateTag('featured-products', 'max')
+  revalidateTag(`product-${productId}`, 'max')
+
+  return { success: true }
+}
+

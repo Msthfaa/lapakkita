@@ -54,11 +54,15 @@ interface ProductDetailItem {
   deskripsi: string
   harga: number
   foto_url: string | null
+  foto_urls?: string[] | null
+  satuan?: string | null
+  kondisi_stok?: string | null
   no_wa: string
   alamat: string | null
   status: 'pending' | 'approved' | 'rejected'
   alasan_tolak: string | null
   is_featured: boolean
+  is_active?: boolean
   created_at: string
   category?: { id: number; nama: string } | null
   region?: { id: number; nama: string } | null
@@ -525,7 +529,24 @@ export function AdminUserDetailView({
                         {/* Informasi Produk */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <StatusBadge status={product.status} />
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <StatusBadge status={product.status} />
+                              {product.is_active === false && (
+                                <span className="text-[10px] bg-neutral-800 text-white px-1.5 py-0.5 rounded font-medium">
+                                  Nonaktif
+                                </span>
+                              )}
+                              {product.kondisi_stok === 'pre_order' && (
+                                <span className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-medium">
+                                  PO
+                                </span>
+                              )}
+                              {product.kondisi_stok === 'stok_terbatas' && (
+                                <span className="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium">
+                                  Stok Terbatas
+                                </span>
+                              )}
+                            </div>
                             <span className="flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
                               <MessageCircle className="h-3 w-3" />
                               {product.wa_clicks_count} klik
@@ -536,8 +557,15 @@ export function AdminUserDetailView({
                             {product.nama}
                           </h3>
 
-                          <div className="mt-1 text-base font-extrabold text-emerald-700">
-                            {formatRupiah(product.harga)}
+                          <div className="mt-1 flex items-baseline gap-1">
+                            <span className="text-base font-extrabold text-emerald-700">
+                              {formatRupiah(product.harga)}
+                            </span>
+                            {product.satuan && (
+                              <span className="text-xs font-normal text-neutral-500">
+                                / {product.satuan}
+                              </span>
+                            )}
                           </div>
 
                           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500">

@@ -29,6 +29,7 @@ export default async function TambahProdukPage() {
         categories={categories}
         regions={regions}
         userId={user.id}
+        sellerProfile={profile}
       />
     </div>
   )

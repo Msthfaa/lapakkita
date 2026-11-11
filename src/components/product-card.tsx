@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { formatRupiah } from '@/lib/format'
 import { Card } from '@/components/ui/card'
-import { Store, MapPin, Sparkles, Image as ImageIcon } from 'lucide-react'
+import { Store, MapPin, Sparkles, Image as ImageIcon, Layers } from 'lucide-react'
 
 interface ProductCardProps {
   product: {
@@ -10,6 +10,9 @@ interface ProductCardProps {
     nama: string
     harga: number
     foto_url: string | null
+    foto_urls?: string[] | null
+    satuan?: string | null
+    kondisi_stok?: 'ready_stock' | 'pre_order' | 'stok_terbatas' | string | null
     is_featured?: boolean
     alamat?: string | null
     category?: { nama: string } | null
@@ -19,6 +22,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const photoCount = product.foto_urls?.length || (product.foto_url ? 1 : 0)
+
   return (
     <Link href={`/produk/${product.id}`} className="group block h-full">
       <Card className="h-full overflow-hidden border border-neutral-200 bg-white transition-all duration-200 hover:border-emerald-500 hover:shadow-md flex flex-col">
@@ -52,6 +57,26 @@ export function ProductCard({ product }: ProductCardProps) {
               {product.category.nama}
             </div>
           )}
+
+          {/* Indikator Multi-Foto */}
+          {photoCount > 1 && (
+            <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/60 backdrop-blur-xs px-1.5 py-0.5 text-[10px] font-medium text-white">
+              <Layers className="h-3 w-3" />
+              {photoCount}
+            </div>
+          )}
+
+          {/* Badge Kondisi Stok (Pre-Order / Stok Terbatas) */}
+          {product.kondisi_stok === 'pre_order' && (
+            <div className="absolute bottom-2 left-2 rounded-md bg-blue-600/90 backdrop-blur-xs px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
+              Pre-Order
+            </div>
+          )}
+          {product.kondisi_stok === 'stok_terbatas' && (
+            <div className="absolute bottom-2 left-2 rounded-md bg-amber-600/90 backdrop-blur-xs px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
+              Stok Terbatas
+            </div>
+          )}
         </div>
 
         {/* Info Konten */}
@@ -60,9 +85,16 @@ export function ProductCard({ product }: ProductCardProps) {
             <h3 className="font-semibold text-neutral-900 group-hover:text-emerald-700 line-clamp-2 text-sm leading-snug">
               {product.nama}
             </h3>
-            <p className="mt-2 text-base font-bold text-emerald-600">
-              {formatRupiah(product.harga)}
-            </p>
+            <div className="mt-2 flex items-baseline gap-1">
+              <span className="text-base font-bold text-emerald-600">
+                {formatRupiah(product.harga)}
+              </span>
+              {product.satuan && (
+                <span className="text-xs font-normal text-neutral-500">
+                  / {product.satuan}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="mt-3 pt-3 border-t border-neutral-100 space-y-1 text-xs text-neutral-500">

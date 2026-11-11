@@ -125,10 +125,11 @@ export const getFeaturedProducts = unstable_cache(
           `
           *,
           category:categories(id, nama),
-          seller:profiles(id, nama)
+          seller:profiles(id, nama, region_id, alamat)
         `
         )
         .eq('status', 'approved')
+        .eq('is_active', true)
         .eq('is_featured', true)
         .order('created_at', { ascending: false })
         .limit(MAX_FEATURED_PRODUCTS),
@@ -142,10 +143,14 @@ export const getFeaturedProducts = unstable_cache(
 
     const regionMap = new Map((regions || []).map((r) => [r.id, r]))
 
-    return (productsRes.data || []).map((prod) => ({
-      ...prod,
-      region: prod.region_id ? regionMap.get(prod.region_id) || null : null,
-    }))
+    return (productsRes.data || []).map((prod) => {
+      const regId = prod.region_id || prod.seller?.region_id
+      return {
+        ...prod,
+        alamat: prod.alamat || prod.seller?.alamat || null,
+        region: regId ? regionMap.get(regId) || null : null,
+      }
+    })
   },
   ['featured-products-cache'],
   {
@@ -185,11 +190,12 @@ export async function getApprovedProducts({
           `
           *,
           category:categories(id, nama),
-          seller:profiles(id, nama)
+          seller:profiles(id, nama, region_id, alamat)
         `,
           { count: 'exact' }
         )
         .eq('status', 'approved')
+        .eq('is_active', true)
 
       if (cleanQuery) {
         builder = builder.or(`nama.ilike.%${cleanQuery}%,deskripsi.ilike.%${cleanQuery}%`)
@@ -222,10 +228,14 @@ export async function getApprovedProducts({
       const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE))
       const regionMap = new Map((regions || []).map((r) => [r.id, r]))
 
-      const products = (res.data || []).map((prod) => ({
-        ...prod,
-        region: prod.region_id ? regionMap.get(prod.region_id) || null : null,
-      }))
+      const products = (res.data || []).map((prod) => {
+        const regId = prod.region_id || prod.seller?.region_id
+        return {
+          ...prod,
+          alamat: prod.alamat || prod.seller?.alamat || null,
+          region: regId ? regionMap.get(regId) || null : null,
+        }
+      })
 
       return {
         products,
@@ -258,7 +268,7 @@ export async function getProductDetail(id: string) {
             `
             *,
             category:categories(id, nama),
-            seller:profiles(id, nama)
+            seller:profiles(id, nama, region_id, alamat, latitude, longitude, no_wa)
           `
           )
           .eq('id', id)
@@ -272,9 +282,17 @@ export async function getProductDetail(id: string) {
 
       const product = productRes.data
       const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+      const finalRegionId = product.region_id || product.seller?.region_id
+      const finalAlamat = product.alamat || product.seller?.alamat
+      const finalLat = product.latitude ?? product.seller?.latitude ?? null
+      const finalLng = product.longitude ?? product.seller?.longitude ?? null
+
       return {
         ...product,
-        region: product.region_id ? regionMap.get(product.region_id) || null : null,
+        alamat: finalAlamat,
+        latitude: finalLat,
+        longitude: finalLng,
+        region: finalRegionId ? regionMap.get(finalRegionId) || null : null,
       }
     },
     [`product-detail-${id}`],

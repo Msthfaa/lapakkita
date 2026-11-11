@@ -33,6 +33,12 @@ import {
   ExternalLink,
   Loader2,
   Image as ImageIcon,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  Truck,
+  Layers,
+  FileCheck2,
 } from 'lucide-react'
 
 interface AdminModerationItemProps {
@@ -42,16 +48,30 @@ interface AdminModerationItemProps {
     deskripsi: string
     harga: number
     foto_url: string | null
+    foto_urls?: string[] | null
+    satuan?: string | null
+    kondisi_stok?: 'ready_stock' | 'pre_order' | 'stok_terbatas' | null
+    metode_pengiriman?: string[] | null
+    varian?: string | null
+    no_izin?: string | null
     no_wa: string
     alamat: string | null
     status: 'pending' | 'approved' | 'rejected'
     alasan_tolak: string | null
     is_featured: boolean
+    is_active: boolean
     created_at: string
     category?: { nama: string } | null
     region?: { nama: string } | null
     seller?: { nama: string } | null
   }
+}
+
+const SHIPPING_LABELS: Record<string, string> = {
+  ambil_di_tempat: 'Ambil di Tempat',
+  cod: 'COD',
+  kurir_instan: 'Kurir Instan',
+  kurir_ekspedisi: 'Ekspedisi (JNE/J&T)',
 }
 
 export function AdminModerationItem({ product }: AdminModerationItemProps) {
@@ -60,6 +80,16 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
   const [loadingApprove, setLoadingApprove] = useState(false)
   const [loadingReject, setLoadingReject] = useState(false)
   const [loadingFeatured, setLoadingFeatured] = useState(false)
+
+  // Galeri foto untuk admin
+  const allImages =
+    product.foto_urls && product.foto_urls.length > 0
+      ? product.foto_urls
+      : product.foto_url
+        ? [product.foto_url]
+        : []
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0)
+  const currentPhoto = allImages[activePhotoIdx] || product.foto_url
 
   async function handleApprove() {
     setLoadingApprove(true)
@@ -124,27 +154,93 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
 
   return (
     <div className="flex flex-col md:flex-row gap-5 p-5 border border-neutral-200 rounded-xl bg-white shadow-xs">
-      {/* Gambar Produk */}
-      <div className="relative h-44 w-full md:w-44 shrink-0 rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
-        {product.foto_url ? (
-          <Image
-            src={product.foto_url}
-            alt={product.nama}
-            fill
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-neutral-400">
-            <ImageIcon className="h-10 w-10" />
+      {/* Kolom Gambar Produk & Thumbnail Multi-Foto */}
+      <div className="flex flex-col gap-2 w-full md:w-48 shrink-0">
+        <div className="relative h-44 w-full rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
+          {currentPhoto ? (
+            <Image
+              src={currentPhoto}
+              alt={product.nama}
+              fill
+              className="object-cover transition-all"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-neutral-400">
+              <ImageIcon className="h-10 w-10" />
+            </div>
+          )}
+
+          {allImages.length > 1 && (
+            <div className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-xs">
+              {activePhotoIdx + 1} / {allImages.length}
+            </div>
+          )}
+        </div>
+
+        {/* Thumbnail multi-foto jika lebih dari 1 */}
+        {allImages.length > 1 && (
+          <div className="flex gap-1.5 overflow-x-auto pb-1">
+            {allImages.map((img, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActivePhotoIdx(idx)}
+                className={`relative h-11 w-11 shrink-0 rounded-md overflow-hidden border-2 transition cursor-pointer ${
+                  activePhotoIdx === idx
+                    ? 'border-emerald-600 ring-1 ring-emerald-500'
+                    : 'border-neutral-200 opacity-60 hover:opacity-100'
+                }`}
+              >
+                <Image
+                  src={img}
+                  alt={`Thumbnail ${idx + 1}`}
+                  fill
+                  sizes="44px"
+                  className="object-cover"
+                />
+              </button>
+            ))}
           </div>
         )}
       </div>
 
       {/* Info Detail */}
       <div className="flex-1 flex flex-col justify-between">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="space-y-2.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             <StatusBadge status={product.status} />
+
+            {/* Status Etalase (Aktif vs Nonaktif) */}
+            {!product.is_active ? (
+              <span className="text-xs bg-neutral-800 text-white font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                ⏸️ Nonaktif oleh Penjual
+              </span>
+            ) : (
+              <span className="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                🟢 Aktif
+              </span>
+            )}
+
+            {/* Status Stok */}
+            {product.kondisi_stok === 'ready_stock' && (
+              <span className="text-xs bg-emerald-50 text-emerald-700 font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
+                <CheckCircle2 className="h-3 w-3" />
+                Ready
+              </span>
+            )}
+            {product.kondisi_stok === 'pre_order' && (
+              <span className="text-xs bg-blue-50 text-blue-700 font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                PO
+              </span>
+            )}
+            {product.kondisi_stok === 'stok_terbatas' && (
+              <span className="text-xs bg-amber-50 text-amber-700 font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" />
+                Stok Terbatas
+              </span>
+            )}
+
             {product.category && (
               <span className="text-xs bg-neutral-100 text-neutral-700 font-medium px-2.5 py-0.5 rounded-full">
                 {product.category.nama}
@@ -164,10 +260,43 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
             )}
           </div>
 
-          <h3 className="text-lg font-bold text-neutral-900">{product.nama}</h3>
-          <p className="text-base font-extrabold text-emerald-600">
-            {formatRupiah(product.harga)}
-          </p>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">{product.nama}</h3>
+            <div className="flex items-baseline gap-1 mt-0.5">
+              <span className="text-base font-extrabold text-emerald-600">
+                {formatRupiah(product.harga)}
+              </span>
+              {product.satuan && (
+                <span className="text-xs font-medium text-neutral-500">
+                  / {product.satuan}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Atribut Detail: Varian, Izin Usaha, Pengiriman */}
+          {(product.varian || product.no_izin || (product.metode_pengiriman && product.metode_pengiriman.length > 0)) && (
+            <div className="flex flex-wrap gap-2 text-xs">
+              {product.varian && (
+                <div className="inline-flex items-center gap-1 rounded bg-neutral-100 px-2 py-1 text-neutral-700">
+                  <Layers className="h-3 w-3 text-emerald-600" />
+                  <span>Varian: <strong>{product.varian}</strong></span>
+                </div>
+              )}
+              {product.no_izin && (
+                <div className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 text-emerald-800 border border-emerald-200">
+                  <FileCheck2 className="h-3 w-3 text-emerald-600" />
+                  <span>Izin: <strong>{product.no_izin}</strong></span>
+                </div>
+              )}
+              {product.metode_pengiriman && product.metode_pengiriman.length > 0 && (
+                <div className="inline-flex items-center gap-1 rounded bg-neutral-100 px-2 py-1 text-neutral-700">
+                  <Truck className="h-3 w-3 text-emerald-600" />
+                  <span>Kirim: {product.metode_pengiriman.map((k) => SHIPPING_LABELS[k] || k).join(', ')}</span>
+                </div>
+              )}
+            </div>
+          )}
 
           <p className="text-xs text-neutral-600 whitespace-pre-line line-clamp-3 bg-neutral-50 p-2.5 rounded-md border border-neutral-100">
             {product.deskripsi || 'Tidak ada deskripsi.'}
@@ -193,6 +322,12 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
               <span>Diajukan: {formatTanggal(product.created_at)}</span>
             </div>
           </div>
+
+          {!product.is_active && (
+            <div className="rounded-md bg-amber-50 p-2.5 text-xs text-amber-900 border border-amber-200 mt-2">
+              <strong>ℹ️ Catatan Moderasi:</strong> Produk ini sedang disetel <strong>Nonaktif</strong> oleh penjual. Jika Anda menyetujui, statusnya menjadi Disetujui tetapi produk <strong>tetap tidak tampil di katalog publik</strong> sampai penjual mengaktifkannya sendiri di dashboard.
+            </div>
+          )}
 
           {product.status === 'rejected' && product.alasan_tolak && (
             <div className="rounded-md bg-rose-50 p-2.5 text-xs text-rose-800 border border-rose-200 mt-2">

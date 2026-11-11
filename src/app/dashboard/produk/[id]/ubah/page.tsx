@@ -39,6 +39,7 @@ export default async function UbahProdukPage({ params }: Props) {
         categories={categories}
         regions={regions}
         userId={user.id}
+        sellerProfile={profile}
         initialData={product}
       />
     </div>
