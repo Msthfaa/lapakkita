@@ -24,13 +24,13 @@ export default async function HomePage() {
       {/* ===== HERO SECTION - SPOTLIGHT AURA DI BELAKANG JUDUL & CAROUSEL ===== */}
       <section className="relative overflow-hidden bg-transparent pt-24 pb-16 sm:pt-32 sm:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Center Editorial Headline in Serif font - 2 baris pas tanpa terpotong */}
+          {/* Center Editorial Headline in Serif font - 2 baris pas tanpa terpotong (Ukuran tetap terjaga sesuai permintaan) */}
           <div className="mx-auto max-w-5xl text-center mb-10 sm:mb-14 px-2">
-            <h1 className="font-serif text-xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[48px] font-normal tracking-tight text-neutral-900 dark:text-white leading-tight sm:leading-[1.12]">
+            <h1 className="font-serif text-[23px] sm:text-[33px] md:text-[39px] lg:text-[47px] xl:text-[51px] font-normal tracking-tight text-neutral-900 dark:text-white leading-tight sm:leading-[1.12]">
               <span className="block">Karya Anak Bangsa, Kualitas Juara,</span>
               <span className="block mt-1 sm:mt-1.5">Harga Bersahaja</span>
             </h1>
-            <p className="mt-3 sm:mt-4 text-xs sm:text-sm tracking-normal text-neutral-600 dark:text-neutral-400 font-medium">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base tracking-normal text-neutral-600 dark:text-neutral-400 font-medium">
               Produk Pilihan &amp; Terpopuler dari UMKM Lokal Terverifikasi
             </p>
           </div>

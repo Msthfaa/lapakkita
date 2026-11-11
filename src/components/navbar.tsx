@@ -127,7 +127,7 @@ export function Navbar({ user, profile }: NavbarProps) {
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-tr from-[#186049] via-[#2a7a58] to-[#4A943E] text-white shadow-xs font-serif font-bold text-xs shrink-0">
               <Store className="h-4 w-4 text-white drop-shadow-xs" />
             </div>
-            <span className="font-serif text-base font-semibold tracking-tight text-[#186049] dark:text-white transition-colors select-none">
+            <span className="font-serif text-[19px] font-semibold tracking-tight text-[#186049] dark:text-white transition-colors select-none">
               Lapak<span className="text-[#4A943E] dark:text-[#5ebd4f] font-bold">Kita</span>
             </span>
           </Link>
@@ -145,8 +145,8 @@ export function Navbar({ user, profile }: NavbarProps) {
               const isActive = activeTab === item.id
               const isHashOnHome = isHomePage && (item.href === '/' || item.href === '/#unggulan')
 
-              // High-contrast text: white on active green pill, high-contrast dark/light on inactive
-              const buttonClass = `h-8 px-4 flex items-center justify-center text-xs sm:text-sm rounded-full transition-all duration-200 cursor-pointer select-none leading-none ${
+              // High-contrast text: white on active green pill, high-contrast dark/light on inactive (ukuran navbar +3px)
+              const buttonClass = `h-8 px-4 flex items-center justify-center text-[14px] sm:text-[16px] rounded-full transition-all duration-200 cursor-pointer select-none leading-none ${
                 isActive
                   ? 'bg-gradient-to-r from-[#186049] to-[#257d5a] !text-white font-bold shadow-md'
                   : 'text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white font-semibold hover:bg-black/5 dark:hover:bg-white/10'
@@ -201,7 +201,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                 <Link
                   href="/dashboard"
                   prefetch={true}
-                  className="flex h-8 items-center gap-1.5 text-xs font-semibold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors px-3 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                  className="flex h-8 items-center gap-1.5 text-[14px] font-semibold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors px-3 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
                 >
                   <LayoutDashboard className="h-3.5 w-3.5" />
                   <span className="hidden lg:inline">Dashboard</span>
@@ -212,7 +212,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                 <Link
                   href="/admin"
                   prefetch={true}
-                  className="flex h-8 items-center gap-1 text-xs font-bold text-[#186049] dark:text-[#ECE8AF] bg-[#ECE8AF]/70 dark:bg-white/10 border border-[#186049]/20 dark:border-white/20 transition-colors px-3 rounded-full hover:scale-105"
+                  className="flex h-8 items-center gap-1 text-[14px] font-bold text-[#186049] dark:text-[#ECE8AF] bg-[#ECE8AF]/70 dark:bg-white/10 border border-[#186049]/20 dark:border-white/20 transition-colors px-3 rounded-full hover:scale-105"
                 >
                   <ShieldCheck className="h-3.5 w-3.5 text-[#186049] dark:text-[#ECE8AF]" />
                   <span className="hidden lg:inline">Admin</span>
@@ -234,13 +234,13 @@ export function Navbar({ user, profile }: NavbarProps) {
             <div className="flex h-11 items-center gap-1 rounded-full glass-pill p-1.5">
               <Link
                 href="/masuk"
-                className="h-8 px-3.5 flex items-center justify-center text-xs font-semibold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors rounded-full"
+                className="h-8 px-3.5 flex items-center justify-center text-[14px] font-semibold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors rounded-full"
               >
                 Masuk
               </Link>
               <Link
                 href="/daftar"
-                className="flex h-8 px-4 items-center justify-center rounded-full bg-[#186049] hover:bg-[#124b39] text-white text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95"
+                className="flex h-8 px-4 items-center justify-center rounded-full bg-[#186049] hover:bg-[#124b39] text-white text-[14px] font-semibold shadow-xs transition-all hover:scale-105 active:scale-95"
               >
                 Daftar
               </Link>
