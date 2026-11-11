@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { id: 'beranda', label: 'Beranda', href: '/' },
   { id: 'unggulan', label: 'Unggulan', href: '/#unggulan' },
   { id: 'kategori', label: 'Kategori', href: '/kategori' },
+  { id: 'tentang', label: 'Tentang Kami', href: '/tentang' },
 ]
 
 export function Navbar({ user, profile }: NavbarProps) {
@@ -28,9 +29,10 @@ export function Navbar({ user, profile }: NavbarProps) {
 
   const isHomePage = pathname === '/'
   const isKategoriPage = pathname?.startsWith('/kategori')
+  const isTentangPage = pathname?.startsWith('/tentang')
 
   const [activeTab, setActiveTab] = useState<string>(
-    isKategoriPage ? 'kategori' : 'beranda'
+    isTentangPage ? 'tentang' : isKategoriPage ? 'kategori' : isHomePage ? 'beranda' : ''
   )
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -44,7 +46,9 @@ export function Navbar({ user, profile }: NavbarProps) {
 
   // Update active tab based on route changes
   useEffect(() => {
-    if (isKategoriPage) {
+    if (isTentangPage) {
+      setActiveTab('tentang')
+    } else if (isKategoriPage) {
       setActiveTab('kategori')
     } else if (isHomePage) {
       if (typeof window !== 'undefined' && window.location.hash === '#unggulan') {
@@ -52,8 +56,10 @@ export function Navbar({ user, profile }: NavbarProps) {
       } else {
         setActiveTab('beranda')
       }
+    } else {
+      setActiveTab('')
     }
-  }, [pathname, isHomePage, isKategoriPage])
+  }, [pathname, isHomePage, isKategoriPage, isTentangPage])
 
   // Scroll spy to automatically update active pill on homepage
   useEffect(() => {
@@ -109,6 +115,7 @@ export function Navbar({ user, profile }: NavbarProps) {
           <Link
             href="/"
             prefetch={true}
+            title="LapakKita - Karya Anak Bangsa, Kualitas Juara, Harga Bersahaja"
             onClick={() => {
               if (isHomePage) {
                 window.scrollTo({ top: 0, behavior: 'smooth' })
