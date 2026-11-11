@@ -8,7 +8,7 @@ import { AdminMasterOverview } from '@/components/admin/admin-master-overview'
 import { AdminSystemPulse } from '@/components/admin/admin-system-pulse'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { CheckSquare, Layers, Sparkles } from 'lucide-react'
+import { CheckSquare, Sparkles, ShieldCheck, ArrowRight } from 'lucide-react'
 
 export const metadata = {
   title: 'Dashboard Admin - LapakKita',
@@ -18,51 +18,43 @@ export default async function AdminDashboardPage() {
   const data = await getAdminDashboardExtendedData()
 
   return (
-    <div className="space-y-6 sm:space-y-8">
-      {/* Title & Quick Actions Row (Donezo Header Style) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-5 sm:space-y-6">
+      {/* Header Row: Title & Action Tunggal Tanpa Duplikasi */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
               Dashboard
             </h1>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/70 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/70 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:text-emerald-300">
               <Sparkles className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
-              Real-time
+              Live Online
             </span>
           </div>
-          <p className="mt-1 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
-            Pantau, moderasi, dan kelola ekosistem produk UMKM LapakKita dengan mudah.
+          <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+            Monitoring metrik kurasi mutu, performa etalase, dan direktori penjual UMKM.
           </p>
         </div>
 
-        {/* Action Buttons: Solid Green Pill + Outline Pill */}
-        <div className="flex items-center gap-2.5 self-start sm:self-auto">
-          <Button
-            asChild
-            className="rounded-full bg-[#0B3B2C] hover:bg-[#0D4433] dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2 h-10 shadow-xs hover:shadow-md transition-all hover:scale-105 active:scale-95 gap-2"
-          >
-            <Link href="/admin/moderasi">
-              <CheckSquare className="h-4 w-4" />
-              <span>Moderasi Produk</span>
-              {data.stats.pendingCount > 0 && (
-                <span className="rounded-full bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.2">
-                  {data.stats.pendingCount}
-                </span>
-              )}
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="outline"
-            className="rounded-full border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-900 font-semibold text-xs px-4 py-2 h-10 shadow-2xs transition-all hover:scale-105 active:scale-95 gap-2"
-          >
-            <Link href="/admin/master">
-              <Layers className="h-4 w-4 text-neutral-500 dark:text-neutral-400" />
-              <span>Kelola Master Data</span>
-            </Link>
-          </Button>
+        {/* Action Button Tunggal (Hanya muncul jika butuh tindakan moderasi) */}
+        <div className="self-start sm:self-auto">
+          {data.stats.pendingCount > 0 ? (
+            <Button
+              asChild
+              className="rounded-full bg-[#0B3B2C] hover:bg-[#0D4433] dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2 h-9 shadow-xs hover:shadow-md transition-all gap-2"
+            >
+              <Link href="/admin/moderasi">
+                <CheckSquare className="h-3.5 w-3.5" />
+                <span>Tinjau {data.stats.pendingCount} Produk Pending</span>
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </Button>
+          ) : (
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 shadow-2xs">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Semua Antrean Bersih &amp; Terverifikasi</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -70,7 +62,7 @@ export default async function AdminDashboardPage() {
       <AdminKpiCards stats={data.stats} />
 
       {/* Row 2: Analytics Bar Chart + Prioritas Aksi Cepat + Master Data Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-5">
         {/* Kolom 1-2: Grafik Batang Mingguan Interaktif (Pill-shaped Bar Chart Donezo) */}
         <div className="lg:col-span-2">
           <AdminWeeklyChart
@@ -94,7 +86,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Row 3: Penjual Terbaru + Approval Gauge Meter + System Monitor Timer */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-5">
         {/* Kolom 1-2: Penjual UMKM Terbaru (Donezo Team Collaboration Replica) */}
         <div className="lg:col-span-2">
           <AdminRecentSellers sellers={data.recentSellers} />

@@ -17,6 +17,11 @@ export function Navbar({ user, profile }: NavbarProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // Di rute Panel Admin, sembunyikan navbar publik agar tidak tumpang tindih
+  if (pathname.startsWith('/admin')) {
+    return null
+  }
+
   const isSeller = profile?.role === 'seller'
   const isAdmin = profile?.role === 'admin'
 

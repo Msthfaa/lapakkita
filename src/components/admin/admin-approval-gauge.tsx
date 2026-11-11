@@ -1,6 +1,7 @@
 'use client'
 
-import { ShieldCheck, Award } from 'lucide-react'
+import { Award } from 'lucide-react'
+import { motion } from 'motion/react'
 
 interface AdminApprovalGaugeProps {
   rate: number // percentage (0 - 100)
@@ -15,70 +16,55 @@ export function AdminApprovalGauge({
   pendingCount = 0,
   rejectedCount = 0,
 }: AdminApprovalGaugeProps) {
-  // SVG Semi-Circle Arc Calculation:
-  // Radius r = 80, Circumference of half circle = PI * r ≈ 251.32
-  const r = 80
+  const r = 76
   const arcLength = Math.PI * r
   const clampedRate = Math.max(0, Math.min(100, rate))
   const strokeDashoffset = arcLength * (1 - clampedRate / 100)
 
   return (
-    <div className="rounded-3xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 p-6 shadow-2xs transition-all duration-300 flex flex-col justify-between">
+    <div className="rounded-3xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 p-5 sm:p-6 shadow-2xs transition-all duration-300 flex flex-col justify-between">
       {/* Title */}
-      <div className="flex items-center justify-between pb-2">
+      <div className="flex items-center justify-between pb-1">
         <div>
           <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
-            Tingkat Kurasi Produk
+            Tingkat Kurasi Mutu
           </h3>
           <p className="text-[11px] text-neutral-400 dark:text-neutral-500 font-medium">
-            Rasio kelayakan & standar etalase
+            Rasio produk lolos seleksi
           </p>
         </div>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
-          <Award className="h-4 w-4" />
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+          <Award className="h-3.5 w-3.5" />
         </div>
       </div>
 
       {/* SVG Semi-Circle Gauge (Donezo 41% Gauge replica) */}
-      <div className="relative flex flex-col items-center justify-center pt-2">
+      <div className="relative flex flex-col items-center justify-center pt-1 pb-1">
         <svg
-          viewBox="0 0 200 115"
-          className="w-52 max-w-full overflow-visible"
+          viewBox="0 0 190 105"
+          className="w-48 max-w-full overflow-visible"
         >
           {/* Background Track Arc */}
           <path
-            d="M 20 100 A 80 80 0 0 1 180 100"
+            d="M 19 95 A 76 76 0 0 1 171 95"
             fill="none"
             stroke="currentColor"
-            strokeWidth="20"
+            strokeWidth="18"
             strokeLinecap="round"
             className="text-neutral-100 dark:text-neutral-900"
           />
 
-          {/* Pending portion accent if any */}
-          {pendingCount > 0 && (
-            <path
-              d="M 20 100 A 80 80 0 0 1 180 100"
-              fill="none"
-              stroke="#F59E0B"
-              strokeWidth="20"
-              strokeLinecap="round"
-              strokeDasharray={arcLength}
-              strokeDashoffset={arcLength * (1 - Math.min(1, (approvedCount + pendingCount) / Math.max(1, approvedCount + pendingCount + rejectedCount)))}
-              className="opacity-40 transition-all duration-1000 ease-out"
-            />
-          )}
-
           {/* Foreground Progress Arc (Rich Forest / Emerald) */}
-          <path
-            d="M 20 100 A 80 80 0 0 1 180 100"
+          <motion.path
+            d="M 19 95 A 76 76 0 0 1 171 95"
             fill="none"
             stroke="url(#emeraldGaugeGrad)"
-            strokeWidth="20"
+            strokeWidth="18"
             strokeLinecap="round"
             strokeDasharray={arcLength}
-            strokeDashoffset={strokeDashoffset}
-            className="transition-all duration-1000 ease-out"
+            initial={{ strokeDashoffset: arcLength }}
+            animate={{ strokeDashoffset }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
           />
 
           <defs>
@@ -90,32 +76,32 @@ export function AdminApprovalGauge({
         </svg>
 
         {/* Center Text inside the Semi Circle */}
-        <div className="absolute bottom-1 text-center flex flex-col items-center justify-center">
+        <div className="absolute bottom-0 text-center flex flex-col items-center justify-center">
           <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-none">
             {clampedRate}%
           </span>
-          <span className="text-[11px] text-neutral-400 dark:text-neutral-500 font-medium mt-1">
-            Lolos Kurasi
+          <span className="text-[10px] text-neutral-400 dark:text-neutral-500 font-medium mt-1">
+            Lolos Seleksi
           </span>
         </div>
       </div>
 
       {/* Legend Dots (Donezo Style) */}
-      <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-around text-[11px]">
-        <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-[#0B3B2C] dark:bg-emerald-400" />
+      <div className="mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-around text-[10px]">
+        <div className="flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#0B3B2C] dark:bg-emerald-400" />
           <span className="text-neutral-600 dark:text-neutral-400">
-            Disetujui ({approvedCount})
+            Setuju ({approvedCount})
           </span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-amber-500" />
+        <div className="flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
           <span className="text-neutral-600 dark:text-neutral-400">
             Pending ({pendingCount})
           </span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-rose-500" />
+        <div className="flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
           <span className="text-neutral-600 dark:text-neutral-400">
             Revisi ({rejectedCount})
           </span>
