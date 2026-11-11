@@ -21,13 +21,13 @@ interface HeroCarouselProps {
   products: Product[]
 }
 
-// Fallback curated aesthetic images if product doesn't have an image
+// Fallback curated aesthetic images if product doesn't have an image - High Definition (HD)
 const FALLBACK_IMAGES = [
-  'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=800&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=800&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=1200&auto=format&fit=crop&q=90',
+  'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1200&auto=format&fit=crop&q=90',
+  'https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&auto=format&fit=crop&q=90',
+  'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=1200&auto=format&fit=crop&q=90',
+  'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=1200&auto=format&fit=crop&q=90',
 ]
 
 export function HeroCarousel({ products }: HeroCarouselProps) {
@@ -248,6 +248,9 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 zIndex: style.zIndex,
                 pointerEvents: style.pointerEvents,
                 transition: 'all 550ms cubic-bezier(0.25, 1, 0.5, 1)',
+                willChange: 'transform, opacity',
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden',
               }}
               className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer
                 w-[220px] sm:w-[260px] md:w-[285px]
@@ -263,12 +266,13 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   alt={product.nama}
                   fill
                   priority={isCenter}
-                  sizes="(max-width: 640px) 220px, (max-width: 1024px) 260px, 285px"
+                  quality={95}
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 650px"
                   className={`object-cover transition-transform duration-700 ${isCenter ? 'scale-100' : 'scale-105'}`}
                 />
 
-                {/* Ambient dark gradient overlay - exactly like reference image */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-black/10" />
+                {/* Ambient dark gradient overlay - clear on top for crisp HD image presentation */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 via-40% to-transparent pointer-events-none" />
 
                 {/* Subtle top pill for category if available */}
                 {product.category && (
