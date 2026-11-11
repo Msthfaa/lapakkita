@@ -94,6 +94,7 @@ export async function createProductAction(values: ProductFormValues): Promise<Ac
   revalidatePath('/')
   revalidateTag('products', 'max')
   revalidateTag('approved-products', 'max')
+  revalidateTag('popular-products', 'max')
   return { success: true, data: { id: data.id } }
 }
 
@@ -182,6 +183,8 @@ export async function updateProductAction(
   revalidatePath(`/produk/${productId}`)
   revalidatePath('/')
   revalidateTag('products', 'max')
+  revalidateTag('approved-products', 'max')
+  revalidateTag('popular-products', 'max')
   revalidateTag(`product-${productId}`, 'max')
   return { success: true }
 }
@@ -233,6 +236,9 @@ export async function deleteProductAction(productId: string): Promise<ActionResu
   revalidatePath('/dashboard')
   revalidatePath('/')
   revalidateTag('products', 'max')
+  revalidateTag('approved-products', 'max')
+  revalidateTag('featured-products', 'max')
+  revalidateTag('popular-products', 'max')
   revalidateTag(`product-${productId}`, 'max')
   return { success: true }
 }
@@ -304,6 +310,7 @@ export async function toggleProductActiveAction(
   revalidateTag('products', 'max')
   revalidateTag('approved-products', 'max')
   revalidateTag('featured-products', 'max')
+  revalidateTag('popular-products', 'max')
   revalidateTag(`product-${productId}`, 'max')
 
   return { success: true }

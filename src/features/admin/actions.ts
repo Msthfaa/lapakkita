@@ -48,6 +48,7 @@ export async function approveProductAction(productId: string) {
     revalidatePath(`/produk/${productId}`)
     revalidateTag('products', 'max')
     revalidateTag('approved-products', 'max')
+    revalidateTag('popular-products', 'max')
     revalidateTag(`product-${productId}`, 'max')
     return { success: true }
   } catch (err: unknown) {
@@ -82,6 +83,7 @@ export async function rejectProductAction(productId: string, alasan: string) {
     revalidatePath('/')
     revalidateTag('products', 'max')
     revalidateTag('approved-products', 'max')
+    revalidateTag('popular-products', 'max')
     revalidateTag(`product-${productId}`, 'max')
     return { success: true }
   } catch (err: unknown) {
@@ -109,6 +111,7 @@ export async function toggleFeaturedAction(productId: string, isFeatured: boolea
     revalidatePath('/')
     revalidateTag('products', 'max')
     revalidateTag('featured-products', 'max')
+    revalidateTag('popular-products', 'max')
     return { success: true }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Gagal mengubah status unggulan'
@@ -386,6 +389,7 @@ export async function adminDeleteUserAction(userId: string) {
     revalidatePath('/')
     revalidateTag('products', 'max')
     revalidateTag('approved-products', 'max')
+    revalidateTag('popular-products', 'max')
 
     const deletedCount =
       rpcData && typeof rpcData === 'object' && 'deleted_products_count' in rpcData
