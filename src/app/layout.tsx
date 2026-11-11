@@ -3,13 +3,17 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { FloatingRouteLoader } from '@/components/floating-route-loader'
-import { PublicFooter } from '@/components/public-footer'
 import { getUserAndProfile } from '@/features/auth/actions'
 import { Toaster } from 'sonner'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
 import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
+<<<<<<< HEAD
 import { connection } from 'next/server'
+=======
+import { NavbarWrapper } from '@/components/navbar-wrapper'
+import { LiquidBackground } from '@/components/liquid-background'
+>>>>>>> 410a3ce (feat: revamp UI theme to forest green, modernize product detail layout, and showcase seller products)
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -54,11 +58,19 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </head>
+<<<<<<< HEAD
       <body className="flex min-h-full flex-col bg-[#fbfaf5] dark:bg-[#0a110e] text-[#111a16] dark:text-[#f4f5ef] font-sans transition-colors duration-300">
+=======
+      <body className="relative flex min-h-full flex-col bg-[#FAF9F5] dark:bg-[#000000] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300 selection:bg-[#186049]/30">
+>>>>>>> 410a3ce (feat: revamp UI theme to forest green, modernize product detail layout, and showcase seller products)
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {/* FULL VIEWPORT AMBIENT LIQUID GRADIENT (GRADASI HIJAU & OREN SEPERTI GAMBAR) */}
+          <LiquidBackground />
+
           <Suspense fallback={null}>
             <FloatingRouteLoader />
           </Suspense>
+<<<<<<< HEAD
           <Suspense
             fallback={
               <div className="h-16 w-full border-b border-[#186049]/10 dark:border-[#186049]/20 bg-[#fbfaf5] dark:bg-[#0a110e]" />
@@ -67,9 +79,36 @@ export default function RootLayout({
             <NavbarSlot />
           </Suspense>
           <main className="flex-1">{children}</main>
+=======
+
+>>>>>>> 410a3ce (feat: revamp UI theme to forest green, modernize product detail layout, and showcase seller products)
           <Suspense fallback={null}>
-            <PublicFooter />
+            <NavbarWrapper>
+              <Suspense
+                fallback={
+                  <div className="fixed top-4 sm:top-6 inset-x-0 z-50 px-4 sm:px-8 lg:px-12 pointer-events-none">
+                    <div className="mx-auto flex max-w-7xl items-center justify-between">
+                      <div className="h-11 w-32 rounded-full glass-pill" />
+                      <div className="hidden md:block h-12 w-80 rounded-full glass-pill" />
+                      <div className="h-11 w-28 rounded-full glass-pill" />
+                    </div>
+                  </div>
+                }
+              >
+                <NavbarSlot />
+              </Suspense>
+            </NavbarWrapper>
           </Suspense>
+          <main className="relative z-10 flex-1">{children}</main>
+          
+          {/* Footer Bersih dan Transparan agar Gradasi Terlihat Seperti Gambar yang Diminta */}
+          <footer className="relative z-10 border-t border-neutral-200/50 dark:border-neutral-800/60 bg-transparent py-8 text-center text-xs text-neutral-600 dark:text-neutral-400">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <p>
+                &copy; 2026 <strong className="text-neutral-900 dark:text-neutral-200">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
+              </p>
+            </div>
+          </footer>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

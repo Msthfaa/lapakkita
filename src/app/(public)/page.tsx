@@ -1,183 +1,140 @@
 import {
   getCategories,
-  getRegions,
   getFeaturedProducts,
-  getApprovedProducts,
   getPopularProducts,
 } from '@/features/products/queries'
 import { ProductCard } from '@/components/product-card'
-import { CatalogFilters } from '@/components/catalog-filters'
-import { Pagination } from '@/components/pagination'
 import { HeroCarousel } from '@/components/hero-carousel'
-import { Sparkles, PackageSearch, ArrowDown } from 'lucide-react'
-import { Suspense } from 'react'
+import { Sparkles, ArrowDown, ArrowRight, Layers } from 'lucide-react'
 import Link from 'next/link'
 
-interface PageProps {
-  searchParams: Promise<{
-    q?: string
-    kategori?: string
-    daerah?: string
-    page?: string
-  }>
-}
-
-export default async function HomePage({ searchParams }: PageProps) {
-  const params = await searchParams
-  const q = params.q || ''
-  const categoryId = params.kategori ? parseInt(params.kategori, 10) : undefined
-  const regionId = params.daerah ? parseInt(params.daerah, 10) : undefined
-  const currentPage = params.page ? Math.max(1, parseInt(params.page, 10)) : 1
-
-  const isFiltering = Boolean(q || categoryId || regionId)
-
-  // Fetch data
-  const [categories, regions, featuredProducts, popularProducts, { products, total, totalPages }] =
-    await Promise.all([
-      getCategories(),
-      getRegions(),
-      !isFiltering ? getFeaturedProducts() : Promise.resolve([]),
-      !isFiltering ? getPopularProducts(14) : Promise.resolve([]),
-      getApprovedProducts({ query: q, categoryId, regionId, page: currentPage }),
-    ])
+export default async function HomePage() {
+  // Fetch data for homepage
+  const [categories, featuredProducts, popularProducts] = await Promise.all([
+    getCategories(),
+    getFeaturedProducts(),
+    getPopularProducts(14),
+  ])
 
   // Products prioritized for the 3D hero carousel
   const heroProducts = popularProducts.length > 0 ? popularProducts : featuredProducts
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
-      {/* ===== HERO SECTION - EXACT REPLICA OF THE IMAGE ===== */}
-      {!isFiltering && (
-        <section className="relative overflow-hidden bg-white dark:bg-black pt-12 pb-16 sm:pt-16 sm:pb-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Center Editorial Headline in Serif font - 3 lines matching the reference */}
-            <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16">
-              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight text-neutral-900 dark:text-white leading-[1.15]">
-                Selected and popular
-                <br />
-                products on the social
-                <br />
-                right now
-              </h1>
-              <p className="mt-4 text-xs sm:text-sm tracking-widest uppercase text-neutral-400 dark:text-neutral-500">
-                Produk Pilihan &amp; Terpopuler Dari UMKM Lokal Terverifikasi
-              </p>
-            </div>
-
-            {/* 3D Cylindrical Curved Carousel */}
-            <div className="mx-auto max-w-6xl">
-              <HeroCarousel products={heroProducts} />
-            </div>
-
-            {/* Subtle scroll down indicator */}
-            <div className="mt-14 text-center">
-              <a
-                href="#katalog"
-                className="inline-flex items-center gap-2 text-xs font-light text-neutral-400 dark:text-neutral-500 hover:text-black dark:hover:text-white transition-colors"
-              >
-                <span>Jelajahi Semua Produk</span>
-                <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
-              </a>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ===== CATALOG SEARCH & FILTER SECTION ===== */}
-      <section
-        id="katalog"
-        className="border-t border-neutral-200 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-950/50 py-12 transition-colors duration-300"
-      >
+    <div className="min-h-screen bg-transparent transition-colors duration-300">
+      {/* ===== HERO SECTION - SPOTLIGHT AURA DI BELAKANG JUDUL & CAROUSEL ===== */}
+      <section className="relative overflow-hidden bg-transparent pt-24 pb-16 sm:pt-32 sm:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl space-y-4 mb-10">
-            <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 dark:text-white">
-                {isFiltering ? 'Hasil Pencarian Produk' : 'Katalog UMKM Terverifikasi'}
-              </h2>
-              <p className="mt-1 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
-                Hubungi langsung penjual via WhatsApp resmi tanpa perantara
-              </p>
-            </div>
-
-            <Suspense
-              fallback={
-                <div className="h-16 w-full animate-pulse rounded-2xl bg-neutral-200 dark:bg-neutral-900" />
-              }
-            >
-              <CatalogFilters categories={categories} regions={regions} />
-            </Suspense>
+          {/* Center Editorial Headline in Serif font - 3 lines matching the reference */}
+          <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-tight text-neutral-900 dark:text-white leading-[1.15]">
+              Selected and popular
+              <br />
+              products on the social
+              <br />
+              right now
+            </h1>
+            <p className="mt-4 text-xs sm:text-sm tracking-widest uppercase text-neutral-500 dark:text-neutral-400 font-medium">
+              Produk Pilihan &amp; Terpopuler Dari UMKM Lokal Terverifikasi
+            </p>
           </div>
 
-          {/* Featured showcase if not filtering */}
-          {!isFiltering && featuredProducts.length > 0 && (
-            <div id="unggulan" className="mb-14 space-y-6">
-              <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                <Sparkles className="h-4 w-4 text-amber-500" />
-                <h3 className="font-serif text-lg font-normal text-neutral-900 dark:text-white">
-                  Produk Unggulan Kurasi
-                </h3>
-              </div>
+          {/* 3D Cylindrical Curved Carousel */}
+          <div className="mx-auto max-w-6xl">
+            <HeroCarousel products={heroProducts} />
+          </div>
 
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {featuredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+          {/* Subtle scroll down indicator */}
+          <div className="mt-14 text-center">
+            <a
+              href="#unggulan"
+              className="inline-flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-[#186049] dark:hover:text-white transition-colors"
+            >
+              <span>Lihat Produk Unggulan</span>
+              <ArrowDown className="h-3.5 w-3.5 animate-bounce text-[#4A943E]" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION PRODUK UNGGULAN KURASI ===== */}
+      <section
+        id="unggulan"
+        className="scroll-mt-24 border-t border-neutral-200/50 dark:border-neutral-800/60 bg-transparent py-16 transition-colors duration-300"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          {/* Header Section */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-5">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/15 text-[#186049]">
+                <Sparkles className="h-4 w-4" />
               </div>
+              <div>
+                <h2 className="font-serif text-2xl font-normal text-neutral-900 dark:text-white">
+                  Produk Unggulan Kurasi
+                </h2>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  Produk UMKM pilihan dengan kualitas terverifikasi dan siap dihubungi langsung
+                </p>
+              </div>
+            </div>
+
+            <Link
+              href="/kategori"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#186049] dark:text-[#ECE8AF] hover:text-[#4A943E] transition-colors self-start sm:self-auto"
+            >
+              <span>Buka Semua Kategori &amp; Pencarian</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          {/* Grid Produk Unggulan */}
+          {featuredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="py-12 text-center text-xs text-neutral-400">
+              Belum ada produk yang ditandai sebagai unggulan.
             </div>
           )}
 
-          {/* All Catalog Products */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-              <h3 className="font-serif text-lg font-normal text-neutral-900 dark:text-white">
-                {isFiltering ? 'Semua Hasil' : 'Koleksi Produk'}
+          {/* Banner Eksplorasi Kategori & Pencarian */}
+          <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/60 p-8 sm:p-10 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-2 text-center md:text-left">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-white/10 px-3 py-1 text-[11px] font-semibold text-[#186049] dark:text-[#ECE8AF]">
+                <Layers className="h-3 w-3 text-[#186049] dark:text-[#4A943E]" />
+                <span>Eksplorasi Lengkap</span>
+              </div>
+              <h3 className="font-serif text-xl sm:text-2xl font-normal text-neutral-900 dark:text-white">
+                Cari Produk Berdasarkan Kategori &amp; Daerah
               </h3>
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                {total} produk terdaftar
-              </span>
+              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
+                Ingin mencari produk spesifik? Jelajahi tab kategori untuk memfilter kuliner, kerajinan, fashion, hingga hasil pertanian dari berbagai daerah.
+              </p>
+
+              {/* Quick Category Chips Preview */}
+              <div className="flex flex-wrap gap-2 pt-2 justify-center md:justify-start">
+                {categories.slice(0, 5).map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/kategori?kategori=${cat.id}`}
+                    className="rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-[#ECE8AF]/60 px-3 py-1 text-xs text-neutral-700 dark:text-neutral-300 transition-colors"
+                  >
+                    {cat.nama}
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {products.length === 0 ? (
-              <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-16 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-400 mb-4">
-                  <PackageSearch className="h-8 w-8" />
-                </div>
-                <h4 className="text-lg font-serif font-normal text-neutral-800 dark:text-neutral-200">
-                  {isFiltering
-                    ? 'Tidak ada produk yang cocok'
-                    : 'Belum ada produk yang disetujui'}
-                </h4>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm mt-1">
-                  {isFiltering
-                    ? 'Coba ganti kata kunci atau pilih filter kategori / daerah yang berbeda.'
-                    : 'Produk sedang dalam proses moderasi admin.'}
-                </p>
-                {isFiltering && (
-                  <Link
-                    href="/"
-                    className="mt-4 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
-                  >
-                    Kembali ke Beranda &rarr;
-                  </Link>
-                )}
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  q={q}
-                  kategori={params.kategori}
-                  daerah={params.daerah}
-                />
-              </>
-            )}
+            <Link
+              href="/kategori"
+              className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-[#186049] hover:bg-[#124b39] text-white px-6 py-3.5 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md active:scale-95"
+            >
+              <span>Buka Tab Kategori &amp; Pencarian</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

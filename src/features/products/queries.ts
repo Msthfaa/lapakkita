@@ -373,3 +373,93 @@ export const getPopularProducts = unstable_cache(
     tags: ['products', 'popular-products'],
   }
 )
+
+
+/**
+ * Mengambil produk lain yang dijual oleh toko / penjual yang sama.
+ */
+export async function getProductsBySeller(sellerId: string, currentProductId?: string, limit = 8) {
+  if (!sellerId) return []
+
+  const supabase = getPublicClient()
+  const [productsRes, regions] = await Promise.all([
+    supabase
+      .from('products')
+      .select(
+        `
+        *,
+        category:categories(id, nama),
+        seller:profiles(id, nama, region_id, alamat)
+      `
+      )
+      .eq('seller_id', sellerId)
+      .eq('status', 'approved')
+      .eq('is_active', true)
+      .neq('id', currentProductId || '')
+      .order('created_at', { ascending: false })
+      .limit(limit),
+    getRegions().catch(() => []),
+  ])
+
+  if (productsRes.error) {
+    console.error('Error fetching seller products:', productsRes.error.message)
+    return []
+  }
+
+  const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+
+  return (productsRes.data || []).map((prod) => {
+    const regId = prod.region_id || prod.seller?.region_id
+    return {
+      ...prod,
+      alamat: prod.alamat || prod.seller?.alamat || null,
+      region: regId ? regionMap.get(regId) || null : null,
+    }
+  })
+}
+
+/**
+ * Mengambil rekomendasi produk dari kategori yang sama sebagai pelengkap.
+ */
+export async function getRelatedProducts(categoryId?: number | null, currentProductId?: string, limit = 4) {
+  const supabase = getPublicClient()
+  let query = supabase
+    .from('products')
+    .select(
+      `
+      *,
+      category:categories(id, nama),
+      seller:profiles(id, nama, region_id, alamat)
+    `
+    )
+    .eq('status', 'approved')
+    .eq('is_active', true)
+
+  if (currentProductId) {
+    query = query.neq('id', currentProductId)
+  }
+
+  if (categoryId) {
+    query = query.eq('category_id', categoryId)
+  }
+
+  const [productsRes, regions] = await Promise.all([
+    query.order('created_at', { ascending: false }).limit(limit),
+    getRegions().catch(() => []),
+  ])
+
+  if (productsRes.error) {
+    return []
+  }
+
+  const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+
+  return (productsRes.data || []).map((prod) => {
+    const regId = prod.region_id || prod.seller?.region_id
+    return {
+      ...prod,
+      alamat: prod.alamat || prod.seller?.alamat || null,
+      region: regId ? regionMap.get(regId) || null : null,
+    }
+  })
+}

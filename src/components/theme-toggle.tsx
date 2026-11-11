@@ -14,7 +14,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="h-8 w-8 rounded-full border border-neutral-200 dark:border-neutral-800 bg-transparent" />
+      <div className="h-11 w-11 rounded-full glass-btn" />
     )
   }
 
@@ -24,14 +24,14 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full border border-neutral-300 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/80 text-neutral-700 dark:text-neutral-300 transition-all duration-200 hover:border-neutral-400 dark:hover:border-neutral-600 hover:scale-105 active:scale-95"
+      className="group relative inline-flex h-11 w-11 items-center justify-center rounded-full glass-btn cursor-pointer active:scale-95 transition-transform"
       aria-label={isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'}
-      title={isDark ? 'Beralih ke Mode Terang (Light Mode)' : 'Beralih ke Mode Gelap (Dark Mode)'}
+      title={isDark ? 'Mode Terang (Light Mode)' : 'Mode Gelap (Dark Mode)'}
     >
       {isDark ? (
-        <Sun className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-amber-400" />
+        <Sun className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-[#ECE8AF]" />
       ) : (
-        <Moon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 text-neutral-700" />
+        <Moon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 text-[#186049]" />
       )}
     </button>
   )

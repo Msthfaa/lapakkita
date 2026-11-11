@@ -8,9 +8,17 @@ interface PaginationProps {
   q?: string
   kategori?: string
   daerah?: string
+  basePath?: string
 }
 
-export function Pagination({ currentPage, totalPages, q, kategori, daerah }: PaginationProps) {
+export function Pagination({
+  currentPage,
+  totalPages,
+  q,
+  kategori,
+  daerah,
+  basePath = '/kategori',
+}: PaginationProps) {
   if (totalPages <= 1) return null
 
   function buildUrl(page: number) {
@@ -19,7 +27,7 @@ export function Pagination({ currentPage, totalPages, q, kategori, daerah }: Pag
     if (kategori) params.set('kategori', kategori)
     if (daerah) params.set('daerah', daerah)
     params.set('page', page.toString())
-    return `/?${params.toString()}#katalog`
+    return `${basePath}?${params.toString()}`
   }
 
   return (

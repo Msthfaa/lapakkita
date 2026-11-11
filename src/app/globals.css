@@ -2,9 +2,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Palette provided by user:
+   1. #D98327 (Ochre / Warm Amber)
+   2. #ECE8AF (Vanilla / Soft Cream)
+   3. #4A943E (Leaf Green)
+   4. #186049 (Deep Pine / Forest Green)
+*/
+
 :root {
-  --background: #fbfaf5;
-  --foreground: #111a16;
+  --background: #fdfdfc;
+  --foreground: #121715;
+  --color-primary: #186049;
+  --color-cream: #ECE8AF;
+  --color-leaf: #4A943E;
+  --color-forest: #186049;
   --brand-orange: #D98327;
   --brand-cream: #ECE8AF;
   --brand-green: #4A943E;
@@ -12,8 +23,12 @@
 }
 
 .dark {
-  --background: #0a110e;
-  --foreground: #f4f5ef;
+  --background: #000000;
+  --foreground: #f4f5f2;
+  --color-primary: #186049;
+  --color-cream: #ECE8AF;
+  --color-leaf: #4A943E;
+  --color-forest: #186049;
   --brand-orange: #D98327;
   --brand-cream: #ECE8AF;
   --brand-green: #4A943E;
@@ -21,6 +36,10 @@
 }
 
 @theme inline {
+  --color-brand-amber: #D98327;
+  --color-brand-cream: #ECE8AF;
+  --color-brand-leaf: #4A943E;
+  --color-brand-forest: #186049;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand-orange: var(--brand-orange);
@@ -37,18 +56,247 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #ffffff;
+}
+
+html.dark,
+.dark {
+  background-color: #000000;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100%;
 }
 
 /* 3D perspective stage */
 .perspective-stage {
   perspective: 1200px;
   transform-style: preserve-3d;
+}
+
+/* ========================================================= */
+/* FULL PAGE LIQUID 3D GRADIENT MESH (GRADASI HIJAU & OREN)  */
+/* Halus, proporsional, tidak terlalu besar, nyaman di mata  */
+/* ========================================================= */
+
+.full-liquid-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Light mode: Lembut, tidak silau, opacity ramah mata */
+:where(html:not(.dark)) .full-liquid-bg {
+  opacity: 0.42;
+  filter: blur(100px) saturate(130%);
+  -webkit-filter: blur(100px) saturate(130%);
+}
+
+/* Dark mode: Deep glowing aurora gradasi hijau-oren on pitch black */
+.dark .full-liquid-bg {
+  opacity: 0.32;
+  filter: blur(110px) saturate(140%);
+  -webkit-filter: blur(110px) saturate(140%);
+}
+
+.full-blob {
+  position: absolute;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  will-change: transform, border-radius;
+}
+
+/* Blob 1: Warm Amber / Oren #D98327 (Top Left - Diperkecil & Halus) */
+.full-blob-1 {
+  width: min(440px, 40vw);
+  height: min(400px, 38vh);
+  background: radial-gradient(circle at 40% 40%, rgba(217, 131, 39, 0.85) 0%, rgba(217, 131, 39, 0.35) 55%, transparent 80%);
+  top: -8%;
+  left: -6%;
+  animation: liquid-full-drift-1 26s infinite alternate ease-in-out, liquid-morph-1 18s infinite alternate ease-in-out;
+}
+
+/* Blob 2: Deep Forest Green #186049 & Leaf Green #4A943E (Top Right - Diperkecil & Halus) */
+.full-blob-2 {
+  width: min(460px, 42vw);
+  height: min(420px, 40vh);
+  background: radial-gradient(circle at 45% 35%, rgba(74, 148, 62, 0.85) 0%, rgba(24, 96, 73, 0.4) 60%, transparent 82%);
+  top: -6%;
+  right: -6%;
+  animation: liquid-full-drift-2 30s infinite alternate ease-in-out, liquid-morph-2 20s infinite alternate ease-in-out;
+}
+
+/* Blob 3: Soft Cream / Vanilla #ECE8AF (Center Glow Lembut) */
+.full-blob-3 {
+  width: min(360px, 32vw);
+  height: min(320px, 30vh);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(236, 232, 175, 0.5) 60%, transparent 80%);
+  top: 26%;
+  left: 28%;
+  opacity: 0.7;
+  animation: liquid-full-drift-3 24s infinite alternate ease-in-out, liquid-morph-1 18s infinite alternate ease-in-out;
+}
+
+/* Blob 4: Vibrant Leaf Green #4A943E (Center Right - Aksen Lembut) */
+.full-blob-4 {
+  width: min(400px, 36vw);
+  height: min(360px, 34vh);
+  background: radial-gradient(circle at 40% 40%, rgba(74, 148, 62, 0.75) 0%, rgba(24, 96, 73, 0.3) 60%, transparent 80%);
+  top: 38%;
+  right: -5%;
+  animation: liquid-full-drift-4 28s infinite alternate ease-in-out, liquid-morph-2 18s infinite alternate ease-in-out;
+}
+
+/* Blob 5: Warm Amber Accent #D98327 (Bottom Left extending into Footer) */
+.full-blob-5 {
+  width: min(440px, 40vw);
+  height: min(380px, 36vh);
+  background: radial-gradient(circle at 40% 40%, rgba(217, 131, 39, 0.8) 0%, rgba(217, 131, 39, 0.3) 60%, transparent 80%);
+  bottom: -10%;
+  left: -5%;
+  animation: liquid-full-drift-2 32s infinite alternate-reverse ease-in-out, liquid-morph-1 22s infinite alternate ease-in-out;
+}
+
+/* Blob 6: Pine Forest Green #186049 & Leaf Green #4A943E (Bottom Right extending into Footer) */
+.full-blob-6 {
+  width: min(460px, 42vw);
+  height: min(400px, 38vh);
+  background: radial-gradient(circle at 40% 40%, rgba(74, 148, 62, 0.8) 0%, rgba(24, 96, 73, 0.35) 65%, transparent 82%);
+  bottom: -10%;
+  right: -5%;
+  animation: liquid-full-drift-1 29s infinite alternate-reverse ease-in-out, liquid-morph-2 21s infinite alternate ease-in-out;
+}
+
+@keyframes liquid-full-drift-1 {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(60px, 40px, 0) scale(1.1) rotate(18deg); }
+  100% { transform: translate3d(-50px, -35px, 0) scale(0.92) rotate(-15deg); }
+}
+
+@keyframes liquid-full-drift-2 {
+  0% { transform: translate3d(0, 0, 0) scale(1.05) rotate(0deg); }
+  50% { transform: translate3d(-65px, -35px, 0) scale(0.94) rotate(-20deg); }
+  100% { transform: translate3d(55px, 45px, 0) scale(1.12) rotate(16deg); }
+}
+
+@keyframes liquid-full-drift-3 {
+  0% { transform: translate3d(0, 0, 0) scale(0.95) rotate(0deg); }
+  50% { transform: translate3d(50px, -40px, 0) scale(1.15) rotate(-16deg); }
+  100% { transform: translate3d(-45px, 35px, 0) scale(0.9) rotate(22deg); }
+}
+
+@keyframes liquid-full-drift-4 {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(-55px, 50px, 0) scale(1.12) rotate(24deg); }
+  100% { transform: translate3d(40px, -30px, 0) scale(0.95) rotate(-18deg); }
+}
+
+@keyframes liquid-morph-1 {
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+}
+
+@keyframes liquid-morph-2 {
+  0% { border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; }
+  50% { border-radius: 60% 30% 40% 70% / 70% 50% 60% 30%; }
+  100% { border-radius: 35% 65% 55% 45% / 55% 35% 65% 45%; }
+}
+
+/* ========================================================= */
+/* GLASSMORPHISM CAPSULE NAVBAR                              */
+/* ========================================================= */
+
+/* Light Mode: Clean White Translucent Glass Capsule */
+.glass-pill {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 12px 30px -4px rgba(0, 0, 0, 0.07),
+    0 4px 10px rgba(0, 0, 0, 0.03);
+  color: #186049;
+}
+
+/* Dark Mode: Sleek Charcoal Glass Capsule */
+html.dark .glass-pill,
+.dark .glass-pill {
+  background: rgba(26, 28, 30, 0.88) !important;
+  backdrop-filter: blur(18px) saturate(190%);
+  -webkit-backdrop-filter: blur(18px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 16px 38px -4px rgba(0, 0, 0, 0.8),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  color: #f4f5f2;
+}
+
+/* Glass Island Button (Search button, Theme toggle) */
+.glass-btn {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #186049;
+  box-shadow: 
+    0 8px 18px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(24, 96, 73, 0.45);
+  color: #186049;
+  transform: translateY(-1px);
+}
+
+html.dark .glass-btn,
+.dark .glass-btn {
+  background: rgba(26, 28, 30, 0.9) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ECE8AF;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+}
+
+html.dark .glass-btn:hover,
+.dark .glass-btn:hover {
+  background: rgba(40, 44, 48, 0.95) !important;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Inner Active Sliding Pill - High Contrast Crisp Bold White text on Forest Green */
+.glass-active-pill {
+  background: linear-gradient(135deg, #186049 0%, #2f8546 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 4px 14px rgba(24, 96, 73, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .glass-active-pill,
+.dark .glass-active-pill {
+  background: linear-gradient(135deg, #186049 0%, #22795c 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    0 4px 16px rgba(24, 96, 73, 0.5),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.5);
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 /* Hide scrollbars */

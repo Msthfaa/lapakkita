@@ -25,9 +25,9 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/produk/${product.id}`} className="group block h-full">
-      <div className="h-full overflow-hidden rounded-2xl border border-[#186049]/15 dark:border-[#186049]/25 bg-white dark:bg-[#0d1612] transition-all duration-300 hover:border-[#186049]/40 dark:hover:border-[#186049]/50 hover:shadow-xl flex flex-col">
+      <div className="h-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 transition-all duration-300 hover:border-[#186049]/40 dark:hover:border-[#ECE8AF]/30 hover:shadow-lg flex flex-col">
         {/* Foto Produk */}
-        <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-white/[0.03]">
+        <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900">
           {product.foto_url ? (
             <Image
               src={product.foto_url}
@@ -44,7 +44,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Badge Unggulan */}
           {product.is_featured && (
-            <div className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-[#D98327]/95 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-semibold text-white shadow">
+            <div className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-[#186049] px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-md">
               <Sparkles className="h-3 w-3" />
               Unggulan
             </div>
@@ -52,14 +52,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Badge Kategori */}
           {product.category && (
-            <div className="absolute right-3 top-3 rounded-full bg-[#ECE8AF]/90 dark:bg-[#186049]/90 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-medium text-[#186049] dark:text-[#ECE8AF] shadow-xs border border-[#ECE8AF]/50 dark:border-[#186049]/40">
+            <div className="absolute right-3 top-3 rounded-full bg-[#ECE8AF] dark:bg-neutral-900 px-2.5 py-0.5 text-[10px] font-semibold text-[#186049] dark:text-[#ECE8AF] shadow-2xs border border-[#186049]/15 dark:border-white/10">
               {product.category.nama}
             </div>
           )}
 
           {/* Indikator Multi-Foto */}
           {photoCount > 1 && (
-            <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/60 backdrop-blur-xs px-1.5 py-0.5 text-[10px] font-medium text-white">
+            <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
               <Layers className="h-3 w-3" />
               {photoCount}
             </div>
@@ -67,12 +67,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Badge Kondisi Stok (Pre-Order / Stok Terbatas) */}
           {product.kondisi_stok === 'pre_order' && (
-            <div className="absolute bottom-2 left-2 rounded-md bg-[#D98327]/90 backdrop-blur-xs px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
+            <div className="absolute bottom-2 left-2 rounded-md bg-blue-600 px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
               Pre-Order
             </div>
           )}
           {product.kondisi_stok === 'stok_terbatas' && (
-            <div className="absolute bottom-2 left-2 rounded-md bg-[#D98327]/90 backdrop-blur-xs px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
+            <div className="absolute bottom-2 left-2 rounded-md bg-amber-600 px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
               Stok Terbatas
             </div>
           )}
@@ -81,11 +81,11 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Info Konten */}
         <div className="p-5 flex-1 flex flex-col justify-between">
           <div>
-            <h3 className="font-serif text-base font-normal text-neutral-900 dark:text-[#f4f5ef] group-hover:text-[#186049] dark:group-hover:text-[#ECE8AF] line-clamp-2 leading-snug transition-colors">
+            <h3 className="font-serif text-base font-normal text-neutral-900 dark:text-white group-hover:text-[#186049] dark:group-hover:text-[#ECE8AF] line-clamp-2 leading-snug transition-colors">
               {product.nama}
             </h3>
             <div className="mt-2 flex items-baseline gap-1">
-              <span className="text-base font-semibold text-[#4A943E] dark:text-[#6ec961] font-mono">
+              <span className="text-base font-semibold text-[#4A943E] dark:text-[#5ebd4f]">
                 {formatRupiah(product.harga)}
               </span>
               {product.satuan && (

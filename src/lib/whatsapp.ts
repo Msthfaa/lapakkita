@@ -31,6 +31,8 @@ export interface WhatsappDetails {
   harga?: number
   satuan?: string
   kondisiStok?: string
+  varian?: string
+  jumlah?: number
 }
 
 /**
@@ -42,16 +44,37 @@ export function buildWhatsappLink(
   details?: WhatsappDetails
 ): string {
   const normalized = normalizeWhatsappNumber(nomor) || nomor
-  let pesan = `Halo, saya tertarik dengan produk *${namaProduk}* di LapakKita.`
+  let pesan = `Halo, saya ingin memesan *${namaProduk}* via LapakKita.`
+
+  if (details?.varian) {
+    pesan += `\n*Pilihan Varian:* ${details.varian}`
+  }
+
+  if (details?.jumlah && details.jumlah > 1) {
+    pesan += `\n*Jumlah:* ${details.jumlah}`
+  }
 
   if (details?.harga) {
+    const qty = details.jumlah || 1
+    const totalHarga = details.harga * qty
     const formattedHarga = new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       maximumFractionDigits: 0,
     }).format(details.harga)
     const satuanText = details.satuan ? ` / ${details.satuan}` : ''
-    pesan += `\nHarga: ${formattedHarga}${satuanText}`
+
+    if (qty > 1) {
+      const formattedTotal = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0,
+      }).format(totalHarga)
+      pesan += `\n*Harga Satuan:* ${formattedHarga}${satuanText}`
+      pesan += `\n*Total Estimasi:* ${formattedTotal}`
+    } else {
+      pesan += `\n*Harga:* ${formattedHarga}${satuanText}`
+    }
   }
 
   if (details?.kondisiStok) {
@@ -61,9 +84,9 @@ export function buildWhatsappLink(
         : details.kondisiStok === 'stok_terbatas'
           ? 'Stok Terbatas'
           : 'Ready Stock'
-    pesan += `\nStatus: ${stokText}`
+    pesan += `\n*Status Stok:* ${stokText}`
   }
 
-  pesan += `\nApakah produk ini masih tersedia untuk pemesanan? Terima kasih.`
+  pesan += `\n\nMohon informasi ketersediaan stok & proses pemesanannya. Terima kasih!`
   return `https://wa.me/${normalized}?text=${encodeURIComponent(pesan)}`
 }
