@@ -65,9 +65,9 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          {/* Badge Kondisi Stok (Pre-Order / Stok Terbatas) */}
+          {/* Badge Kondisi Stok (Pre-Order warna oranye / Stok Terbatas) */}
           {product.kondisi_stok === 'pre_order' && (
-            <div className="absolute bottom-2 left-2 rounded-md bg-blue-600 px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
+            <div className="absolute bottom-2 left-2 rounded-md bg-orange-500 px-2 py-0.5 text-[10px] font-semibold text-white shadow-xs">
               Pre-Order
             </div>
           )}

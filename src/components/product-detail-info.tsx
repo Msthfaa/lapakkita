@@ -108,7 +108,7 @@ export function ProductDetailInfo({ product, isOwner }: ProductDetailInfoProps) 
         )}
 
         {kondisiStok === 'pre_order' && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200/70 dark:border-sky-900/50 bg-sky-50/90 dark:bg-sky-950/40 px-3 py-1 text-xs font-medium text-sky-700 dark:text-sky-300">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-200/70 dark:border-orange-900/50 bg-orange-50/90 dark:bg-orange-950/40 px-3 py-1 text-xs font-medium text-orange-700 dark:text-orange-300">
             <Clock className="h-3 w-3" />
             Pre-Order (PO)
           </span>

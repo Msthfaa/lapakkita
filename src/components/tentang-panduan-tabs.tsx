@@ -7,10 +7,7 @@ import {
   Store,
   Compass,
   UserCheck,
-  CheckCircle2,
-  ArrowRight,
   ShieldCheck,
-  MapPin,
   MessageCircle,
   Truck,
   UploadCloud,
@@ -22,7 +19,7 @@ export function TentangPanduanTabs() {
 
   return (
     <div className="space-y-8">
-      {/* Tab Switcher - High Contrast & Distinct */}
+      {/* Tab Switcher - Warna Selaras Tanpa Gradien */}
       <div className="flex justify-center">
         <div className="inline-flex p-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/80 shadow-xs">
           <button
@@ -63,7 +60,7 @@ export function TentangPanduanTabs() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   01
                 </span>
-                <Compass className="h-5 w-5 text-neutral-400" />
+                <Compass className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Pilih Produk Lokal
@@ -79,7 +76,7 @@ export function TentangPanduanTabs() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   02
                 </span>
-                <ShieldCheck className="h-5 w-5 text-[#4A943E]" />
+                <ShieldCheck className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Periksa Legalitas Toko
@@ -95,7 +92,7 @@ export function TentangPanduanTabs() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   03
                 </span>
-                <MessageCircle className="h-5 w-5 text-[#25D366]" />
+                <MessageCircle className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Pesan via WhatsApp
@@ -111,7 +108,7 @@ export function TentangPanduanTabs() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   04
                 </span>
-                <Truck className="h-5 w-5 text-neutral-400" />
+                <Truck className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Sepakati Pengiriman
@@ -139,12 +136,12 @@ export function TentangPanduanTabs() {
         <div className="space-y-8 animate-in fade-in duration-300">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* Step 1 */}
-            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#4A943E]/40 transition-colors">
+            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#186049]/40 transition-colors">
               <div className="flex items-center justify-between">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4A943E]/10 dark:bg-[#4A943E]/30 text-[#4A943E] dark:text-[#ECE8AF] font-bold text-xs">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   01
                 </span>
-                <UserCheck className="h-5 w-5 text-neutral-400" />
+                <UserCheck className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Buka Akun Gratis
@@ -155,9 +152,9 @@ export function TentangPanduanTabs() {
             </div>
 
             {/* Step 2 */}
-            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#4A943E]/40 transition-colors">
+            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#186049]/40 transition-colors">
               <div className="flex items-center justify-between">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4A943E]/10 dark:bg-[#4A943E]/30 text-[#4A943E] dark:text-[#ECE8AF] font-bold text-xs">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   02
                 </span>
                 <FileCheck2 className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
@@ -171,12 +168,12 @@ export function TentangPanduanTabs() {
             </div>
 
             {/* Step 3 */}
-            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#4A943E]/40 transition-colors">
+            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#186049]/40 transition-colors">
               <div className="flex items-center justify-between">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4A943E]/10 dark:bg-[#4A943E]/30 text-[#4A943E] dark:text-[#ECE8AF] font-bold text-xs">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   03
                 </span>
-                <UploadCloud className="h-5 w-5 text-neutral-400" />
+                <UploadCloud className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Pasang Foto &amp; Varian
@@ -187,12 +184,12 @@ export function TentangPanduanTabs() {
             </div>
 
             {/* Step 4 */}
-            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#4A943E]/40 transition-colors">
+            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 space-y-4 shadow-xs hover:border-[#186049]/40 transition-colors">
               <div className="flex items-center justify-between">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4A943E]/10 dark:bg-[#4A943E]/30 text-[#4A943E] dark:text-[#ECE8AF] font-bold text-xs">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/10 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] font-bold text-xs">
                   04
                 </span>
-                <MessageCircle className="h-5 w-5 text-[#25D366]" />
+                <MessageCircle className="h-5 w-5 text-[#186049] dark:text-[#ECE8AF]" />
               </div>
               <h3 className="font-serif text-base font-semibold text-neutral-900 dark:text-white">
                 Terima Orderan Langsung
@@ -206,7 +203,7 @@ export function TentangPanduanTabs() {
           <div className="text-center pt-2">
             <Link
               href="/daftar"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#186049] to-[#4A943E] hover:opacity-95 text-white px-6 py-3 text-xs sm:text-sm font-semibold shadow-xs transition-transform hover:scale-105"
+              className="inline-flex items-center gap-2 rounded-full bg-[#186049] hover:bg-[#124b39] text-white px-6 py-3 text-xs sm:text-sm font-semibold shadow-xs transition-transform hover:scale-105"
             >
               <UserCheck className="h-4 w-4" />
               <span>Daftarkan Usaha Anda Sekarang (Gratis)</span>

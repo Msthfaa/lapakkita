@@ -5,14 +5,11 @@ import {
   ShieldCheck,
   HeartHandshake,
   ShoppingBag,
-  Lock,
-  FileText,
-  HelpCircle,
   BadgePercent,
-  CheckCircle2,
   Users,
 } from 'lucide-react'
 import { TentangPanduanTabs } from '@/components/tentang-panduan-tabs'
+import { TentangKebijakanInteractive } from '@/components/tentang-kebijakan-interactive'
 
 export const metadata: Metadata = {
   title: 'Tentang Kami - LapakKita | Etalase Digital UMKM Lokal',
@@ -43,8 +40,8 @@ export default function TentangPage() {
         <section className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             
-            {/* Left Column: Authentic Manifesto Story (Rich Pine Accent) */}
-            <div className="lg:col-span-5 rounded-3xl bg-gradient-to-br from-[#186049] via-[#1b6b52] to-[#124b39] p-8 sm:p-10 text-white flex flex-col justify-between shadow-lg relative overflow-hidden">
+            {/* Left Column: Authentic Manifesto Story (Solid Pine Green, Tanpa Gradien) */}
+            <div className="lg:col-span-5 rounded-3xl bg-[#186049] p-8 sm:p-10 text-white flex flex-col justify-between shadow-lg relative overflow-hidden">
               <div className="space-y-4 relative z-10">
                 <span className="text-xs font-semibold tracking-wider text-[#ECE8AF] uppercase">
                   Filosofi Kami
@@ -139,7 +136,7 @@ export default function TentangPage() {
         </section>
 
         {/* ========================================================= */}
-        {/* SECTION 3: KEBIJAKAN & PRIVASI (STRUCTURED EDITORIAL)     */}
+        {/* SECTION 3: KEBIJAKAN & PRIVASI (HOVER ACCORDION, TANPA IKON)*/}
         {/* ========================================================= */}
         <section className="space-y-8 pt-4">
           <div className="text-center max-w-2xl mx-auto space-y-2">
@@ -151,112 +148,33 @@ export default function TentangPage() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 divide-y divide-neutral-200 dark:divide-neutral-800 shadow-xs overflow-hidden">
-            
-            {/* Rule 1 */}
-            <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/70 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
-                  <Lock className="h-4 w-4" />
-                </div>
-                <h3 className="font-serif text-base sm:text-lg font-semibold text-neutral-900 dark:text-white">
-                  1. Perlindungan &amp; Privasi Data Pribadi
-                </h3>
-              </div>
-              <div className="pl-11 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 space-y-2 leading-relaxed">
-                <p>
-                  Kami hanya menyimpan data penting yang dibutuhkan untuk operasional akun (alamat email, nama usaha, dan nomor WhatsApp kontak publik).
-                </p>
-                <p>
-                  LapakKita menjamin kerahasiaan informasi Anda dan <strong>tidak akan pernah</strong> menjual, menyewakan, atau membagikan nomor kontak pengguna kepada pihak ketiga manapun untuk keperluan spam atau iklan komersial.
-                </p>
-              </div>
-            </div>
-
-            {/* Rule 2 */}
-            <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/70 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
-                  <FileText className="h-4 w-4" />
-                </div>
-                <h3 className="font-serif text-base sm:text-lg font-semibold text-neutral-900 dark:text-white">
-                  2. Ketentuan Transaksi Langsung (P2P via WhatsApp)
-                </h3>
-              </div>
-              <div className="pl-11 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 space-y-2 leading-relaxed">
-                <p>
-                  LapakKita berfungsi sebagai etalase digital promosi dan direktori UMKM terkurasi, bukan rekening bersama (escrow).
-                </p>
-                <p>
-                  Pembayaran, detail ongkos kirim, dan pemilihan kurir disepakati secara langsung antara pembeli dan pemilik toko via WhatsApp resmi yang terdaftar. Pastikan selalu mengonfirmasi rincian pesanan dan total harga sebelum mentransfer pembayaran.
-                </p>
-              </div>
-            </div>
-
-            {/* Rule 3 */}
-            <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/70 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-4 w-4" />
-                </div>
-                <h3 className="font-serif text-base sm:text-lg font-semibold text-neutral-900 dark:text-white">
-                  3. Standar Kualitas Produk &amp; Larangan Etalase
-                </h3>
-              </div>
-              <div className="pl-11 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 space-y-2 leading-relaxed">
-                <p>
-                  LapakKita melarang keras penayangan produk tiruan ilegal, barang bajakan, narkotika, obat terlarang, senjata, atau barang lain yang dilarang undang-undang Republik Indonesia.
-                </p>
-                <p>
-                  Foto produk dan deskripsi harus orisinal dan sesuai dengan kondisi fisik barang yang sebenarnya. Tim kurasi berhak menonaktifkan produk atau menutup toko yang melanggar ketentuan etalase.
-                </p>
-              </div>
-            </div>
-
-            {/* Rule 4 */}
-            <div className="p-6 sm:p-8 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/70 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
-                  <HelpCircle className="h-4 w-4" />
-                </div>
-                <h3 className="font-serif text-base sm:text-lg font-semibold text-neutral-900 dark:text-white">
-                  4. Bantuan Pengaduan &amp; Verifikasi Ulang
-                </h3>
-              </div>
-              <div className="pl-11 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 space-y-2 leading-relaxed">
-                <p>
-                  Apabila pembeli menemukan toko dengan informasi palsu atau mengalami kendala komunikasi dengan penjual terdaftar, laporan dapat disampaikan kepada admin LapakKita untuk ditindaklanjuti dengan verifikasi ulang atau pencabutan akun.
-                </p>
-              </div>
-            </div>
-
-          </div>
+          <TentangKebijakanInteractive />
         </section>
 
         {/* ========================================================= */}
-        {/* SECTION 4: CALL TO ACTION (PURPOSEFUL & HIGH CONTRAST)    */}
+        {/* SECTION 4: CALL TO ACTION (CARD WARNA PUTIH SEPERTI GAMBAR 4) */}
         {/* ========================================================= */}
-        <div className="rounded-3xl bg-gradient-to-r from-[#186049] via-[#1b6b52] to-[#4A943E] p-8 sm:p-12 text-white text-center space-y-6 shadow-xl">
-          <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="font-serif text-2xl sm:text-4xl font-normal leading-tight">
+        <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-8 sm:p-12 shadow-xs flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-2xl space-y-2 text-center md:text-left">
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-neutral-900 dark:text-white leading-tight">
               Mari Bergerak Bersama Memajukan UMKM Indonesia
             </h2>
-            <p className="text-xs sm:text-sm text-white/90 leading-relaxed">
+            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
               Dukungan nyata bagi para pelaku usaha lokal dimulai dari pilihan konsumsi kita sehari-hari. Mulai jelajahi karya juara nusantara atau daftarkan toko Anda sekarang.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
             <Link
               href="/kategori"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#186049] font-bold px-6 py-3 text-xs sm:text-sm transition-transform hover:scale-105 shadow-md"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#186049] hover:bg-[#124b39] text-white font-semibold px-6 py-3 text-xs sm:text-sm transition-transform hover:scale-105 shadow-xs"
             >
-              <ShoppingBag className="h-4 w-4 text-[#186049]" />
+              <ShoppingBag className="h-4 w-4 text-white" />
               <span>Jelajahi Produk Pilihan</span>
             </Link>
             <Link
               href="/daftar"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#186049]/40 hover:bg-[#186049]/60 border border-white/30 text-white font-semibold px-6 py-3 text-xs sm:text-sm transition-transform hover:scale-105"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 hover:border-[#186049] dark:hover:border-white/30 font-semibold px-6 py-3 text-xs sm:text-sm transition-transform hover:scale-105"
             >
               <Store className="h-4 w-4" />
               <span>Buka Lapak UMKM Gratis</span>
