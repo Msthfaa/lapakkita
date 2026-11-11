@@ -346,6 +346,7 @@ export const getPopularProducts = unstable_cache(
         `
         )
         .eq('status', 'approved')
+        .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(limit),
       getRegions().catch(() => []),

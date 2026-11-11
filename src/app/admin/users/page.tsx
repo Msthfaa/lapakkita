@@ -13,13 +13,13 @@ export default async function AdminUsersPage() {
   ])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-7 w-full">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900">
-          Manajemen Pengguna & Penjual UMKM
-        </h2>
-        <p className="text-sm text-neutral-500 mt-1">
-          Pantau seluruh akun terdaftar, kelola hak akses role, serta pantau dan bersihkan produk jualan masing-masing penjual.
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
+          Manajemen Pengguna &amp; Penjual UMKM
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+          Pantau seluruh akun terdaftar, kelola hak akses role, serta pantau dan kelola produk jualan masing-masing mitra.
         </p>
       </div>
 

@@ -29,6 +29,10 @@
   --color-brand-forest: var(--brand-forest);
   --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: var(--font-serif), "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --color-pine: #186049;
+  --color-leaf: #4A943E;
+  --color-amber-gold: #D98327;
+  --color-cream: #ECE8AF;
 }
 
 html {
@@ -54,4 +58,163 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ============================================================
+   LapakKita Custom SweetAlert2 Styling (Palette: #186049, #4A943E, #D98327, #ECE8AF)
+   ============================================================ */
+.swal2-container {
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  background-color: rgba(10, 18, 14, 0.45) !important;
+  z-index: 99999 !important;
+}
+
+.swal2-popup,
+.lapak-swal-popup {
+  border-radius: 1.75rem !important;
+  padding: 2.25rem 2rem !important;
+  border: 1px solid rgba(24, 96, 73, 0.18) !important;
+  box-shadow: 0 25px 50px -12px rgba(24, 96, 73, 0.25), 0 0 0 1px rgba(236, 232, 175, 0.2) !important;
+  font-family: inherit !important;
+}
+
+.dark .swal2-popup,
+.dark .lapak-swal-popup {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(74, 148, 62, 0.15) !important;
+}
+
+.swal2-title,
+.lapak-swal-title {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.swal2-html-container,
+.lapak-swal-html {
+  font-size: 0.925rem !important;
+  line-height: 1.55 !important;
+  color: #4b5563 !important;
+  margin-top: 0.5rem !important;
+}
+
+.dark .swal2-html-container,
+.dark .lapak-swal-html {
+  color: #9ca3af !important;
+}
+
+.swal2-actions,
+.lapak-swal-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.75rem !important;
+  margin-top: 1.75rem !important;
+  width: 100% !important;
+}
+
+/* Base button rules to guarantee no unstyled buttons */
+.swal2-actions button {
+  border-radius: 1rem !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 1.6rem !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  border: none !important;
+  outline: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Primary Pine Confirm Button (#186049) */
+.lapak-swal-btn-pine {
+  background-color: #186049 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(24, 96, 73, 0.35) !important;
+}
+
+.lapak-swal-btn-pine:hover {
+  background-color: #124b39 !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(24, 96, 73, 0.45) !important;
+}
+
+/* Leaf Green Accent (#4A943E) */
+.lapak-swal-btn-leaf {
+  background-color: #4A943E !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(74, 148, 62, 0.35) !important;
+}
+
+.lapak-swal-btn-leaf:hover {
+  background-color: #3b7b31 !important;
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+/* Danger / Delete Confirm Button (#D98327) */
+.lapak-swal-btn-danger,
+.swal2-confirm.swal2-styled[style*="217, 131, 39"] {
+  background-color: #D98327 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(217, 131, 39, 0.4) !important;
+}
+
+.lapak-swal-btn-danger:hover {
+  background-color: #bd6e1b !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(217, 131, 39, 0.5) !important;
+}
+
+/* Secondary Cancel Button */
+.lapak-swal-btn-secondary,
+.swal2-cancel {
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.dark .lapak-swal-btn-secondary,
+.dark .swal2-cancel {
+  background-color: #1f2923 !important;
+  color: #e5e7eb !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.lapak-swal-btn-secondary:hover,
+.swal2-cancel:hover {
+  background-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+.dark .lapak-swal-btn-secondary:hover,
+.dark .swal2-cancel:hover {
+  background-color: #273830 !important;
+  color: #ffffff !important;
+}
+
+/* SweetAlert Icons */
+.swal2-icon.swal2-success {
+  border-color: #4A943E !important;
+  color: #4A943E !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring {
+  border: 4px solid rgba(74, 148, 62, 0.25) !important;
+}
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+  background-color: #4A943E !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #D98327 !important;
+  color: #D98327 !important;
+}
+
+.swal2-timer-progress-bar {
+  background: linear-gradient(90deg, #4A943E, #186049) !important;
+  height: 4px !important;
 }

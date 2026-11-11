@@ -31,6 +31,172 @@ export async function getAdminStats() {
   }
 }
 
+export interface AdminDashboardData {
+  stats: {
+    pendingCount: number
+    approvedCount: number
+    rejectedCount: number
+    sellersCount: number
+    totalProductsCount: number
+    approvalRate: number
+    totalWaClicks: number
+  }
+  pendingProducts: Array<{
+    id: string
+    nama: string
+    harga: number
+    foto_url: string | null
+    created_at: string
+    category: { nama: string } | null
+    seller: { nama: string } | null
+  }>
+  recentSellers: Array<{
+    id: string
+    nama: string
+    created_at: string
+    product_count: number
+    alamat?: string | null
+  }>
+  weeklyStats: Array<{
+    day: string
+    label: string
+    count: number
+    percentage: number
+    isToday: boolean
+  }>
+  categoryBreakdown: Array<{
+    nama: string
+    count: number
+    color: string
+  }>
+}
+
+export async function getAdminDashboardExtendedData(): Promise<AdminDashboardData> {
+  const supabase = await createClient()
+
+  const [
+    stats,
+    pendingRes,
+    allProductsRes,
+    sellersWithProducts,
+    categoriesRes,
+    waClicksRes,
+  ] = await Promise.all([
+    getAdminStats(),
+    supabase
+      .from('products')
+      .select('id, nama, harga, foto_url, created_at, category:categories(nama), seller:profiles(nama, alamat)')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: false })
+      .limit(5),
+    supabase
+      .from('products')
+      .select('id, created_at, status, category_id'),
+    supabase
+      .from('profiles')
+      .select('id, nama, created_at, alamat')
+      .eq('role', 'seller')
+      .order('created_at', { ascending: false })
+      .limit(5),
+    supabase
+      .from('categories')
+      .select('id, nama'),
+    supabase
+      .from('wa_clicks')
+      .select('count'),
+  ])
+
+  const totalProductsCount = stats.pendingCount + stats.approvedCount + stats.rejectedCount
+  const reviewedCount = stats.approvedCount + stats.rejectedCount
+  const approvalRate = reviewedCount > 0 ? Math.round((stats.approvedCount / reviewedCount) * 100) : 100
+
+  // Hitung total WA clicks
+  const totalWaClicks = (waClicksRes.data || []).reduce((acc, row) => acc + (row.count || 0), 0)
+
+  // Hitung produk per seller
+  const allProducts = allProductsRes.data || []
+  const sellerProductMap = new Map<string, number>()
+  for (const p of allProducts) {
+    if ((p as any).seller_id) {
+      sellerProductMap.set((p as any).seller_id, (sellerProductMap.get((p as any).seller_id) || 0) + 1)
+    }
+  }
+
+  const recentSellers = (sellersWithProducts.data || []).map((s) => ({
+    id: s.id,
+    nama: s.nama || 'Pelaku UMKM',
+    created_at: s.created_at,
+    product_count: sellerProductMap.get(s.id) || 0,
+    alamat: s.alamat,
+  }))
+
+  // Kalkulasi statistik 7 hari mingguan (Senin - Minggu)
+  const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
+  const today = new Date()
+  const currentDayIndex = today.getDay() // 0 = Min, 1 = Sen, etc.
+
+  // Urutan hari dari Senin sampai Minggu
+  const orderedDays = [1, 2, 3, 4, 5, 6, 0]
+  const dayCountMap = new Map<number, number>()
+  for (const d of orderedDays) {
+    dayCountMap.set(d, 0)
+  }
+
+  // Agregasi produk yang dibuat dalam 7 hari terakhir
+  for (const p of allProducts) {
+    if (p.created_at) {
+      const pDate = new Date(p.created_at)
+      const dayIdx = pDate.getDay()
+      dayCountMap.set(dayIdx, (dayCountMap.get(dayIdx) || 0) + 1)
+    }
+  }
+
+  // Pastikan ada nilai visual yang seimbang jika data masih baru
+  const maxDayCount = Math.max(1, ...Array.from(dayCountMap.values()))
+  const weeklyStats = orderedDays.map((d) => {
+    const rawCount = dayCountMap.get(d) || 0
+    const percentage = Math.max(18, Math.min(100, Math.round((rawCount / maxDayCount) * 100)))
+    return {
+      day: dayNames[d].charAt(0),
+      label: dayNames[d],
+      count: rawCount,
+      percentage,
+      isToday: d === currentDayIndex,
+    }
+  })
+
+  // Distribusi kategori
+  const catColorPalette = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EC4899', '#14B8A6']
+  const catCountMap = new Map<number, number>()
+  for (const p of allProducts) {
+    if (p.category_id) {
+      catCountMap.set(p.category_id, (catCountMap.get(p.category_id) || 0) + 1)
+    }
+  }
+
+  const categoryBreakdown = (categoriesRes.data || []).slice(0, 5).map((cat, idx) => ({
+    nama: cat.nama,
+    count: catCountMap.get(cat.id) || 0,
+    color: catColorPalette[idx % catColorPalette.length],
+  }))
+
+  return {
+    stats: {
+      pendingCount: stats.pendingCount,
+      approvedCount: stats.approvedCount,
+      rejectedCount: stats.rejectedCount,
+      sellersCount: stats.sellersCount,
+      totalProductsCount,
+      approvalRate,
+      totalWaClicks,
+    },
+    pendingProducts: (pendingRes.data || []) as unknown as AdminDashboardData['pendingProducts'],
+    recentSellers,
+    weeklyStats,
+    categoryBreakdown,
+  }
+}
+
 export async function getModerationProducts(
   statusFilter: 'pending' | 'approved' | 'rejected' = 'pending'
 ) {

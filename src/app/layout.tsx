@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
-import { TopLoadingBar } from '@/components/top-loading-bar'
+import { FloatingRouteLoader } from '@/components/floating-route-loader'
+import { PublicFooter } from '@/components/public-footer'
 import { getUserAndProfile } from '@/features/auth/actions'
 import { Toaster } from 'sonner'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
@@ -56,7 +57,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col bg-[#fbfaf5] dark:bg-[#0a110e] text-[#111a16] dark:text-[#f4f5ef] font-sans transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Suspense fallback={null}>
-            <TopLoadingBar />
+            <FloatingRouteLoader />
           </Suspense>
           <Suspense
             fallback={
@@ -66,13 +67,9 @@ export default function RootLayout({
             <NavbarSlot />
           </Suspense>
           <main className="flex-1">{children}</main>
-          <footer className="border-t border-[#186049]/10 dark:border-[#186049]/20 bg-transparent py-8 text-center text-xs text-neutral-600 dark:text-neutral-400">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <p>
-                &copy; 2026 <strong className="font-semibold text-[#186049] dark:text-[#ECE8AF]">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
-              </p>
-            </div>
-          </footer>
+          <Suspense fallback={null}>
+            <PublicFooter />
+          </Suspense>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

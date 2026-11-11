@@ -25,6 +25,7 @@ import {
   approveProductAction,
   rejectProductAction,
 } from '@/features/admin/actions'
+import { swalDeleteConfirm, swalSuccess, swalError, swalConfirm } from '@/lib/sweetalert'
 import { toast } from 'sonner'
 import {
   Store,
@@ -103,10 +104,6 @@ export function AdminUserDetailView({
   const [editRole, setEditRole] = useState<'seller' | 'admin'>(user.role)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  // Delete Modal State
-  const [deleteOpen, setDeleteOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-
   // Direct Moderation State
   const [rejectDialogProduct, setRejectDialogProduct] = useState<ProductDetailItem | null>(null)
   const [alasanTolak, setAlasanTolak] = useState('')
@@ -118,11 +115,14 @@ export function AdminUserDetailView({
     return p.status === activeTab
   })
 
-  // Simpan Edit User
+  // Simpan Edit User dengan SweetAlert
   async function handleSaveEdit(e: React.FormEvent) {
     e.preventDefault()
     if (!editNama.trim() || editNama.trim().length < 2) {
-      toast.error('Nama minimal 2 karakter')
+      await swalError({
+        title: 'Nama Kurang Lengkap',
+        text: 'Nama pengguna atau usaha minimal 2 karakter.',
+      })
       return
     }
 
@@ -134,59 +134,105 @@ export function AdminUserDetailView({
       })
 
       if (!res.success) {
-        toast.error(res.error || 'Gagal mengubah data pengguna')
+        await swalError({
+          title: 'Gagal Menyimpan Data',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success('Data pengguna berhasil diperbarui!')
+        const saved = editNama.trim()
         setEditOpen(false)
         router.refresh()
+        swalSuccess({
+          title: 'Akun Berhasil Diperbarui!',
+          text: `Data akun "${saved}" telah berhasil disimpan.`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan saat menyimpan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Gagal menyimpan perubahan pengguna.',
+      })
     } finally {
       setIsUpdating(false)
     }
   }
 
-  // Hapus User & Seluruh Produknya
-  async function handleConfirmDelete() {
+  // Hapus User Langsung dengan SweetAlert
+  async function handleDeletePrompt() {
     if (isCurrent) {
-      toast.error('Anda tidak dapat menghapus akun Anda sendiri.')
+      await swalError({
+        title: 'Aksi Tidak Diizinkan',
+        text: 'Anda tidak dapat menghapus akun Anda sendiri demi keamanan sistem.',
+      })
       return
     }
 
-    setIsDeleting(true)
+    const hasProducts = stats.totalProducts > 0
+    const confirmed = await swalDeleteConfirm({
+      title: `Hapus Akun "${user.nama}"?`,
+      text: hasProducts
+        ? `Perhatian: Mitra ini memiliki ${stats.totalProducts} produk jualan. Seluruh produk dan riwayat WhatsApp akan otomatis dihapus permanen.`
+        : `Akun ini akan dihapus permanen dari sistem LapakKita.`,
+      confirmButtonText: hasProducts ? 'Ya, Hapus Akun & Produk' : 'Ya, Hapus Akun',
+      cancelButtonText: 'Batal',
+    })
+
+    if (!confirmed) return
+
     try {
       const res = await adminDeleteUserAction(user.id)
-
       if (!res.success) {
-        toast.error(res.error || 'Gagal menghapus pengguna')
+        await swalError({
+          title: 'Gagal Menghapus Akun',
+          text: res.error || 'Terjadi kesalahan sistem saat menghapus data.',
+        })
       } else {
-        toast.success(
-          `Pengguna "${user.nama}" dan ${res.deletedProductsCount} produk jualan miliknya berhasil dihapus!`
-        )
-        setDeleteOpen(false)
+        await swalSuccess({
+          title: 'Akun Berhasil Dihapus!',
+          text: `Akun "${user.nama}" telah berhasil dibersihkan dari sistem.`,
+        })
         router.push('/admin/users')
       }
     } catch {
-      toast.error('Terjadi kesalahan saat menghapus')
-    } finally {
-      setIsDeleting(false)
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Gagal memproses penghapusan akun.',
+      })
     }
   }
 
-  // Cepat Approve Produk dari Halaman Ini
-  async function handleApprove(productId: string) {
+  // Cepat Approve Produk dengan SweetAlert
+  async function handleApprove(productId: string, productName?: string) {
+    const confirmed = await swalConfirm({
+      title: 'Setujui Produk Ini?',
+      text: `Produk "${productName || 'terpilih'}" akan diverifikasi dan tampil aktif di katalog publik LapakKita.`,
+      confirmButtonText: 'Ya, Setujui Sekarang',
+      cancelButtonText: 'Batal',
+      icon: 'question',
+    })
+
+    if (!confirmed) return
+
     setLoadingActionId(productId)
     try {
       const res = await approveProductAction(productId)
       if (!res.success) {
-        toast.error(res.error || 'Gagal menyetujui produk')
+        await swalError({
+          title: 'Gagal Menyetujui Produk',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success('Produk berhasil disetujui & tayang ke publik!')
         router.refresh()
+        swalSuccess({
+          title: 'Produk Disetujui!',
+          text: `Produk "${productName || 'terpilih'}" berhasil disetujui & tayang ke etalase publik!`,
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat memproses persetujuan saat ini.',
+      })
     } finally {
       setLoadingActionId(null)
     }
@@ -196,7 +242,10 @@ export function AdminUserDetailView({
   async function handleRejectConfirm() {
     if (!rejectDialogProduct) return
     if (!alasanTolak.trim() || alasanTolak.trim().length < 3) {
-      toast.error('Alasan penolakan minimal 3 karakter')
+      await swalError({
+        title: 'Alasan Belum Lengkap',
+        text: 'Alasan penolakan minimal 3 karakter agar penjual tahu bagian mana yang harus diperbaiki.',
+      })
       return
     }
 
@@ -204,15 +253,24 @@ export function AdminUserDetailView({
     try {
       const res = await rejectProductAction(rejectDialogProduct.id, alasanTolak.trim())
       if (!res.success) {
-        toast.error(res.error || 'Gagal menolak produk')
+        await swalError({
+          title: 'Gagal Menolak Produk',
+          text: res.error || 'Terjadi kesalahan sistem.',
+        })
       } else {
-        toast.success('Produk ditolak dengan alasan yang tercatat')
         setRejectDialogProduct(null)
         setAlasanTolak('')
         router.refresh()
+        swalSuccess({
+          title: 'Produk Telah Ditolak',
+          text: 'Catatan alasan perbaikan telah dikirim ke penjual.',
+        })
       }
     } catch {
-      toast.error('Terjadi kesalahan')
+      await swalError({
+        title: 'Terjadi Kendala',
+        text: 'Tidak dapat memproses penolakan produk.',
+      })
     } finally {
       setLoadingActionId(null)
     }
@@ -236,14 +294,14 @@ export function AdminUserDetailView({
       </div>
 
       {/* Kartu Profil Pengguna */}
-      <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-xs">
+      <div className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-6 sm:p-7 shadow-2xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
             <div
               className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl text-2xl font-bold shadow-xs ${
                 user.role === 'admin'
-                  ? 'bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60'
-                  : 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60'
+                  ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60'
+                  : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60'
               }`}
             >
               {user.nama ? user.nama.charAt(0).toUpperCase() : 'U'}
@@ -252,18 +310,18 @@ export function AdminUserDetailView({
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">{user.nama}</h1>
                 {user.role === 'admin' ? (
-                  <Badge className="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/60 gap-1 font-semibold">
+                  <Badge className="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/60 gap-1 font-semibold rounded-full px-3 py-0.5">
                     <Shield className="h-3 w-3" />
                     Administrator
                   </Badge>
                 ) : (
-                  <Badge className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60 gap-1 font-semibold">
+                  <Badge className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60 gap-1 font-semibold rounded-full px-3 py-0.5">
                     <Store className="h-3 w-3" />
                     Penjual UMKM
                   </Badge>
                 )}
                 {isCurrent && (
-                  <span className="rounded bg-neutral-200 dark:bg-neutral-800 px-2 py-0.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+                  <span className="rounded-full bg-neutral-200 dark:bg-neutral-800 px-2.5 py-0.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
                     Akun Anda
                   </span>
                 )}
@@ -274,7 +332,7 @@ export function AdminUserDetailView({
                   <span className="text-neutral-700 dark:text-neutral-300">{user.id}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-3.5 w-3.5 text-neutral-400 dark:text-neutral-500" />
+                  <Calendar className="h-3.5 w-3.5 text-neutral-400" />
                   <span>Bergabung {formatTanggal(user.created_at)}</span>
                 </div>
               </div>
@@ -282,7 +340,7 @@ export function AdminUserDetailView({
           </div>
 
           {/* Tombol Aksi Profil */}
-          <div className="flex items-center gap-2 self-start md:self-center">
+          <div className="flex items-center gap-2.5 self-start md:self-center">
             <Button
               type="button"
               variant="outline"
@@ -292,10 +350,10 @@ export function AdminUserDetailView({
                 setEditRole(user.role)
                 setEditOpen(true)
               }}
-              className="gap-1.5 border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+              className="rounded-2xl h-10 px-4 font-semibold text-xs sm:text-sm border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 gap-2"
             >
-              <Edit2 className="h-4 w-4" />
-              Edit Pengguna
+              <Edit2 className="h-4 w-4 text-[#186049] dark:text-[#4A943E]" />
+              <span>Edit Pengguna</span>
             </Button>
 
             <Button
@@ -303,12 +361,12 @@ export function AdminUserDetailView({
               variant="outline"
               size="sm"
               disabled={isCurrent}
-              onClick={() => setDeleteOpen(true)}
+              onClick={handleDeletePrompt}
               title={isCurrent ? 'Tidak bisa menghapus akun sendiri' : 'Hapus pengguna'}
-              className="gap-1.5 border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 disabled:opacity-40"
+              className="rounded-2xl h-10 px-4 font-semibold text-xs sm:text-sm border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 disabled:opacity-40 gap-2"
             >
               <Trash2 className="h-4 w-4" />
-              Hapus Pengguna
+              <span>Hapus Pengguna</span>
             </Button>
           </div>
         </div>
@@ -377,49 +435,49 @@ export function AdminUserDetailView({
         <>
           {/* 5 Kartu Metrik Jualan Penjual */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-xs">
+            <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">Total Produk</span>
-                <Package className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />
+                <span className="text-xs font-semibold text-neutral-500">Total Produk</span>
+                <Package className="h-4 w-4 text-neutral-400" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-neutral-900 dark:text-white">{stats.totalProducts}</div>
-              <p className="mt-0.5 text-[11px] text-neutral-400 dark:text-neutral-500">Semua jualan</p>
+              <div className="mt-2 text-2xl font-bold text-neutral-900">{stats.totalProducts}</div>
+              <p className="mt-0.5 text-[11px] text-neutral-400">Semua jualan</p>
             </div>
 
-            <div className="rounded-xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/40 dark:bg-emerald-950/20 p-4 shadow-xs">
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">Disetujui</span>
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-xs font-semibold text-emerald-800">Disetujui</span>
+                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-emerald-950 dark:text-emerald-100">{stats.approvedCount}</div>
-              <p className="mt-0.5 text-[11px] text-emerald-700 dark:text-emerald-400">Tampil di publik</p>
+              <div className="mt-2 text-2xl font-bold text-emerald-950">{stats.approvedCount}</div>
+              <p className="mt-0.5 text-[11px] text-emerald-700">Tampil di publik</p>
             </div>
 
-            <div className="rounded-xl border border-amber-200 dark:border-amber-800/60 bg-amber-50/40 dark:bg-amber-950/20 p-4 shadow-xs">
+            <div className="rounded-xl border border-amber-200 bg-amber-50/40 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-amber-800 dark:text-amber-300">Menunggu</span>
-                <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <span className="text-xs font-semibold text-amber-800">Menunggu</span>
+                <Clock className="h-4 w-4 text-amber-600" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-amber-950 dark:text-amber-100">{stats.pendingCount}</div>
-              <p className="mt-0.5 text-[11px] text-amber-700 dark:text-amber-400">Perlu ditinjau</p>
+              <div className="mt-2 text-2xl font-bold text-amber-950">{stats.pendingCount}</div>
+              <p className="mt-0.5 text-[11px] text-amber-700">Perlu ditinjau</p>
             </div>
 
-            <div className="rounded-xl border border-rose-200 dark:border-rose-800/60 bg-rose-50/40 dark:bg-rose-950/20 p-4 shadow-xs">
+            <div className="rounded-xl border border-rose-200 bg-rose-50/40 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-rose-800 dark:text-rose-300">Ditolak</span>
-                <XCircle className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+                <span className="text-xs font-semibold text-rose-800">Ditolak</span>
+                <XCircle className="h-4 w-4 text-rose-600" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-rose-950 dark:text-rose-100">{stats.rejectedCount}</div>
-              <p className="mt-0.5 text-[11px] text-rose-700 dark:text-rose-400">Revisi penjual</p>
+              <div className="mt-2 text-2xl font-bold text-rose-950">{stats.rejectedCount}</div>
+              <p className="mt-0.5 text-[11px] text-rose-700">Revisi penjual</p>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 rounded-xl border border-blue-200 dark:border-blue-800/60 bg-blue-50/40 dark:bg-blue-950/20 p-4 shadow-xs">
+            <div className="col-span-2 sm:col-span-1 rounded-xl border border-blue-200 bg-blue-50/40 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-blue-800 dark:text-blue-300">Klik WhatsApp</span>
-                <MessageCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-xs font-semibold text-blue-800">Klik WhatsApp</span>
+                <MessageCircle className="h-4 w-4 text-blue-600" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-blue-950 dark:text-blue-100">{stats.totalClicks}</div>
-              <p className="mt-0.5 text-[11px] text-blue-700 dark:text-blue-400">Total minat pembeli</p>
+              <div className="mt-2 text-2xl font-bold text-blue-950">{stats.totalClicks}</div>
+              <p className="mt-0.5 text-[11px] text-blue-700">Total minat pembeli</p>
             </div>
           </div>
 
@@ -427,23 +485,23 @@ export function AdminUserDetailView({
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
+                <h2 className="text-lg font-bold text-neutral-900">
                   Daftar Produk Jualan Milik {user.nama}
                 </h2>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                <p className="text-xs text-neutral-500 mt-0.5">
                   Pantau seluruh produk yang didaftarkan oleh penjual ini beserta status moderasi dan performanya.
                 </p>
               </div>
 
               {/* Filter Tab Status Produk */}
-              <div className="flex items-center gap-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 p-1 self-start sm:self-auto border border-neutral-200/60 dark:border-neutral-700">
+              <div className="flex items-center gap-1.5 rounded-lg bg-neutral-100 p-1 self-start sm:self-auto">
                 <button
                   type="button"
                   onClick={() => setActiveTab('all')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'all'
-                      ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-xs'
-                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                      ? 'bg-white text-neutral-900 shadow-xs'
+                      : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
                   Semua ({stats.totalProducts})
@@ -453,8 +511,8 @@ export function AdminUserDetailView({
                   onClick={() => setActiveTab('approved')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'approved'
-                      ? 'bg-white dark:bg-neutral-900 text-emerald-800 dark:text-emerald-400 shadow-xs'
-                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                      ? 'bg-white text-emerald-800 shadow-xs'
+                      : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
                   Disetujui ({stats.approvedCount})
@@ -464,8 +522,8 @@ export function AdminUserDetailView({
                   onClick={() => setActiveTab('pending')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'pending'
-                      ? 'bg-white dark:bg-neutral-900 text-amber-800 dark:text-amber-400 shadow-xs'
-                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                      ? 'bg-white text-amber-800 shadow-xs'
+                      : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
                   Pending ({stats.pendingCount})
@@ -475,8 +533,8 @@ export function AdminUserDetailView({
                   onClick={() => setActiveTab('rejected')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'rejected'
-                      ? 'bg-white dark:bg-neutral-900 text-rose-800 dark:text-rose-400 shadow-xs'
-                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                      ? 'bg-white text-rose-800 shadow-xs'
+                      : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
                   Ditolak ({stats.rejectedCount})
@@ -506,11 +564,11 @@ export function AdminUserDetailView({
                   return (
                     <div
                       key={product.id}
-                      className="flex flex-col rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/80 p-4 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition-all"
+                      className="flex flex-col rounded-xl border border-neutral-200 bg-white p-4 shadow-xs hover:border-neutral-300 transition-all"
                     >
                       <div className="flex gap-4">
                         {/* Foto Produk */}
-                        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+                        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-neutral-100 border border-neutral-200">
                           {product.foto_url ? (
                             <Image
                               src={product.foto_url}
@@ -520,7 +578,7 @@ export function AdminUserDetailView({
                               className="object-cover"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-neutral-400 dark:text-neutral-500">
+                            <div className="flex h-full w-full items-center justify-center text-neutral-400">
                               <ImageIcon className="h-8 w-8" />
                             </div>
                           )}
@@ -532,52 +590,52 @@ export function AdminUserDetailView({
                             <div className="flex flex-wrap items-center gap-1.5">
                               <StatusBadge status={product.status} />
                               {product.is_active === false && (
-                                <span className="text-[10px] bg-neutral-800 dark:bg-neutral-700 text-white px-1.5 py-0.5 rounded font-medium">
+                                <span className="text-[10px] bg-neutral-800 text-white px-1.5 py-0.5 rounded font-medium">
                                   Nonaktif
                                 </span>
                               )}
                               {product.kondisi_stok === 'pre_order' && (
-                                <span className="text-[10px] bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 dark:border dark:border-blue-800/50 px-1.5 py-0.5 rounded font-medium">
+                                <span className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-medium">
                                   PO
                                 </span>
                               )}
                               {product.kondisi_stok === 'stok_terbatas' && (
-                                <span className="text-[10px] bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 dark:border dark:border-amber-800/50 px-1.5 py-0.5 rounded font-medium">
+                                <span className="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium">
                                   Stok Terbatas
                                 </span>
                               )}
                             </div>
-                            <span className="flex items-center gap-1 text-[11px] font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded">
+                            <span className="flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
                               <MessageCircle className="h-3 w-3" />
                               {product.wa_clicks_count} klik
                             </span>
                           </div>
 
-                          <h3 className="mt-1.5 font-bold text-neutral-900 dark:text-white truncate" title={product.nama}>
+                          <h3 className="mt-1.5 font-bold text-neutral-900 truncate" title={product.nama}>
                             {product.nama}
                           </h3>
 
                           <div className="mt-1 flex items-baseline gap-1">
-                            <span className="text-base font-extrabold text-emerald-700 dark:text-emerald-400">
+                            <span className="text-base font-extrabold text-emerald-700">
                               {formatRupiah(product.harga)}
                             </span>
                             {product.satuan && (
-                              <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">
+                              <span className="text-xs font-normal text-neutral-500">
                                 / {product.satuan}
                               </span>
                             )}
                           </div>
 
-                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500">
                             {product.category && (
-                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5">
-                                <Tag className="h-3 w-3 text-neutral-400 dark:text-neutral-500" />
+                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 px-1.5 py-0.5">
+                                <Tag className="h-3 w-3 text-neutral-400" />
                                 {product.category.nama}
                               </span>
                             )}
                             {product.region && (
-                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5">
-                                <MapPin className="h-3 w-3 text-neutral-400 dark:text-neutral-500" />
+                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 px-1.5 py-0.5">
+                                <MapPin className="h-3 w-3 text-neutral-400" />
                                 {product.region.nama}
                               </span>
                             )}
@@ -587,19 +645,19 @@ export function AdminUserDetailView({
 
                       {/* Alasan Tolak jika Rejected */}
                       {product.status === 'rejected' && product.alasan_tolak && (
-                        <div className="mt-3 rounded-lg border border-rose-200 dark:border-rose-800/60 bg-rose-50 dark:bg-rose-950/40 p-2.5 text-xs text-rose-900 dark:text-rose-200">
+                        <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-xs text-rose-900">
                           <span className="font-semibold">Alasan Penolakan: </span>
                           {product.alasan_tolak}
                         </div>
                       )}
 
                       {/* Footer Aksi Produk */}
-                      <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between gap-2">
+                      <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between gap-2">
                         <Button
                           asChild
                           variant="ghost"
                           size="sm"
-                          className="text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white h-8 px-2"
+                          className="text-xs text-neutral-600 hover:text-neutral-900 h-8 px-2"
                         >
                           <Link href={`/produk/${product.id}`} target="_blank">
                             Lihat di Etalase
@@ -627,16 +685,16 @@ export function AdminUserDetailView({
                               type="button"
                               size="sm"
                               disabled={isLoading}
-                              onClick={() => handleApprove(product.id)}
-                              className="h-8 text-xs bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20"
+                              onClick={() => handleApprove(product.id, product.nama)}
+                              className="h-8 text-xs bg-[#186049] hover:bg-[#124b39] text-white rounded-xl"
                             >
                               {isLoading ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                               ) : (
                                 <>
-                              <Check className="mr-1 h-3.5 w-3.5" />
-                              Setujui
-                            </>
+                                  <Check className="mr-1 h-3.5 w-3.5" />
+                                  Setujui
+                                </>
                               )}
                             </Button>
                           </div>
@@ -651,22 +709,28 @@ export function AdminUserDetailView({
         </>
       )}
 
-      {/* ================= MODAL EDIT PENGGUNA ================= */}
+      {/* ================= MODAL EDIT PENGGUNA (Palette: #186049, #4A943E, #D98327, #ECE8AF) ================= */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-neutral-900">
-              <Edit2 className="h-5 w-5 text-blue-600" />
-              Edit Data Pengguna
-            </DialogTitle>
-            <DialogDescription>
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-md">
+          <DialogHeader className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#ECE8AF] text-[#186049] font-bold">
+                <Edit2 className="h-4 w-4" />
+              </div>
+              <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                Edit Data Pengguna
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
               Ubah nama tampilan atau hak akses role akun {user.nama}.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSaveEdit} className="space-y-4 py-2">
             <div className="space-y-1.5">
-              <Label htmlFor="detail-edit-nama">Nama Pengguna / Usaha</Label>
+              <Label htmlFor="detail-edit-nama" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Nama Pengguna / Usaha *
+              </Label>
               <Input
                 id="detail-edit-nama"
                 value={editNama}
@@ -674,41 +738,45 @@ export function AdminUserDetailView({
                 placeholder="Nama pengguna"
                 disabled={isUpdating}
                 required
+                className="h-12 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#4A943E]"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="detail-edit-role">Peran (Role)</Label>
+              <Label htmlFor="detail-edit-role" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Peran (Role)
+              </Label>
               <select
                 id="detail-edit-role"
                 value={editRole}
                 onChange={(e) => setEditRole(e.target.value as 'seller' | 'admin')}
                 disabled={isUpdating || isCurrent}
-                className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500 disabled:bg-neutral-100 disabled:cursor-not-allowed"
+                className="w-full h-12 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 px-3.5 py-2 text-sm text-neutral-900 dark:text-white shadow-2xs focus:ring-2 focus:ring-[#4A943E] disabled:bg-neutral-100 dark:disabled:bg-neutral-800/40 disabled:cursor-not-allowed"
               >
                 <option value="seller">Penjual UMKM (seller)</option>
                 <option value="admin">Administrator (admin)</option>
               </select>
               {isCurrent && (
-                <p className="text-xs text-amber-600">
+                <p className="text-xs text-[#D98327]">
                   Role akun Anda sendiri tidak dapat diubah demi keamanan sesi.
                 </p>
               )}
             </div>
 
-            <DialogFooter className="pt-2">
+            <DialogFooter className="gap-2 sm:gap-3 pt-3">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setEditOpen(false)}
                 disabled={isUpdating}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
               <Button
                 type="submit"
                 disabled={isUpdating}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                className="rounded-2xl h-11 px-6 bg-[#186049] hover:bg-[#124b39] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
               >
                 {isUpdating ? (
                   <>
@@ -724,120 +792,48 @@ export function AdminUserDetailView({
         </DialogContent>
       </Dialog>
 
-      {/* ================= MODAL KONFIRMASI HAPUS PENGGUNA ================= */}
-      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="sm:max-w-lg border-rose-200">
-          <DialogHeader>
-            <div className="mx-auto sm:mx-0 flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-rose-600 mb-2">
-              <AlertTriangle className="h-6 w-6" />
-            </div>
-            <DialogTitle className="text-lg font-bold text-rose-950">
-              Konfirmasi Hapus Akun {user.nama}
-            </DialogTitle>
-            <DialogDescription className="text-neutral-600">
-              Apakah Anda yakin ingin menghapus akun ini secara permanen dari sistem?
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 py-2">
-            {user.role === 'admin' ? (
-              <div className="rounded-lg border border-purple-200 bg-purple-50/70 p-3.5 text-xs text-purple-900 space-y-1">
-                <div className="font-bold flex items-center gap-1.5 text-purple-800">
-                  <Shield className="h-4 w-4 shrink-0 text-purple-600" />
-                  Penghapusan Akun Administrator
-                </div>
-                <p className="leading-relaxed">
-                  Akun ini bertindak sebagai administrator sistem dan <strong>tidak memiliki katalog produk/iklan jualan</strong>. Menghapus akun ini hanya akan mencabut akses admin.
-                </p>
-              </div>
-            ) : stats.totalProducts > 0 ? (
-              <div className="rounded-lg border border-amber-200 bg-amber-50/80 p-3.5 text-xs text-amber-900 space-y-2">
-                <div className="font-bold flex items-center gap-1.5 text-amber-800">
-                  <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
-                  Peringatan: Ada {stats.totalProducts} Produk Jualan Terkait!
-                </div>
-                <p className="leading-relaxed">
-                  Pengguna ini adalah penjual dengan <strong>{stats.totalProducts} produk jualan</strong> yang
-                  saat ini tersimpan di platform LapakKita.
-                </p>
-                <p className="leading-relaxed font-semibold text-amber-950">
-                  Menghapus akun ini akan <u>otomatis menghapus seluruh {stats.totalProducts} produk jualan</u> dan
-                  riwayat klik WhatsApp miliknya secara bersih (cascading) agar data tidak rusak dan tidak terjadi error di etalase.
-                </p>
-              </div>
-            ) : (
-              <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-900 flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0" />
-                <span>Penjual ini belum memiliki produk jualan yang terdaftar.</span>
-              </div>
-            )}
-
-            <DialogFooter className="pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setDeleteOpen(false)}
-                disabled={isDeleting}
-              >
-                Batal
-              </Button>
-              <Button
-                type="button"
-                onClick={handleConfirmDelete}
-                disabled={isDeleting}
-                className="bg-rose-600 hover:bg-rose-700 text-white font-medium gap-1.5"
-              >
-                {isDeleting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Sedang Menghapus...
-                  </>
-                ) : (
-                  <>
-                    <Trash2 className="h-4 w-4" />
-                    Hapus Akun {user.role === 'seller' && stats.totalProducts > 0 ? `& ${stats.totalProducts} Produk` : ''}
-                  </>
-                )}
-              </Button>
-            </DialogFooter>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* ================= MODAL ALASAN PENOLAKAN PRODUK ================= */}
+      {/* ================= MODAL ALASAN PENOLAKAN PRODUK (Palette: #D98327, #186049) ================= */}
       <Dialog
         open={!!rejectDialogProduct}
         onOpenChange={(open) => !open && setRejectDialogProduct(null)}
       >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-rose-900 flex items-center gap-2">
-              <XCircle className="h-5 w-5 text-rose-600" />
-              Tolak Produk: {rejectDialogProduct?.nama}
-            </DialogTitle>
-            <DialogDescription>
-              Tuliskan alasan penolakan secara jelas agar penjual dapat memperbaiki informasinya.
+        <DialogContent className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-[#0c1611] p-6 sm:p-7 shadow-2xl max-w-md">
+          <DialogHeader className="space-y-2">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#D98327]/20 text-[#D98327] font-bold">
+                <XCircle className="h-5 w-5" />
+              </div>
+              <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
+                Tolak Produk: {rejectDialogProduct?.nama}
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Tuliskan alasan penolakan secara jelas dan ramah agar penjual dapat memperbaiki informasinya.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-1.5">
-              <Label htmlFor="alasan-tolak-detail">Alasan Penolakan</Label>
+              <Label htmlFor="alasan-tolak-detail" className="text-xs sm:text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Alasan Penolakan / Catatan Revisi *
+              </Label>
               <Textarea
                 id="alasan-tolak-detail"
                 value={alasanTolak}
                 onChange={(e) => setAlasanTolak(e.target.value)}
                 placeholder="Contoh: Foto produk buram, nomor WhatsApp tidak aktif, atau deskripsi kurang lengkap."
-                rows={4}
+                rows={3}
+                className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-sm focus-visible:ring-2 focus-visible:ring-[#D98327] resize-none"
               />
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="gap-2 sm:gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => setRejectDialogProduct(null)}
                 disabled={loadingActionId === rejectDialogProduct?.id}
+                className="rounded-2xl h-11 px-5 border-neutral-200 dark:border-neutral-800 font-semibold text-xs sm:text-sm"
               >
                 Batal
               </Button>
@@ -848,7 +844,7 @@ export function AdminUserDetailView({
                   loadingActionId === rejectDialogProduct?.id ||
                   alasanTolak.trim().length < 3
                 }
-                className="bg-rose-600 hover:bg-rose-700 text-white font-medium"
+                className="rounded-2xl h-11 px-6 bg-[#D98327] hover:bg-[#bd6e1b] text-white font-bold text-xs sm:text-sm shadow-sm transition-transform hover:scale-102"
               >
                 {loadingActionId === rejectDialogProduct?.id ? (
                   <>
