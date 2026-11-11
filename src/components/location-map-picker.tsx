@@ -187,9 +187,12 @@ export function LocationMapPicker({
   }
 
   // Cari lokasi berdasarkan teks
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault()
-    if (!searchQuery.trim()) return
+  async function handleSearch(e?: React.SyntheticEvent) {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    if (!searchQuery.trim() || isSearching) return
 
     setIsSearching(true)
     try {
@@ -232,20 +235,28 @@ export function LocationMapPicker({
     <div className="space-y-3">
       {/* Toolbar Pencarian & GPS */}
       <div className="flex flex-col sm:flex-row gap-2">
-        <form onSubmit={handleSearch} className="flex-1 flex gap-2">
+        <div className="flex-1 flex gap-2">
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                e.stopPropagation()
+                handleSearch(e)
+              }
+            }}
             placeholder="Cari jalan, pasar, atau patokan di peta..."
             className="text-xs h-9 bg-white"
             disabled={isSearching}
           />
           <Button
-            type="submit"
+            type="button"
             size="sm"
             variant="outline"
+            onClick={handleSearch}
             disabled={isSearching || !searchQuery.trim()}
-            className="gap-1 h-9 text-xs shrink-0"
+            className="gap-1 h-9 text-xs shrink-0 cursor-pointer"
           >
             {isSearching ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -254,7 +265,7 @@ export function LocationMapPicker({
             )}
             Cari
           </Button>
-        </form>
+        </div>
 
         <Button
           type="button"
