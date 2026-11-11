@@ -111,10 +111,10 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
         </Button>
       </div>
 
-      <Card className="border-neutral-200 shadow-xs">
+      <Card className="border-neutral-200 dark:border-neutral-800 shadow-xs">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
               <Store className="h-6 w-6" />
             </div>
             <div>
@@ -130,8 +130,8 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
           {/* Nama Toko & Nomor WA */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="nama" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                <Store className="h-4 w-4 text-emerald-600" />
+              <Label htmlFor="nama" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+                <Store className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Nama Toko / Nama Usaha *
               </Label>
               <Input
@@ -141,13 +141,13 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
                 {...register('nama')}
               />
               {errors.nama && (
-                <p className="text-xs text-rose-600 font-medium">{errors.nama.message}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.nama.message}</p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="no_wa" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                <Phone className="h-4 w-4 text-emerald-600" />
+              <Label htmlFor="no_wa" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+                <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Nomor WhatsApp Toko *
               </Label>
               <Input
@@ -157,14 +157,14 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
                 {...register('no_wa')}
               />
               {errors.no_wa && (
-                <p className="text-xs text-rose-600 font-medium">{errors.no_wa.message}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.no_wa.message}</p>
               )}
             </div>
           </div>
 
           {/* Deskripsi Singkat Toko */}
           <div className="space-y-1.5">
-            <Label htmlFor="deskripsi_toko" className="font-semibold text-neutral-800">
+            <Label htmlFor="deskripsi_toko" className="font-semibold text-neutral-800 dark:text-neutral-200">
               Deskripsi Singkat Usaha / Slogan Toko
             </Label>
             <Textarea
@@ -175,27 +175,27 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
               {...register('deskripsi_toko')}
             />
             {errors.deskripsi_toko && (
-              <p className="text-xs text-rose-600 font-medium">{errors.deskripsi_toko.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.deskripsi_toko.message}</p>
             )}
           </div>
 
           {/* Kota / Wilayah & Alamat Lengkap */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="region_id" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                <MapPin className="h-4 w-4 text-emerald-600" />
+              <Label htmlFor="region_id" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+                <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Kota / Wilayah Utama
               </Label>
               <select
                 id="region_id"
-                className="flex h-10 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                className="flex h-10 w-full rounded-md border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-sm text-neutral-900 dark:text-neutral-100 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                 disabled={loading}
                 {...register('region_id', {
                   setValueAs: (v) => (v ? parseInt(v, 10) : null),
                 })}
               >
                 {regions.map((reg) => (
-                  <option key={reg.id} value={reg.id}>
+                  <option key={reg.id} value={reg.id} className="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
                     {reg.nama}
                   </option>
                 ))}
@@ -203,7 +203,7 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
             </div>
 
             <div className="sm:col-span-2 space-y-1.5">
-              <Label htmlFor="alamat" className="font-semibold text-neutral-800">
+              <Label htmlFor="alamat" className="font-semibold text-neutral-800 dark:text-neutral-200">
                 Alamat Fisik Lengkap Toko / Rumah Produksi
               </Label>
               <Input
@@ -213,21 +213,21 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
                 {...register('alamat')}
               />
               {errors.alamat && (
-                <p className="text-xs text-rose-600 font-medium">{errors.alamat.message}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.alamat.message}</p>
               )}
             </div>
           </div>
 
           {/* Titik Lokasi Peta (Leaflet OpenStreetMap) */}
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50/70 p-4 space-y-3">
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/50 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-emerald-600" />
+                <MapPin className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 <div>
-                  <h4 className="text-sm font-bold text-neutral-900">
+                  <h4 className="text-sm font-bold text-neutral-900 dark:text-white">
                     Titik Koordinat Peta Toko (GPS)
                   </h4>
-                  <p className="text-xs text-neutral-500">
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
                     Geser pin atau klik di peta untuk menandai titik presisi toko Anda.
                   </p>
                 </div>
@@ -238,7 +238,7 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowMap(!showMap)}
-                className="h-8 text-xs font-semibold text-emerald-700 hover:bg-emerald-100/50 gap-1"
+                className="h-8 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/50 gap-1"
               >
                 {showMap ? (
                   <>
@@ -253,11 +253,13 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
             </div>
 
             {currentLat && currentLng ? (
-              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>
                   Koordinat Tersimpan: Latitude {currentLat.toFixed(5)}, Longitude {currentLng.toFixed(5)}
                 </span>
+              </div>
+            ) : null}
               </div>
             ) : (
               <div className="text-xs text-amber-800 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">
@@ -286,7 +288,7 @@ export function SellerProfileForm({ initialProfile, regions }: SellerProfileForm
           <Button
             type="submit"
             disabled={loading}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium gap-1.5 cursor-pointer"
+            className="bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 font-medium gap-1.5 cursor-pointer shadow-2xs"
           >
             {loading ? (
               <>

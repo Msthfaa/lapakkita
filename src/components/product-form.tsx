@@ -347,12 +347,12 @@ export function ProductForm({
       </div>
 
       {/* ================= BAGIAN 1: GALERI MULTI-FOTO PRODUK ================= */}
-      <Card className="border-neutral-200 shadow-xs">
+      <Card className="border-neutral-200 dark:border-neutral-800 shadow-xs">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-lg font-bold flex items-center gap-2">
-                <ImageIcon className="h-5 w-5 text-emerald-600" />
+                <ImageIcon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 Galeri Foto Produk UMKM
               </CardTitle>
               <CardDescription>
@@ -368,7 +368,7 @@ export function ProductForm({
         <CardContent className="space-y-4">
           {/* Dropzone Upload */}
           {photos.length < 5 && (
-            <div className="rounded-xl border-2 border-dashed border-neutral-300 p-6 text-center hover:border-emerald-500 hover:bg-emerald-50/20 transition-all bg-neutral-50/50">
+            <div className="rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 p-6 text-center hover:border-emerald-500 hover:bg-emerald-50/20 dark:hover:bg-emerald-950/20 transition-all bg-neutral-50/50 dark:bg-neutral-900/50">
               <input
                 id="product-photos-input"
                 type="file"
@@ -382,7 +382,7 @@ export function ProductForm({
                 htmlFor="product-photos-input"
                 className="flex flex-col items-center justify-center cursor-pointer space-y-2"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
                   {uploadingImage ? (
                     <Loader2 className="h-6 w-6 animate-spin" />
                   ) : (
@@ -390,12 +390,12 @@ export function ProductForm({
                   )}
                 </div>
                 <div>
-                  <span className="font-semibold text-sm text-emerald-700 hover:underline">
+                  <span className="font-semibold text-sm text-emerald-700 dark:text-emerald-400 hover:underline">
                     {uploadingImage ? 'Sedang Mengunggah...' : 'Klik untuk Pilih Foto'}
                   </span>
-                  <span className="text-xs text-neutral-500"> atau seret gambar ke sini</span>
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400"> atau seret gambar ke sini</span>
                 </div>
-                <p className="text-[11px] text-neutral-400">
+                <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
                   Format: JPG, PNG, WEBP &bull; Maksimal 2 MB per foto &bull; Tersedia {5 - photos.length} slot lagi
                 </p>
               </label>
@@ -408,10 +408,10 @@ export function ProductForm({
               {photos.map((url, idx) => (
                 <div
                   key={idx}
-                  className={`group relative aspect-square rounded-xl overflow-hidden border-2 bg-neutral-100 transition-all ${
+                  className={`group relative aspect-square rounded-xl overflow-hidden border-2 bg-neutral-100 dark:bg-neutral-800 transition-all ${
                     idx === 0
                       ? 'border-emerald-600 ring-2 ring-emerald-500/20 shadow-sm'
-                      : 'border-neutral-200 hover:border-neutral-300'
+                      : 'border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600'
                   }`}
                 >
                   <Image
@@ -424,15 +424,15 @@ export function ProductForm({
 
                   {/* Badge Foto Utama */}
                   {idx === 0 ? (
-                    <div className="absolute top-1.5 left-1.5 rounded-md bg-emerald-600 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-xs flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-white" />
+                    <div className="absolute top-1.5 left-1.5 rounded-md bg-[#186049] text-[#ECE8AF] border border-[#ECE8AF]/20 px-1.5 py-0.5 text-[10px] font-bold shadow-xs flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-[#D98327] text-[#D98327]" />
                       Cover
                     </div>
                   ) : (
                     <button
                       type="button"
                       onClick={() => handleSetAsCover(idx)}
-                      className="absolute top-1.5 left-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md bg-black/70 hover:bg-emerald-600 px-1.5 py-0.5 text-[10px] font-medium text-white cursor-pointer"
+                      className="absolute top-1.5 left-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md bg-black/70 hover:bg-[#186049] px-1.5 py-0.5 text-[10px] font-medium text-white cursor-pointer"
                       title="Jadikan foto cover utama"
                     >
                       Pilih Cover
@@ -457,10 +457,10 @@ export function ProductForm({
       </Card>
 
       {/* ================= BAGIAN 2: INFORMASI DASAR PRODUK ================= */}
-      <Card className="border-neutral-200 shadow-xs">
+      <Card className="border-neutral-200 dark:border-neutral-800 shadow-xs">
         <CardHeader>
           <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <Tag className="h-5 w-5 text-emerald-600" />
+            <Tag className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             Informasi Dasar Produk
           </CardTitle>
           <CardDescription>
@@ -471,7 +471,7 @@ export function ProductForm({
         <CardContent className="space-y-5">
           {/* Nama Produk */}
           <div className="space-y-1.5">
-            <Label htmlFor="nama" className="font-semibold text-neutral-800">
+            <Label htmlFor="nama" className="font-semibold text-neutral-800 dark:text-neutral-200">
               Nama Produk UMKM <span className="text-rose-500">*</span>
             </Label>
             <Input
@@ -481,24 +481,24 @@ export function ProductForm({
               {...register('nama')}
             />
             {errors.nama && (
-              <p className="text-xs text-rose-600 font-medium">{errors.nama.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.nama.message}</p>
             )}
           </div>
 
           {/* Kategori & Daerah */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="category_id" className="font-semibold text-neutral-800">
+              <Label htmlFor="category_id" className="font-semibold text-neutral-800 dark:text-neutral-200">
                 Kategori Usaha <span className="text-rose-500">*</span>
               </Label>
               <select
                 id="category_id"
                 disabled={loading}
                 {...register('category_id', { valueAsNumber: true })}
-                className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-md border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500 cursor-pointer"
               >
                 {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
+                  <option key={cat.id} value={cat.id} className="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
                     {cat.nama}
                   </option>
                 ))}
@@ -506,17 +506,17 @@ export function ProductForm({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="region_id" className="font-semibold text-neutral-800">
+              <Label htmlFor="region_id" className="font-semibold text-neutral-800 dark:text-neutral-200">
                 Daerah / Kota UMKM <span className="text-rose-500">*</span>
               </Label>
               <select
                 id="region_id"
                 disabled={loading}
                 {...register('region_id', { valueAsNumber: true })}
-                className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-md border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500 cursor-pointer"
               >
                 {regions.map((reg) => (
-                  <option key={reg.id} value={reg.id}>
+                  <option key={reg.id} value={reg.id} className="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
                     {reg.nama}
                   </option>
                 ))}
@@ -527,8 +527,8 @@ export function ProductForm({
           {/* Varian & Sertifikasi */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="varian" className="text-neutral-700">
-                Pilihan Varian Produk <span className="text-neutral-400 text-xs">(Opsional)</span>
+              <Label htmlFor="varian" className="text-neutral-700 dark:text-neutral-300">
+                Pilihan Varian Produk <span className="text-neutral-400 dark:text-neutral-500 text-xs">(Opsional)</span>
               </Label>
               <Input
                 id="varian"
@@ -536,14 +536,14 @@ export function ProductForm({
                 disabled={loading}
                 {...register('varian')}
               />
-              <p className="text-[11px] text-neutral-400">
+              <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
                 Tuliskan pilihan rasa, ukuran, atau warna yang tersedia.
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="no_izin" className="text-neutral-700">
-                Legalitas / Sertifikasi <span className="text-neutral-400 text-xs">(Opsional)</span>
+              <Label htmlFor="no_izin" className="text-neutral-700 dark:text-neutral-300">
+                Legalitas / Sertifikasi <span className="text-neutral-400 dark:text-neutral-500 text-xs">(Opsional)</span>
               </Label>
               <Input
                 id="no_izin"
@@ -551,7 +551,7 @@ export function ProductForm({
                 disabled={loading}
                 {...register('no_izin')}
               />
-              <p className="text-[11px] text-neutral-400">
+              <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
                 Nomor izin P-IRT, Halal, atau BPOM untuk meningkatkan kepercayaan pembeli.
               </p>
             </div>
@@ -560,10 +560,10 @@ export function ProductForm({
       </Card>
 
       {/* ================= BAGIAN 3: HARGA, SATUAN & KETERSEDIAAN STOK ================= */}
-      <Card className="border-neutral-200 shadow-xs">
+      <Card className="border-neutral-200 dark:border-neutral-800 shadow-xs">
         <CardHeader>
           <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <Layers className="h-5 w-5 text-emerald-600" />
+            <Layers className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             Harga, Satuan & Ketersediaan Stok
           </CardTitle>
           <CardDescription>
@@ -575,11 +575,11 @@ export function ProductForm({
           {/* Harga Rupiah (Formatted with dots) & Satuan */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="harga-input" className="font-semibold text-neutral-800">
+              <Label htmlFor="harga-input" className="font-semibold text-neutral-800 dark:text-neutral-200">
                 Harga Jual (Rupiah) <span className="text-rose-500">*</span>
               </Label>
               <div className="relative flex items-center">
-                <span className="absolute left-3 font-semibold text-neutral-500 text-sm">
+                <span className="absolute left-3 font-semibold text-neutral-500 dark:text-neutral-400 text-sm">
                   Rp
                 </span>
                 <Input
@@ -590,34 +590,34 @@ export function ProductForm({
                   value={rawHarga}
                   onChange={handleHargaChange}
                   disabled={loading}
-                  className="pl-10 font-mono font-semibold text-neutral-900"
+                  className="pl-10 font-mono font-semibold text-neutral-900 dark:text-neutral-100"
                 />
               </div>
-              <p className="text-[11px] text-neutral-400">
+              <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
                 Ketik angka murni, tanda titik (.) ribuan akan diformat otomatis.
               </p>
               {errors.harga && (
-                <p className="text-xs text-rose-600 font-medium">{errors.harga.message}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.harga.message}</p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="satuan" className="font-semibold text-neutral-800">
+              <Label htmlFor="satuan" className="font-semibold text-neutral-800 dark:text-neutral-200">
                 Satuan / Kemasan Produk <span className="text-rose-500">*</span>
               </Label>
               <select
                 id="satuan"
                 disabled={loading}
                 {...register('satuan')}
-                className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-md border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm shadow-xs focus:border-emerald-500 focus:outline-hidden focus:ring-1 focus:ring-emerald-500 cursor-pointer"
               >
                 {SATUAN_OPTIONS.map((sat) => (
-                  <option key={sat} value={sat}>
+                  <option key={sat} value={sat} className="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
                     {sat}
                   </option>
                 ))}
               </select>
-              <p className="text-[11px] text-neutral-400">
+              <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
                 Menjelaskan harga tersebut per apa (misal: Rp 120.000 / Box).
               </p>
             </div>
@@ -625,15 +625,15 @@ export function ProductForm({
 
           {/* Ketersediaan Stok */}
           <div className="space-y-2 pt-2">
-            <Label className="font-semibold text-neutral-800">
+            <Label className="font-semibold text-neutral-800 dark:text-neutral-200">
               Status Ketersediaan Produk <span className="text-rose-500">*</span>
             </Label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <label
                 className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                   selectedKondisiStok === 'ready_stock'
-                    ? 'border-emerald-600 bg-emerald-50/50 ring-1 ring-emerald-500'
-                    : 'border-neutral-200 bg-white hover:bg-neutral-50'
+                    ? 'border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/40 ring-1 ring-emerald-500'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800/80'
                 }`}
               >
                 <input
@@ -645,21 +645,21 @@ export function ProductForm({
                 <CheckCircle2
                   className={`h-5 w-5 shrink-0 ${
                     selectedKondisiStok === 'ready_stock'
-                      ? 'text-emerald-600'
-                      : 'text-neutral-300'
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : 'text-neutral-300 dark:text-neutral-600'
                   }`}
                 />
                 <div>
-                  <div className="font-bold text-sm text-neutral-900">Ready Stock</div>
-                  <div className="text-[11px] text-neutral-500">Stok siap langsung dikirim</div>
+                  <div className="font-bold text-sm text-neutral-900 dark:text-white">Ready Stock</div>
+                  <div className="text-[11px] text-neutral-500 dark:text-neutral-400">Stok siap langsung dikirim</div>
                 </div>
               </label>
 
               <label
                 className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                   selectedKondisiStok === 'pre_order'
-                    ? 'border-blue-600 bg-blue-50/50 ring-1 ring-blue-500'
-                    : 'border-neutral-200 bg-white hover:bg-neutral-50'
+                    ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/40 ring-1 ring-blue-500'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800/80'
                 }`}
               >
                 <input
@@ -671,21 +671,21 @@ export function ProductForm({
                 <Clock
                   className={`h-5 w-5 shrink-0 ${
                     selectedKondisiStok === 'pre_order'
-                      ? 'text-blue-600'
-                      : 'text-neutral-300'
+                      ? 'text-blue-600 dark:text-blue-400'
+                      : 'text-neutral-300 dark:text-neutral-600'
                   }`}
                 />
                 <div>
-                  <div className="font-bold text-sm text-neutral-900">Pre-Order (PO)</div>
-                  <div className="text-[11px] text-neutral-500">Dibuat berdasarkan pesanan</div>
+                  <div className="font-bold text-sm text-neutral-900 dark:text-white">Pre-Order (PO)</div>
+                  <div className="text-[11px] text-neutral-500 dark:text-neutral-400">Dibuat berdasarkan pesanan</div>
                 </div>
               </label>
 
               <label
                 className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                   selectedKondisiStok === 'stok_terbatas'
-                    ? 'border-amber-600 bg-amber-50/50 ring-1 ring-amber-500'
-                    : 'border-neutral-200 bg-white hover:bg-neutral-50'
+                    ? 'border-amber-600 bg-amber-50/50 dark:bg-amber-950/40 ring-1 ring-amber-500'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800/80'
                 }`}
               >
                 <input
@@ -697,13 +697,13 @@ export function ProductForm({
                 <AlertCircle
                   className={`h-5 w-5 shrink-0 ${
                     selectedKondisiStok === 'stok_terbatas'
-                      ? 'text-amber-600'
-                      : 'text-neutral-300'
+                      ? 'text-amber-600 dark:text-amber-400'
+                      : 'text-neutral-300 dark:text-neutral-600'
                   }`}
                 />
                 <div>
-                  <div className="font-bold text-sm text-neutral-900">Stok Terbatas</div>
-                  <div className="text-[11px] text-neutral-500">Persediaan cepat habis</div>
+                  <div className="font-bold text-sm text-neutral-900 dark:text-white">Stok Terbatas</div>
+                  <div className="text-[11px] text-neutral-500 dark:text-neutral-400">Persediaan cepat habis</div>
                 </div>
               </label>
             </div>
@@ -712,10 +712,10 @@ export function ProductForm({
       </Card>
 
       {/* ================= BAGIAN 4: PENGIRIMAN, KONTAK & LOKASI PENJUAL ================= */}
-      <Card className="border-neutral-200 shadow-xs">
+      <Card className="border-neutral-200 dark:border-neutral-800 shadow-xs">
         <CardHeader>
           <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <Truck className="h-5 w-5 text-emerald-600" />
+            <Truck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             Jangkauan Pengiriman & Kontak Penjual
           </CardTitle>
           <CardDescription>
@@ -726,7 +726,7 @@ export function ProductForm({
         <CardContent className="space-y-5">
           {/* Metode Pengiriman Checkbox */}
           <div className="space-y-2">
-            <Label className="font-semibold text-neutral-800">
+            <Label className="font-semibold text-neutral-800 dark:text-neutral-200">
               Metode / Jangkauan Pengiriman yang Dilayani <span className="text-rose-500">*</span>
             </Label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -739,15 +739,15 @@ export function ProductForm({
                     onClick={() => handleTogglePengiriman(opt)}
                     className={`flex items-center gap-2.5 p-3 rounded-lg border text-left text-xs transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-emerald-600 bg-emerald-50/60 font-semibold text-emerald-950'
-                        : 'border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50'
+                        ? 'border-[#186049] bg-[#186049]/10 dark:bg-[#186049]/25 font-semibold text-[#186049] dark:text-[#ECE8AF]'
+                        : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800/80'
                     }`}
                   >
                     <div
                       className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
                         isSelected
-                          ? 'border-emerald-600 bg-emerald-600 text-white'
-                          : 'border-neutral-300 bg-white'
+                          ? 'border-[#186049] bg-[#186049] text-[#ECE8AF]'
+                          : 'border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800'
                       }`}
                     >
                       {isSelected && <CheckCircle2 className="h-3.5 w-3.5" />}
@@ -761,8 +761,8 @@ export function ProductForm({
 
           {/* Nomor WhatsApp */}
           <div className="space-y-1.5">
-            <Label htmlFor="no_wa" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-              <Phone className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="no_wa" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+              <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Nomor WhatsApp Penjual <span className="text-rose-500">*</span>
             </Label>
             <Input
@@ -771,18 +771,18 @@ export function ProductForm({
               disabled={loading}
               {...register('no_wa')}
             />
-            <p className="text-[11px] text-neutral-400">
+            <p className="text-[11px] text-neutral-400 dark:text-neutral-500">
               Pembeli yang menekan tombol pesan akan langsung terhubung ke nomor WhatsApp ini dengan format pemesanan otomatis.
             </p>
             {errors.no_wa && (
-              <p className="text-xs text-rose-600 font-medium">{errors.no_wa.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.no_wa.message}</p>
             )}
           </div>
 
           {/* Alamat Lengkap */}
           <div className="space-y-1.5">
-            <Label htmlFor="alamat" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-              <MapPin className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="alamat" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+              <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Alamat Lengkap Toko / Patokan Usaha
             </Label>
             <Input
@@ -792,16 +792,16 @@ export function ProductForm({
               {...register('alamat')}
             />
             {errors.alamat && (
-              <p className="text-xs text-rose-600 font-medium">{errors.alamat.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.alamat.message}</p>
             )}
           </div>
 
           {/* Titik Lokasi Peta Produk (Maps) */}
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50/70 p-3 space-y-2">
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/50 p-3 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <MapPin className="h-4 w-4 text-emerald-600" />
-                <span className="text-xs font-bold text-neutral-900">
+                <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-xs font-bold text-neutral-900 dark:text-white">
                   Titik Lokasi Peta Toko (GPS)
                 </span>
               </div>
@@ -810,18 +810,18 @@ export function ProductForm({
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowMap(!showMap)}
-                className="h-7 text-xs font-semibold text-emerald-700 hover:bg-emerald-100/50"
+                className="h-7 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/50"
               >
                 {showMap ? 'Sembunyikan Peta' : '📍 Atur Titik di Peta'}
               </Button>
             </div>
 
             {currentLat && currentLng ? (
-              <p className="text-xs text-emerald-800 font-medium bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+              <p className="text-xs text-emerald-800 dark:text-emerald-300 font-medium bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded border border-emerald-200 dark:border-emerald-800/60">
                 ✓ Koordinat tersimpan: ({currentLat.toFixed(5)}, {currentLng.toFixed(5)})
               </p>
             ) : (
-              <p className="text-[11px] text-neutral-500">
+              <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
                 Secara otomatis menggunakan koordinat peta dari profil toko Anda jika tidak diubah di sini.
               </p>
             )}
@@ -846,7 +846,7 @@ export function ProductForm({
 
           {/* Deskripsi Lengkap Produk */}
           <div className="space-y-1.5">
-            <Label htmlFor="deskripsi" className="font-semibold text-neutral-800">
+            <Label htmlFor="deskripsi" className="font-semibold text-neutral-800 dark:text-neutral-200">
               Deskripsi Lengkap Produk
             </Label>
             <Textarea
@@ -857,27 +857,27 @@ export function ProductForm({
               {...register('deskripsi')}
             />
             {errors.deskripsi && (
-              <p className="text-xs text-rose-600 font-medium">{errors.deskripsi.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.deskripsi.message}</p>
             )}
           </div>
 
           {/* Status Etalase Produk (Aktif vs Nonaktif) */}
-          <div className="space-y-2 pt-3 border-t border-neutral-100">
+          <div className="space-y-2 pt-3 border-t border-neutral-100 dark:border-neutral-800">
             <div className="flex items-center justify-between">
-              <Label className="font-semibold text-neutral-800">
+              <Label className="font-semibold text-neutral-800 dark:text-neutral-200">
                 Status Publikasi di Etalase
               </Label>
               <span
                 className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
                   currentIsActive
-                    ? 'bg-emerald-100 text-emerald-800'
-                    : 'bg-neutral-200 text-neutral-700'
+                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800/50'
+                    : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
                 }`}
               >
                 {currentIsActive ? '🟢 Siap Tayang / Aktif' : '⏸️ Disembunyikan / Nonaktif'}
               </span>
             </div>
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">
               Pilih apakah produk ini ingin langsung ditampilkan di katalog publik setelah disetujui admin, atau disembunyikan sementara (misal jika stok kosong atau toko sedang libur).
             </p>
 
@@ -885,8 +885,8 @@ export function ProductForm({
               <label
                 className={`relative flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition-all ${
                   currentIsActive
-                    ? 'border-emerald-600 bg-emerald-50/40 ring-1 ring-emerald-500'
-                    : 'border-neutral-200 bg-white hover:border-neutral-300'
+                    ? 'border-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/40 ring-1 ring-emerald-500'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 <input
@@ -897,8 +897,8 @@ export function ProductForm({
                   className="mt-1 h-4 w-4 text-emerald-600 focus:ring-emerald-500"
                 />
                 <div className="text-xs">
-                  <span className="font-bold text-neutral-900 block">🟢 Aktifkan Produk</span>
-                  <span className="text-neutral-500">
+                  <span className="font-bold text-neutral-900 dark:text-white block">🟢 Aktifkan Produk</span>
+                  <span className="text-neutral-500 dark:text-neutral-400">
                     Produk akan langsung tampil di etalase publik setelah disetujui admin.
                   </span>
                 </div>
@@ -907,8 +907,8 @@ export function ProductForm({
               <label
                 className={`relative flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition-all ${
                   !currentIsActive
-                    ? 'border-neutral-800 bg-neutral-50 ring-1 ring-neutral-800'
-                    : 'border-neutral-200 bg-white hover:border-neutral-300'
+                    ? 'border-neutral-800 dark:border-neutral-500 bg-neutral-50 dark:bg-neutral-900 ring-1 ring-neutral-800 dark:ring-neutral-500'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 <input
@@ -919,8 +919,8 @@ export function ProductForm({
                   className="mt-1 h-4 w-4 text-neutral-600 focus:ring-neutral-500"
                 />
                 <div className="text-xs">
-                  <span className="font-bold text-neutral-900 block">⏸️ Nonaktifkan Sementara</span>
-                  <span className="text-neutral-500">
+                  <span className="font-bold text-neutral-900 dark:text-white block">⏸️ Nonaktifkan Sementara</span>
+                  <span className="text-neutral-500 dark:text-neutral-400">
                     Sembunyikan dari katalog publik. Anda bisa mengaktifkannya kapan saja di Dashboard.
                   </span>
                 </div>
@@ -929,8 +929,8 @@ export function ProductForm({
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-neutral-100">
-          <p className="text-xs text-neutral-500">
+        <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
             {isEditing
               ? 'Catatan: Setiap perubahan akan mengirim produk kembali ke antrean moderasi admin.'
               : 'Produk akan diverifikasi oleh tim admin sebelum tampil di etalase publik.'}
@@ -949,7 +949,7 @@ export function ProductForm({
             <Button
               type="submit"
               disabled={loading || uploadingImage}
-              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+              className="w-full sm:w-auto bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 font-medium shadow-2xs"
             >
               {loading ? (
                 <>

@@ -151,32 +151,32 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-xs">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+        <div className="flex items-center gap-3 rounded-xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/40 dark:bg-emerald-950/20 p-4 shadow-xs">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
             <Store className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-xl font-bold text-emerald-950">{totalSellers}</div>
-            <div className="text-xs text-emerald-700 font-medium">Penjual UMKM</div>
+            <div className="text-xl font-bold text-emerald-950 dark:text-emerald-100">{totalSellers}</div>
+            <div className="text-xs text-emerald-700 dark:text-emerald-400 font-medium">Penjual UMKM</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-xl border border-purple-200 bg-purple-50/40 p-4 shadow-xs">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
+        <div className="flex items-center gap-3 rounded-xl border border-purple-200 dark:border-purple-800/60 bg-purple-50/40 dark:bg-purple-950/20 p-4 shadow-xs">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
             <Shield className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-xl font-bold text-purple-950">{totalAdmins}</div>
-            <div className="text-xs text-purple-700 font-medium">Administrator</div>
+            <div className="text-xl font-bold text-purple-950 dark:text-purple-100">{totalAdmins}</div>
+            <div className="text-xs text-purple-700 dark:text-purple-400 font-medium">Administrator</div>
           </div>
         </div>
       </div>
 
       {/* Filter & Pencarian Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-xs">
         {/* Input Cari */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 dark:text-neutral-500" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -192,8 +192,8 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
             onClick={() => setRoleFilter('all')}
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
               roleFilter === 'all'
-                ? 'bg-neutral-900 text-white'
-                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                ? 'bg-neutral-900 dark:bg-white text-white dark:text-black'
+                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'
             }`}
           >
             Semua ({totalUsers})
@@ -204,7 +204,7 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
               roleFilter === 'seller'
                 ? 'bg-emerald-700 text-white'
-                : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40'
             }`}
           >
             Penjual ({totalSellers})
@@ -215,7 +215,7 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
               roleFilter === 'admin'
                 ? 'bg-purple-700 text-white'
-                : 'bg-purple-50 text-purple-800 hover:bg-purple-100'
+                : 'bg-purple-50 dark:bg-purple-950/40 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/40'
             }`}
           >
             Admin ({totalAdmins})
@@ -225,24 +225,24 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
 
       {/* Daftar Pengguna */}
       {filteredUsers.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-neutral-300 bg-white p-12 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 text-neutral-400">
+        <div className="rounded-xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900/50 p-12 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500">
             <Users className="h-6 w-6" />
           </div>
-          <h3 className="mt-4 text-base font-semibold text-neutral-800">
+          <h3 className="mt-4 text-base font-semibold text-neutral-800 dark:text-neutral-200">
             Tidak Ada Pengguna Ditemukan
           </h3>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
             {search
               ? `Tidak ada hasil yang cocok dengan kata kunci "${search}".`
               : 'Belum ada pengguna pada kategori ini.'}
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-neutral-700">
-              <thead className="border-b border-neutral-200 bg-neutral-50/80 text-xs font-bold uppercase tracking-wider text-neutral-500">
+            <table className="w-full text-left text-sm text-neutral-700 dark:text-neutral-300">
+              <thead className="border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-950/80 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
                 <tr>
                   <th scope="col" className="px-6 py-3.5">
                     Pengguna
@@ -261,13 +261,13 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-200">
+              <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
                 {filteredUsers.map((user) => {
                   const isCurrent = user.id === currentUserId
                   return (
                     <tr
                       key={user.id}
-                      className="hover:bg-neutral-50/60 transition-colors"
+                      className="hover:bg-neutral-50/60 dark:hover:bg-neutral-800/50 transition-colors"
                     >
                       {/* Kolom Profil Pengguna */}
                       <td className="px-6 py-4">
@@ -275,22 +275,22 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                           <div
                             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-sm ${
                               user.role === 'admin'
-                                ? 'bg-purple-100 text-purple-700 border border-purple-200'
-                                : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                                ? 'bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60'
+                                : 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60'
                             }`}
                           >
                             {user.nama ? user.nama.charAt(0).toUpperCase() : 'U'}
                           </div>
                           <div className="min-w-0">
-                            <div className="flex items-center gap-1.5 font-bold text-neutral-900 truncate">
+                            <div className="flex items-center gap-1.5 font-bold text-neutral-900 dark:text-white truncate">
                               <span>{user.nama}</span>
                               {isCurrent && (
-                                <span className="rounded bg-neutral-200 px-1.5 py-0.5 text-[10px] font-semibold text-neutral-700">
+                                <span className="rounded bg-neutral-200 dark:bg-neutral-800 px-1.5 py-0.5 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300">
                                   Anda
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-neutral-500 truncate">
+                            <div className="text-xs text-neutral-500 dark:text-neutral-400 truncate">
                               {user.email !== '-' ? user.email : 'ID: ' + user.id.slice(0, 8) + '...'}
                             </div>
                           </div>
@@ -300,12 +300,12 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                       {/* Kolom Role */}
                       <td className="px-4 py-4 whitespace-nowrap">
                         {user.role === 'admin' ? (
-                          <Badge className="bg-purple-100 text-purple-800 border-purple-200 gap-1 font-semibold">
+                          <Badge className="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/60 gap-1 font-semibold">
                             <Shield className="h-3 w-3" />
                             Admin
                           </Badge>
                         ) : (
-                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 gap-1 font-semibold">
+                          <Badge className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60 gap-1 font-semibold">
                             <Store className="h-3 w-3" />
                             Penjual UMKM
                           </Badge>
@@ -315,24 +315,24 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                       {/* Kolom Produk */}
                       <td className="px-4 py-4 whitespace-nowrap">
                         {user.role === 'admin' ? (
-                          <span className="inline-flex items-center text-xs text-neutral-400 italic">
+                          <span className="inline-flex items-center text-xs text-neutral-400 dark:text-neutral-500 italic">
                             Bukan Penjual
                           </span>
                         ) : (
                           <Link
                             href={`/admin/users/${user.id}`}
-                            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-white transition-colors"
                           >
-                            <Package className="h-3.5 w-3.5 text-neutral-500" />
+                            <Package className="h-3.5 w-3.5 text-neutral-500 dark:text-neutral-400" />
                             <span>{user.product_count} Produk</span>
                           </Link>
                         )}
                       </td>
 
                       {/* Kolom Tanggal */}
-                      <td className="px-4 py-4 whitespace-nowrap text-xs text-neutral-500">
+                      <td className="px-4 py-4 whitespace-nowrap text-xs text-neutral-500 dark:text-neutral-400">
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5 text-neutral-400" />
+                          <Calendar className="h-3.5 w-3.5 text-neutral-400 dark:text-neutral-500" />
                           <span>{formatTanggal(user.created_at)}</span>
                         </div>
                       </td>
@@ -345,7 +345,7 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                             asChild
                             variant="outline"
                             size="sm"
-                            className="h-8 text-xs font-medium border-neutral-200 text-neutral-700 hover:bg-neutral-100"
+                            className="h-8 text-xs font-medium border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                           >
                             <Link href={`/admin/users/${user.id}`}>
                               <Eye className="mr-1.5 h-3.5 w-3.5 text-neutral-500" />

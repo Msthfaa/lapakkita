@@ -19,7 +19,6 @@ import { toast } from 'sonner'
 import {
   Edit,
   Trash2,
-  Eye,
   MessageCircle,
   AlertCircle,
   Loader2,
@@ -28,6 +27,9 @@ import {
   CheckCircle2,
   Clock,
   Power,
+  MapPin,
+  Tag,
+  ExternalLink,
 } from 'lucide-react'
 
 interface SellerProductItemProps {
@@ -95,114 +97,130 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
   }
 
   return (
-    <div className={`flex flex-col sm:flex-row gap-4 p-4 border rounded-xl bg-white shadow-xs transition-all ${
-      product.is_active ? 'border-neutral-200 hover:border-neutral-300' : 'border-neutral-200/70 bg-neutral-50/40 opacity-90'
-    }`}>
-      {/* Gambar */}
-      <div className="relative h-32 w-full sm:w-32 shrink-0 rounded-lg overflow-hidden bg-neutral-100 border border-neutral-100">
+    <div
+      className={`group flex flex-col sm:flex-row gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl border transition-all duration-200 ${
+        product.is_active
+          ? 'border-[#186049]/15 dark:border-[#186049]/30 bg-white dark:bg-[#0d1612] shadow-2xs hover:border-[#186049]/40 dark:hover:border-[#186049]/50 dark:hover:bg-[#101b16]'
+          : 'border-neutral-200/70 dark:border-white/[0.05] bg-neutral-50/50 dark:bg-[#0a0f0d] opacity-80 border-dashed'
+      }`}
+    >
+      {/* Gambar Thumbnail */}
+      <div className="relative h-32 w-full sm:w-36 sm:h-36 shrink-0 rounded-xl overflow-hidden bg-neutral-100 dark:bg-white/[0.03] border border-[#186049]/10 dark:border-[#186049]/25">
         {product.foto_url ? (
           <Image
             src={product.foto_url}
             alt={product.nama}
             fill
-            className={`object-cover ${!product.is_active ? 'grayscale-[40%]' : ''}`}
+            sizes="(max-width: 640px) 100vw, 144px"
+            className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
+              !product.is_active ? 'grayscale-[35%] opacity-85' : ''
+            }`}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-neutral-400">
+          <div className="flex h-full w-full items-center justify-center text-neutral-400 dark:text-neutral-500">
             <ImageIcon className="h-8 w-8" />
           </div>
         )}
 
         {photoCount > 1 && (
-          <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-xs">
+          <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-xs">
             <Layers className="h-3 w-3" />
             {photoCount}
           </div>
         )}
 
         {!product.is_active && (
-          <div className="absolute top-1.5 left-1.5 rounded bg-neutral-900/80 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
+          <div className="absolute top-2 left-2 rounded-md bg-[#186049]/90 px-2 py-0.5 text-[10px] font-medium text-[#ECE8AF] backdrop-blur-xs border border-[#ECE8AF]/20">
             Nonaktif
           </div>
         )}
       </div>
 
       {/* Info Produk */}
-      <div className="flex-1 flex flex-col justify-between">
+      <div className="flex-1 flex flex-col justify-between min-w-0">
         <div>
-          <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+          {/* Baris Badge Harmonis */}
+          <div className="flex flex-wrap items-center gap-1.5 mb-2">
             <StatusBadge status={product.status} />
 
-            {/* Status Tayang Etalase (Aktif vs Nonaktif) */}
+            {/* Status Tayang Etalase */}
             {product.is_active ? (
-              <span className="inline-flex items-center gap-1 text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-semibold">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-medium bg-[#4A943E]/15 text-[#4A943E] dark:text-[#6ec961] border border-[#4A943E]/30 px-2.5 py-0.5 rounded-full">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#4A943E] animate-pulse" />
                 Aktif di Etalase
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-[11px] bg-neutral-200 text-neutral-700 px-2 py-0.5 rounded-full font-semibold">
-                ⏸️ Dinonaktifkan
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-neutral-100 dark:bg-white/[0.05] text-neutral-600 dark:text-neutral-400 border border-neutral-200/80 dark:border-white/[0.07] px-2.5 py-0.5 rounded-full">
+                Dinonaktifkan
               </span>
             )}
 
             {/* Status Stok */}
+            {product.kondisi_stok === 'ready_stock' && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#4A943E]/10 text-[#4A943E] dark:text-[#6ec961] border border-[#4A943E]/25 px-2.5 py-0.5 rounded-full">
+                <CheckCircle2 className="h-3 w-3 text-[#4A943E]" />
+                Ready
+              </span>
+            )}
             {product.kondisi_stok === 'pre_order' && (
-              <span className="inline-flex items-center gap-1 text-[11px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#D98327]/15 text-[#D98327] dark:text-[#f7a348] border border-[#D98327]/30 px-2.5 py-0.5 rounded-full">
                 <Clock className="h-3 w-3" />
                 PO
               </span>
             )}
             {product.kondisi_stok === 'stok_terbatas' && (
-              <span className="inline-flex items-center gap-1 text-[11px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-medium">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#D98327]/15 text-[#D98327] dark:text-[#f7a348] border border-[#D98327]/30 px-2.5 py-0.5 rounded-full">
                 <AlertCircle className="h-3 w-3" />
                 Stok Terbatas
               </span>
             )}
-            {product.kondisi_stok === 'ready_stock' && (
-              <span className="inline-flex items-center gap-1 text-[11px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
-                <CheckCircle2 className="h-3 w-3" />
-                Ready
-              </span>
-            )}
 
+            {/* Kategori */}
             {product.category && (
-              <span className="text-xs bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded-full font-medium">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#ECE8AF]/30 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/15 dark:border-[#186049]/30 px-2.5 py-0.5 rounded-full">
+                <Tag className="h-2.5 w-2.5 opacity-70" />
                 {product.category.nama}
               </span>
             )}
+
+            {/* Daerah */}
             {product.region && (
-              <span className="text-xs bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full font-medium">
-                📍 {product.region.nama}
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#ECE8AF]/30 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/15 dark:border-[#186049]/30 px-2.5 py-0.5 rounded-full">
+                <MapPin className="h-2.5 w-2.5 text-[#D98327]" />
+                {product.region.nama}
               </span>
             )}
           </div>
 
-          <h3 className="font-semibold text-neutral-900 text-base">{product.nama}</h3>
+          <h3 className="font-semibold text-neutral-900 dark:text-[#f4f5ef] text-base sm:text-lg tracking-tight group-hover:text-[#186049] dark:group-hover:text-[#ECE8AF] transition-colors">
+            {product.nama}
+          </h3>
+
           <div className="flex items-baseline gap-1 mt-1">
-            <span className="text-sm font-bold text-emerald-700">
+            <span className="text-base sm:text-lg font-bold text-[#4A943E] dark:text-[#6ec961] font-mono tracking-tight">
               {formatRupiah(product.harga)}
             </span>
             {product.satuan && (
-              <span className="text-xs font-normal text-neutral-500">
+              <span className="text-xs text-neutral-500 dark:text-neutral-400 font-normal">
                 / {product.satuan}
               </span>
             )}
           </div>
 
-          {/* Klik WA counter */}
-          <div className="flex items-center gap-1.5 mt-2 text-xs text-neutral-600 font-medium bg-emerald-50 text-emerald-800 w-fit px-2.5 py-1 rounded-md">
-            <MessageCircle className="h-3.5 w-3.5 text-emerald-600" />
-            <span>Produkmu diklik {product.total_clicks} kali via WhatsApp</span>
+          {/* Klik WA Chip */}
+          <div className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-lg text-xs font-medium bg-[#186049]/10 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/25">
+            <MessageCircle className="h-3.5 w-3.5 text-[#4A943E]" />
+            <span>{product.total_clicks} kali diklik pembeli via WhatsApp</span>
           </div>
 
           {/* Peringatan Informatif jika status Disetujui tapi Dinonaktifkan */}
           {product.status === 'approved' && !product.is_active && (
-            <div className="mt-2.5 rounded-lg bg-amber-50/90 p-2.5 text-xs text-amber-900 border border-amber-200 flex items-start gap-2">
-              <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
+            <div className="mt-3 rounded-xl bg-[#D98327]/10 p-3 text-xs text-[#D98327] dark:text-[#f7a348] border border-[#D98327]/25 flex items-start gap-2.5">
+              <AlertCircle className="h-4 w-4 shrink-0 text-[#D98327] mt-0.5" />
               <div>
-                <p className="font-semibold">Produk Disetujui, Namun Sedang Dinonaktifkan</p>
-                <p className="text-amber-800 mt-0.5">
-                  Produk ini aman &amp; telah disetujui, tetapi saat ini Anda sembunyikan dari etalase publik (misal stok kosong/libur). Klik tombol <strong>Aktifkan</strong> di bawah kapan pun Anda siap menjualnya kembali.
+                <p className="font-semibold text-[#D98327]">Produk Disetujui, Namun Sedang Dinonaktifkan</p>
+                <p className="text-neutral-600 dark:text-neutral-300 mt-0.5">
+                  Produk ini aman &amp; telah disetujui, tetapi saat ini disembunyikan dari katalog publik (misal stok kosong/libur). Klik tombol <strong>Aktifkan di Etalase</strong> kapan pun siap dijual kembali.
                 </p>
               </div>
             </div>
@@ -210,8 +228,8 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
 
           {/* Peringatan Informatif jika status Pending dan Dinonaktifkan */}
           {product.status === 'pending' && !product.is_active && (
-            <div className="mt-2.5 rounded-lg bg-neutral-100/90 p-2 text-xs text-neutral-700 border border-neutral-200 flex items-center gap-2">
-              <AlertCircle className="h-3.5 w-3.5 shrink-0 text-neutral-500" />
+            <div className="mt-3 rounded-xl bg-neutral-100 dark:bg-white/[0.04] p-3 text-xs text-neutral-600 dark:text-neutral-300 border border-neutral-200 dark:border-white/[0.08] flex items-center gap-2">
+              <AlertCircle className="h-3.5 w-3.5 shrink-0 text-neutral-400" />
               <span>
                 Produk sedang dalam antrean verifikasi admin dalam status <strong>Nonaktif</strong>.
               </span>
@@ -220,10 +238,10 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
 
           {/* Alert jika ditolak */}
           {product.status === 'rejected' && product.alasan_tolak && (
-            <div className="mt-3 flex items-start gap-2 rounded-lg bg-rose-50 p-3 text-xs text-rose-800 border border-rose-200">
-              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-rose-600" />
+            <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-rose-500/10 p-3 text-xs text-rose-800 dark:text-rose-200 border border-rose-500/20">
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-rose-600 dark:text-rose-400" />
               <div>
-                <p className="font-semibold text-rose-900">Alasan penolakan dari admin:</p>
+                <p className="font-semibold text-rose-900 dark:text-rose-100">Alasan penolakan dari admin:</p>
                 <p className="mt-0.5">{product.alasan_tolak}</p>
               </div>
             </div>
@@ -231,11 +249,16 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
         </div>
 
         {/* Baris Tombol Aksi */}
-        <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-neutral-100">
+        <div className="flex flex-wrap items-center gap-2 mt-4 pt-3.5 border-t border-[#186049]/10 dark:border-[#186049]/20">
           {/* Tombol Edit */}
-          <Button asChild size="sm" variant="outline" className="gap-1.5 h-8 text-xs">
+          <Button
+            asChild
+            size="sm"
+            variant="outline"
+            className="h-8 px-3 text-xs font-medium gap-1.5 rounded-lg border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] hover:bg-[#186049]/10 text-[#186049] dark:text-[#ECE8AF]"
+          >
             <Link href={`/dashboard/produk/${product.id}/ubah`}>
-              <Edit className="h-3.5 w-3.5" />
+              <Edit className="h-3.5 w-3.5 text-[#186049] dark:text-[#ECE8AF]" />
               Edit
             </Link>
           </Button>
@@ -244,35 +267,39 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
           <Button
             type="button"
             size="sm"
-            variant={product.is_active ? 'outline' : 'default'}
             disabled={togglingActive}
             onClick={handleToggleActive}
-            className={`gap-1.5 h-8 text-xs font-medium cursor-pointer ${
-              !product.is_active
-                ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                : 'text-neutral-700 hover:bg-neutral-100'
+            className={`gap-1.5 h-8 px-3 text-xs font-medium rounded-lg cursor-pointer transition-all ${
+              product.is_active
+                ? 'border border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] hover:bg-[#186049]/10 text-neutral-700 dark:text-neutral-300'
+                : 'bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 shadow-2xs'
             }`}
           >
             {togglingActive ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
             ) : product.is_active ? (
               <>
-                <Power className="h-3.5 w-3.5 text-neutral-500" />
+                <Power className="h-3.5 w-3.5 text-neutral-400" />
                 Nonaktifkan
               </>
             ) : (
               <>
-                <Power className="h-3.5 w-3.5 text-white" />
-                Aktifkan
+                <Power className="h-3.5 w-3.5 text-[#ECE8AF]" />
+                Aktifkan di Etalase
               </>
             )}
           </Button>
 
           {/* Tombol Lihat Pratinjau / Publik */}
-          <Button asChild size="sm" variant="ghost" className="gap-1.5 h-8 text-xs text-neutral-600">
+          <Button
+            asChild
+            size="sm"
+            variant="ghost"
+            className="h-8 px-3 text-xs font-medium gap-1.5 rounded-lg text-neutral-600 hover:text-[#186049] dark:text-neutral-400 dark:hover:text-[#ECE8AF] hover:bg-[#186049]/10"
+          >
             <Link href={`/produk/${product.id}`} target="_blank">
-              <Eye className="h-3.5 w-3.5" />
-              {product.is_active ? 'Lihat di Publik' : 'Pratinjau'}
+              <ExternalLink className="h-3.5 w-3.5" />
+              {product.is_active ? 'Lihat di Etalase' : 'Pratinjau'}
             </Link>
           </Button>
 
@@ -281,7 +308,7 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
             size="sm"
             variant="ghost"
             onClick={() => setDeleteOpen(true)}
-            className="gap-1.5 h-8 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 ml-auto"
+            className="gap-1.5 h-8 px-2.5 text-xs font-medium text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 ml-auto rounded-lg transition-colors cursor-pointer"
           >
             <Trash2 className="h-3.5 w-3.5" />
             Hapus

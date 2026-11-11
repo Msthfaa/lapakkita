@@ -132,14 +132,14 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
   return (
     <div className="space-y-6">
       {/* Tab Switcher & Tombol Tambah */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
         <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('kategori')}
             className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'kategori'
                 ? 'bg-purple-600 text-white shadow-sm'
-                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'
             }`}
           >
             <Tag className="h-4 w-4" />
@@ -150,7 +150,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
             className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'daerah'
                 ? 'bg-purple-600 text-white shadow-sm'
-                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'
             }`}
           >
             <MapPin className="h-4 w-4" />
@@ -163,7 +163,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
             setNewName('')
             setAddDialogOpen(true)
           }}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 self-start sm:self-auto font-medium"
+          className="bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 gap-1.5 self-start sm:self-auto font-medium"
         >
           <Plus className="h-4 w-4" />
           Tambah {activeTab === 'kategori' ? 'Kategori Baru' : 'Daerah Baru'}
@@ -171,14 +171,14 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
       </div>
 
       {activeTab === 'daerah' && regions.length === 0 && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900 space-y-1.5 shadow-xs">
-          <p className="font-bold flex items-center gap-1.5 text-amber-800">
-            <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
+        <div className="rounded-xl border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/30 p-4 text-xs text-amber-900 dark:text-amber-200 space-y-1.5 shadow-xs">
+          <p className="font-bold flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
+            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
             Tabel &quot;regions&quot; Belum Dibuat di Database Supabase
           </p>
           <p className="leading-relaxed">
             Untuk mengaktifkan pengelolaan daerah/wilayah, jalankan skrip migrasi{' '}
-            <code className="rounded bg-amber-100 px-1.5 py-0.5 font-mono font-semibold text-amber-950">
+            <code className="rounded bg-amber-100 dark:bg-amber-900/60 px-1.5 py-0.5 font-mono font-semibold text-amber-950 dark:text-amber-200">
               supabase/migrations/0002_add_regions.sql
             </code>{' '}
             di <strong>Supabase Dashboard &gt; SQL Editor</strong>.
@@ -188,7 +188,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
 
       {/* Grid Kartu Master Data */}
       {items.length === 0 ? (
-        <div className="rounded-xl border-2 border-dashed border-neutral-200 p-12 text-center text-neutral-500 bg-white">
+        <div className="rounded-xl border-2 border-dashed border-neutral-200 dark:border-neutral-800 p-12 text-center text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900/60">
           Belum ada {activeTab} yang didaftarkan. Klik tombol di atas untuk menambah data baru.
         </div>
       ) : (
@@ -196,17 +196,17 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-3.5 rounded-lg border border-neutral-200 bg-white shadow-xs hover:border-purple-200 transition-all"
+              className="flex items-center justify-between p-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/80 shadow-xs hover:border-purple-300 dark:hover:border-purple-700 transition-all"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-purple-50 text-purple-700">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
                   {activeTab === 'kategori' ? (
                     <Tag className="h-3.5 w-3.5" />
                   ) : (
                     <MapPin className="h-3.5 w-3.5" />
                   )}
                 </div>
-                <span className="font-semibold text-neutral-900 text-sm truncate">
+                <span className="font-semibold text-neutral-900 dark:text-neutral-100 text-sm truncate">
                   {item.nama}
                 </span>
               </div>
@@ -215,7 +215,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 text-neutral-500 hover:text-purple-600"
+                  className="h-7 w-7 p-0 text-neutral-500 dark:text-neutral-400 hover:text-purple-600 dark:hover:text-purple-400"
                   onClick={() => {
                     setEditItem(item)
                     setEditName(item.nama)
@@ -227,7 +227,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 text-neutral-500 hover:text-rose-600"
+                  className="h-7 w-7 p-0 text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400"
                   onClick={() => setDeleteItem(item)}
                   title="Hapus"
                 >
@@ -282,7 +282,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
               </Button>
               <Button
                 type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+                className="bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 font-medium"
                 disabled={savingAdd}
               >
                 {savingAdd ? (

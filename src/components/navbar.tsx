@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { signOutAction } from '@/features/auth/actions'
-import { PlusCircle, ShieldCheck, LogOut, LayoutDashboard, Menu, X } from 'lucide-react'
+import { ShieldCheck, LogOut, LayoutDashboard, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { ThemeToggle } from '@/components/theme-toggle'
 
@@ -21,76 +21,47 @@ export function Navbar({ user, profile }: NavbarProps) {
   const isAdmin = profile?.role === 'admin'
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-transparent dark:border-neutral-900 bg-white/90 dark:bg-black/90 backdrop-blur-md transition-colors duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-[#186049]/10 dark:border-[#186049]/25 bg-[#fbfaf5]/85 dark:bg-[#0a110e]/85 backdrop-blur-xl transition-colors duration-300">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-12">
-        {/* Brand - exactly matching "Voyager2 —" minimalist editorial aesthetic */}
+        {/* Brand */}
         <Link href="/" prefetch={true} className="flex items-center gap-2 group">
-          <span className="text-xl sm:text-2xl font-medium tracking-tight text-neutral-900 dark:text-white transition-opacity group-hover:opacity-80">
-            LapakKita
+          <span className="text-xl sm:text-2xl font-serif font-medium tracking-tight text-[#186049] dark:text-[#ECE8AF] transition-opacity group-hover:opacity-85">
+            Lapak<span className="text-[#D98327]">Kita</span>
           </span>
-          <span className="text-xl sm:text-2xl font-light text-neutral-400 dark:text-neutral-500">
+          <span className="text-xl sm:text-2xl font-light text-[#D98327]/60 dark:text-[#D98327]/80">
             &mdash;
           </span>
         </Link>
 
-        {/* Desktop Nav - Clean, spaced text links like the reference */}
+        {/* Desktop Nav - Clean, spaced text links */}
         <nav className="hidden items-center gap-8 md:flex">
           <Link
             href="/"
             prefetch={true}
-            className={`text-sm font-light transition-colors hover:text-black dark:hover:text-white ${
+            className={`text-sm font-light transition-colors hover:text-[#186049] dark:hover:text-[#ECE8AF] ${
               pathname === '/'
-                ? 'text-neutral-900 dark:text-white font-normal'
+                ? 'text-[#186049] dark:text-[#ECE8AF] font-medium'
                 : 'text-neutral-500 dark:text-neutral-400'
             }`}
           >
             Katalog
           </Link>
 
-          <a
-            href="#unggulan"
-            className="text-sm font-light text-neutral-500 dark:text-neutral-400 transition-colors hover:text-black dark:hover:text-white"
-          >
-            Unggulan
-          </a>
-
-          <a
-            href="#kategori"
-            className="text-sm font-light text-neutral-500 dark:text-neutral-400 transition-colors hover:text-black dark:hover:text-white"
-          >
-            Kategori
-          </a>
-
-          <a
-            href="#daerah"
-            className="text-sm font-light text-neutral-500 dark:text-neutral-400 transition-colors hover:text-black dark:hover:text-white"
-          >
-            Daerah
-          </a>
-
           {user && (
             <>
               {isSeller && (
-                <>
-                  <Link
-                    href="/dashboard"
-                    prefetch={true}
-                    className={`flex items-center gap-1.5 text-sm font-light transition-colors hover:text-black dark:hover:text-white ${
-                      pathname === '/dashboard'
-                        ? 'text-neutral-900 dark:text-white font-normal'
-                        : 'text-neutral-500 dark:text-neutral-400'
-                    }`}
-                  >
-                    <LayoutDashboard className="h-3.5 w-3.5" />
-                    Dashboard
-                  </Link>
-                  <Button asChild size="sm" variant="outline" className="h-8 rounded-full text-xs font-normal border-neutral-300 dark:border-neutral-800 dark:text-neutral-200">
-                    <Link href="/dashboard/produk/baru" prefetch={true}>
-                      <PlusCircle className="h-3.5 w-3.5 mr-1" />
-                      Tambah
-                    </Link>
-                  </Button>
-                </>
+                <Link
+                  href="/dashboard"
+                  prefetch={true}
+                  className={`flex items-center gap-1.5 text-sm font-light transition-colors hover:text-[#186049] dark:hover:text-[#ECE8AF] ${
+                    pathname === '/dashboard'
+                      ? 'text-[#186049] dark:text-[#ECE8AF] font-medium'
+                      : 'text-neutral-500 dark:text-neutral-400'
+                  }`}
+                >
+                  <LayoutDashboard className="h-3.5 w-3.5 text-[#4A943E]" />
+                  Dashboard
+                </Link>
               )}
 
               {isAdmin && (
@@ -98,7 +69,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                   <Link
                     href="/admin"
                     prefetch={true}
-                    className="flex items-center gap-1 text-sm font-light text-purple-600 dark:text-purple-400 hover:underline"
+                    className="flex items-center gap-1 text-sm font-light text-[#D98327] hover:underline"
                   >
                     <ShieldCheck className="h-3.5 w-3.5" />
                     Admin
@@ -106,15 +77,15 @@ export function Navbar({ user, profile }: NavbarProps) {
                   <Link
                     href="/admin/moderasi"
                     prefetch={true}
-                    className="text-sm font-light text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white"
+                    className="text-sm font-light text-neutral-500 dark:text-neutral-400 hover:text-[#186049] dark:hover:text-[#ECE8AF]"
                   >
                     Moderasi
                   </Link>
                 </div>
               )}
 
-              <div className="flex items-center gap-3 border-l border-neutral-200 dark:border-neutral-800 pl-4">
-                <span className="text-xs text-neutral-500 dark:text-neutral-400 max-w-[100px] truncate">
+              <div className="flex items-center gap-3 border-l border-[#186049]/15 dark:border-[#186049]/30 pl-4">
+                <span className="text-xs text-neutral-600 dark:text-neutral-300 max-w-[120px] truncate">
                   {profile?.nama || user.email}
                 </span>
                 <form action={signOutAction}>
@@ -135,13 +106,13 @@ export function Navbar({ user, profile }: NavbarProps) {
             <div className="flex items-center gap-3">
               <Link
                 href="/masuk"
-                className="text-sm font-light text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+                className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-[#186049] dark:hover:text-[#ECE8AF] transition-colors"
               >
                 Masuk
               </Link>
               <Link
                 href="/daftar"
-                className="rounded-full bg-neutral-900 dark:bg-white px-4 py-1.5 text-xs font-medium text-white dark:text-black transition-all hover:opacity-90 shadow-sm"
+                className="rounded-full bg-[#186049] hover:bg-[#124b39] px-4 py-1.5 text-xs font-medium text-[#ECE8AF] border border-[#ECE8AF]/20 transition-all hover:opacity-95 shadow-2xs"
               >
                 Daftar Penjual
               </Link>

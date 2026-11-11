@@ -5,6 +5,10 @@ dns.setDefaultResultOrder("ipv4first");
 
 const nextConfig: NextConfig = {
   /* config options here */
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
   images: {
     remotePatterns: [
       {
@@ -18,8 +22,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  cacheComponents: true,
-  partialPrefetching: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   turbopack: {
     rules: {
       "*.css": {

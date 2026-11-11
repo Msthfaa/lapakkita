@@ -4,21 +4,25 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4A943E] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer",
   {
     variants: {
       variant: {
         default:
-          "bg-emerald-600 text-white shadow hover:bg-emerald-700",
+          "bg-[#186049] text-[#ECE8AF] shadow hover:bg-[#124b39] transition-all",
         destructive:
           "bg-rose-600 text-white shadow-sm hover:bg-rose-700",
         outline:
-          "border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-sm hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-900 dark:text-neutral-100",
+          "border border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] shadow-2xs hover:bg-[#186049]/5 dark:hover:bg-[#186049]/20 text-[#186049] dark:text-[#ECE8AF]",
         secondary:
-          "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-sm hover:bg-neutral-200 dark:hover:bg-neutral-700",
+          "bg-[#ECE8AF]/30 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] shadow-2xs hover:bg-[#ECE8AF]/50 dark:hover:bg-[#186049]/50",
+        accent:
+          "bg-[#D98327] text-white shadow hover:bg-[#c0721e] active:scale-[0.98] transition-all",
+        green:
+          "bg-[#4A943E] text-white shadow hover:bg-[#3d7c33] transition-all",
         ghost:
-          "hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-neutral-100 text-neutral-700 dark:text-neutral-300",
-        link: "text-emerald-600 dark:text-emerald-400 underline-offset-4 hover:underline",
+          "hover:bg-[#186049]/10 text-neutral-700 dark:text-neutral-300 hover:text-[#186049] dark:hover:text-[#ECE8AF]",
+        link: "text-[#186049] dark:text-[#ECE8AF] underline-offset-4 hover:underline hover:text-[#D98327]",
         whatsapp:
           "bg-[#25D366] text-white shadow hover:bg-[#1EBE5D] font-semibold",
       },

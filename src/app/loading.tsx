@@ -2,8 +2,8 @@ export default function Loading() {
   return (
     <div className="w-full">
       {/* Sleek top loading progress bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-emerald-100/60 overflow-hidden">
-        <div className="h-full bg-emerald-600 animate-pulse w-full" />
+      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-[#186049]/20 overflow-hidden">
+        <div className="h-full bg-[#186049] animate-pulse w-full" />
       </div>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <div className="h-7 w-48 bg-neutral-200/70 rounded-md animate-pulse" />

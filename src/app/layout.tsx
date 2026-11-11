@@ -8,6 +8,7 @@ import { Toaster } from 'sonner'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
 import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
+import { connection } from 'next/server'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
 }
 
 async function NavbarSlot() {
+  await connection()
   const { user, profile } = await getUserAndProfile()
   return <Navbar user={user} profile={profile} />
 }
@@ -49,24 +51,25 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
           rel="stylesheet"
         />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       </head>
-      <body className="flex min-h-full flex-col bg-white dark:bg-black text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300">
+      <body className="flex min-h-full flex-col bg-[#fbfaf5] dark:bg-[#0a110e] text-[#111a16] dark:text-[#f4f5ef] font-sans transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Suspense fallback={null}>
             <TopLoadingBar />
           </Suspense>
           <Suspense
             fallback={
-              <div className="h-16 w-full border-b border-neutral-200 dark:border-neutral-900 bg-white dark:bg-black" />
+              <div className="h-16 w-full border-b border-[#186049]/10 dark:border-[#186049]/20 bg-[#fbfaf5] dark:bg-[#0a110e]" />
             }
           >
             <NavbarSlot />
           </Suspense>
           <main className="flex-1">{children}</main>
-          <footer className="border-t border-neutral-200 dark:border-neutral-900 bg-white dark:bg-black py-8 text-center text-xs text-neutral-500 dark:text-neutral-500">
+          <footer className="border-t border-[#186049]/10 dark:border-[#186049]/20 bg-transparent py-8 text-center text-xs text-neutral-600 dark:text-neutral-400">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <p>
-                &copy; 2026 <strong className="text-neutral-700 dark:text-neutral-300">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
+                &copy; 2026 <strong className="font-semibold text-[#186049] dark:text-[#ECE8AF]">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
               </p>
             </div>
           </footer>

@@ -8,7 +8,7 @@ interface StatusBadgeProps {
 export function StatusBadge({ status }: StatusBadgeProps) {
   if (status === 'approved') {
     return (
-      <Badge variant="success" className="gap-1 font-medium bg-emerald-100 text-emerald-800 border-emerald-200">
+      <Badge variant="success" className="gap-1 font-medium px-2 py-0.5 text-[11px]">
         <CheckCircle2 className="h-3 w-3" />
         Disetujui
       </Badge>
@@ -17,7 +17,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
   if (status === 'rejected') {
     return (
-      <Badge variant="danger" className="gap-1 font-medium bg-rose-100 text-rose-800 border-rose-200">
+      <Badge variant="danger" className="gap-1 font-medium px-2 py-0.5 text-[11px]">
         <XCircle className="h-3 w-3" />
         Ditolak
       </Badge>
@@ -25,7 +25,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   }
 
   return (
-    <Badge variant="warning" className="gap-1 font-medium bg-amber-100 text-amber-800 border-amber-200">
+    <Badge variant="warning" className="gap-1 font-medium px-2 py-0.5 text-[11px]">
       <Clock className="h-3 w-3" />
       Menunggu Moderasi
     </Badge>

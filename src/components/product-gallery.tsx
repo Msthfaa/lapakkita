@@ -30,7 +30,7 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
   return (
     <div className="flex flex-col gap-3">
       {/* Gambar Utama */}
-      <div className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xs">
+      <div className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xs">
         {activeImage ? (
           <Image
             src={activeImage}
@@ -41,9 +41,9 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-neutral-50 text-neutral-300">
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-neutral-50 dark:bg-neutral-900 text-neutral-300 dark:text-neutral-600">
             <ImageIcon className="h-20 w-20 stroke-1" />
-            <span className="text-xs text-neutral-400">Tidak ada foto produk</span>
+            <span className="text-xs text-neutral-400 dark:text-neutral-500">Tidak ada foto produk</span>
           </div>
         )}
 
@@ -69,7 +69,7 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
               type="button"
               onClick={handlePrev}
               aria-label="Foto Sebelumnya"
-              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-neutral-700 shadow-md backdrop-blur-xs transition hover:bg-white hover:text-neutral-900 cursor-pointer"
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 dark:bg-neutral-900/80 text-neutral-700 dark:text-neutral-200 shadow-md backdrop-blur-xs transition hover:bg-white dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white cursor-pointer"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -77,7 +77,7 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
               type="button"
               onClick={handleNext}
               aria-label="Foto Berikutnya"
-              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-neutral-700 shadow-md backdrop-blur-xs transition hover:bg-white hover:text-neutral-900 cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 dark:bg-neutral-900/80 text-neutral-700 dark:text-neutral-200 shadow-md backdrop-blur-xs transition hover:bg-white dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white cursor-pointer"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -98,7 +98,7 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
                 className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition cursor-pointer ${
                   isActive
                     ? 'border-emerald-600 ring-2 ring-emerald-500/30'
-                    : 'border-neutral-200 opacity-70 hover:opacity-100 hover:border-neutral-300'
+                    : 'border-neutral-200 dark:border-neutral-800 opacity-70 hover:opacity-100 hover:border-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 <Image

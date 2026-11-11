@@ -69,16 +69,16 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
   const hasFilter = Boolean(currentQ || currentCategory || currentRegion)
 
   return (
-    <div className="rounded-2xl border border-neutral-200 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-3 sm:p-4 shadow-sm transition-colors duration-300">
+    <div className="rounded-2xl border border-[#186049]/15 dark:border-[#186049]/30 bg-white/90 dark:bg-[#0d1612] p-3 sm:p-4 shadow-sm transition-colors duration-300">
       <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-3">
         {/* Kolom Pencarian */}
         <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-neutral-400 dark:text-neutral-500" />
+          <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-[#186049]/60 dark:text-[#ECE8AF]/60" />
           <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Cari produk UMKM..."
-            className="h-11 rounded-xl pl-10 pr-9 border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600"
+            className="h-11 rounded-xl pl-10 pr-9 border-neutral-200 dark:border-white/[0.08] bg-neutral-50/50 dark:bg-white/[0.03] text-neutral-900 dark:text-white placeholder:text-neutral-400 focus-visible:ring-1 focus-visible:ring-[#4A943E]"
           />
           {q && (
             <button
@@ -87,7 +87,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
                 setQ('')
                 applyFilters('', kategori, daerah)
               }}
-              className="absolute right-3.5 top-3.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200"
+              className="absolute right-3.5 top-3.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -99,7 +99,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           <select
             value={kategori}
             onChange={handleCategoryChange}
-            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 cursor-pointer"
+            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-white/[0.08] bg-neutral-50/50 dark:bg-[#0f1915] px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#4A943E] cursor-pointer"
           >
             <option value="">Semua Kategori</option>
             {categories.map((cat) => (
@@ -115,7 +115,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           <select
             value={daerah}
             onChange={handleRegionChange}
-            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 cursor-pointer"
+            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-white/[0.08] bg-neutral-50/50 dark:bg-[#0f1915] px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#4A943E] cursor-pointer"
           >
             <option value="">Semua Daerah</option>
             {regions.map((reg) => (
@@ -131,7 +131,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="h-11 px-6 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-medium transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
+            className="h-11 px-6 rounded-xl bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 text-sm font-medium transition-all hover:opacity-95 active:scale-95 disabled:opacity-50 cursor-pointer shadow-2xs"
           >
             {isPending ? 'Mencari...' : 'Cari'}
           </button>
@@ -140,7 +140,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
             <button
               type="button"
               onClick={handleReset}
-              className="h-11 px-4 rounded-xl border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 text-sm hover:text-black dark:hover:text-white transition-colors"
+              className="h-11 px-4 rounded-xl border border-[#186049]/20 dark:border-[#186049]/35 text-[#186049] dark:text-[#ECE8AF] text-sm hover:bg-[#186049]/10 transition-colors cursor-pointer"
             >
               Reset
             </button>

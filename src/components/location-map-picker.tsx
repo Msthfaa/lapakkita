@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import 'leaflet/dist/leaflet.css'
 import { MapPin, Navigation, Search, Loader2, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -247,7 +246,7 @@ export function LocationMapPicker({
               }
             }}
             placeholder="Cari jalan, pasar, atau patokan di peta..."
-            className="text-xs h-9 bg-white"
+            className="text-xs h-9 bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-white"
             disabled={isSearching}
           />
           <Button
@@ -256,7 +255,7 @@ export function LocationMapPicker({
             variant="outline"
             onClick={handleSearch}
             disabled={isSearching || !searchQuery.trim()}
-            className="gap-1 h-9 text-xs shrink-0 cursor-pointer"
+            className="gap-1 h-9 text-xs shrink-0 cursor-pointer dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
           >
             {isSearching ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -273,19 +272,19 @@ export function LocationMapPicker({
           variant="secondary"
           onClick={handleUseCurrentLocation}
           disabled={isLocating}
-          className="gap-1.5 h-9 text-xs shrink-0 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200"
+          className="gap-1.5 h-9 text-xs shrink-0 text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border border-emerald-200 dark:border-emerald-800"
         >
           {isLocating ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
           ) : (
-            <Navigation className="h-3.5 w-3.5 text-emerald-600" />
+            <Navigation className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
           )}
           Gunakan Lokasi GPS Saya
         </Button>
       </div>
 
       {/* Wadah Peta */}
-      <div className="relative rounded-xl border border-neutral-300 overflow-hidden shadow-inner bg-neutral-100">
+      <div className="relative rounded-xl border border-neutral-300 dark:border-neutral-800 overflow-hidden shadow-inner bg-neutral-100 dark:bg-neutral-950">
         <div ref={mapContainerRef} className="h-64 sm:h-72 w-full z-10" />
 
         {!hasMarker && (
@@ -299,18 +298,18 @@ export function LocationMapPicker({
       </div>
 
       {/* Status Koordinat */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500 bg-neutral-50 p-2.5 rounded-lg border border-neutral-200">
-        <div className="flex items-center gap-1.5">
-          <MapPin className="h-4 w-4 text-emerald-600 shrink-0" />
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-900/80 p-2.5 rounded-lg border border-neutral-200 dark:border-neutral-800">
+        <div className="flex items-center gap-1.5 text-neutral-800 dark:text-neutral-200">
+          <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
           {hasMarker ? (
             <span>
-              Koordinat Terpilih: <strong>{lat.toFixed(5)}, {lng.toFixed(5)}</strong>
+              Koordinat Terpilih: <strong className="text-neutral-900 dark:text-white">{lat.toFixed(5)}, {lng.toFixed(5)}</strong>
             </span>
           ) : (
-            <span className="text-neutral-400">Belum ada titik yang dipilih di peta</span>
+            <span className="text-neutral-400 dark:text-neutral-500">Belum ada titik yang dipilih di peta</span>
           )}
         </div>
-        <span className="text-[11px] text-neutral-400">Peta OpenStreetMap &copy; Bebas Biaya</span>
+        <span className="text-[11px] text-neutral-400 dark:text-neutral-500">Peta OpenStreetMap &copy; Bebas Biaya</span>
       </div>
     </div>
   )

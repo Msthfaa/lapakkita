@@ -167,8 +167,81 @@ interface GetApprovedProductsParams {
 }
 
 /**
- * Mengambil produk katalog publik dengan cache server berdasarkan kombinasi parameter.
+ * Mengambil produk katalog publik dengan cache server berdasarkan parameter.
  */
+const fetchApprovedProductsInternal = unstable_cache(
+  async (cleanQuery: string, categoryId?: number, regionId?: number, page: number = 1) => {
+    const supabase = getPublicClient()
+    const from = (page - 1) * ITEMS_PER_PAGE
+    const to = from + ITEMS_PER_PAGE - 1
+
+    let builder = supabase
+      .from('products')
+      .select(
+        `
+        *,
+        category:categories(id, nama),
+        seller:profiles(id, nama, region_id, alamat)
+      `,
+        { count: 'exact' }
+      )
+      .eq('status', 'approved')
+      .eq('is_active', true)
+
+    if (cleanQuery) {
+      builder = builder.or(`nama.ilike.%${cleanQuery}%,deskripsi.ilike.%${cleanQuery}%`)
+    }
+
+    if (categoryId && !isNaN(categoryId)) {
+      builder = builder.eq('category_id', categoryId)
+    }
+
+    if (regionId && !isNaN(regionId)) {
+      builder = builder.eq('region_id', regionId)
+    }
+
+    const [res, regions] = await Promise.all([
+      builder.order('created_at', { ascending: false }).range(from, to),
+      getRegions().catch(() => []),
+    ])
+
+    if (res.error) {
+      console.error('Error fetching public products:', res.error.message)
+      return {
+        products: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: page,
+      }
+    }
+
+    const total = res.count || 0
+    const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE))
+    const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+
+    const products = (res.data || []).map((prod) => {
+      const regId = prod.region_id || prod.seller?.region_id
+      return {
+        ...prod,
+        alamat: prod.alamat || prod.seller?.alamat || null,
+        region: regId ? regionMap.get(regId) || null : null,
+      }
+    })
+
+    return {
+      products,
+      total,
+      totalPages,
+      currentPage: page,
+    }
+  },
+  ['approved-products-cache'],
+  {
+    revalidate: 60,
+    tags: ['products', 'approved-products'],
+  }
+)
+
 export async function getApprovedProducts({
   query = '',
   categoryId,
@@ -176,133 +249,58 @@ export async function getApprovedProducts({
   page = 1,
 }: GetApprovedProductsParams) {
   const cleanQuery = query.trim().toLowerCase()
-  const cacheKey = `approved-products-${cleanQuery || 'all'}-${categoryId ?? 'all'}-${regionId ?? 'all'}-${page}`
-
-  const fetcher = unstable_cache(
-    async () => {
-      const supabase = getPublicClient()
-      const from = (page - 1) * ITEMS_PER_PAGE
-      const to = from + ITEMS_PER_PAGE - 1
-
-      let builder = supabase
-        .from('products')
-        .select(
-          `
-          *,
-          category:categories(id, nama),
-          seller:profiles(id, nama, region_id, alamat)
-        `,
-          { count: 'exact' }
-        )
-        .eq('status', 'approved')
-        .eq('is_active', true)
-
-      if (cleanQuery) {
-        builder = builder.or(`nama.ilike.%${cleanQuery}%,deskripsi.ilike.%${cleanQuery}%`)
-      }
-
-      if (categoryId && !isNaN(categoryId)) {
-        builder = builder.eq('category_id', categoryId)
-      }
-
-      if (regionId && !isNaN(regionId)) {
-        builder = builder.eq('region_id', regionId)
-      }
-
-      const [res, regions] = await Promise.all([
-        builder.order('created_at', { ascending: false }).range(from, to),
-        getRegions().catch(() => []),
-      ])
-
-      if (res.error) {
-        console.error('Error fetching public products:', res.error.message)
-        return {
-          products: [],
-          total: 0,
-          totalPages: 1,
-          currentPage: page,
-        }
-      }
-
-      const total = res.count || 0
-      const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE))
-      const regionMap = new Map((regions || []).map((r) => [r.id, r]))
-
-      const products = (res.data || []).map((prod) => {
-        const regId = prod.region_id || prod.seller?.region_id
-        return {
-          ...prod,
-          alamat: prod.alamat || prod.seller?.alamat || null,
-          region: regId ? regionMap.get(regId) || null : null,
-        }
-      })
-
-      return {
-        products,
-        total,
-        totalPages,
-        currentPage: page,
-      }
-    },
-    [cacheKey],
-    {
-      revalidate: 60,
-      tags: ['products', 'approved-products'],
-    }
-  )
-
-  return fetcher()
+  return fetchApprovedProductsInternal(cleanQuery, categoryId, regionId, page)
 }
 
 /**
  * Mengambil detail produk publik dengan cache server.
  */
-export async function getProductDetail(id: string) {
-  const fetcher = unstable_cache(
-    async () => {
-      const supabase = getPublicClient()
-      const [productRes, regions] = await Promise.all([
-        supabase
-          .from('products')
-          .select(
-            `
-            *,
-            category:categories(id, nama),
-            seller:profiles(id, nama, region_id, alamat, latitude, longitude, no_wa)
+const fetchProductDetailInternal = unstable_cache(
+  async (id: string) => {
+    const supabase = getPublicClient()
+    const [productRes, regions] = await Promise.all([
+      supabase
+        .from('products')
+        .select(
           `
-          )
-          .eq('id', id)
-          .single(),
-        getRegions().catch(() => []),
-      ])
+          *,
+          category:categories(id, nama),
+          seller:profiles(id, nama, region_id, alamat, latitude, longitude, no_wa)
+        `
+        )
+        .eq('id', id)
+        .single(),
+      getRegions().catch(() => []),
+    ])
 
-      if (productRes.error || !productRes.data) {
-        return null
-      }
-
-      const product = productRes.data
-      const regionMap = new Map((regions || []).map((r) => [r.id, r]))
-      const finalRegionId = product.region_id || product.seller?.region_id
-      const finalAlamat = product.alamat || product.seller?.alamat
-      const finalLat = product.latitude ?? product.seller?.latitude ?? null
-      const finalLng = product.longitude ?? product.seller?.longitude ?? null
-
-      return {
-        ...product,
-        alamat: finalAlamat,
-        latitude: finalLat,
-        longitude: finalLng,
-        region: finalRegionId ? regionMap.get(finalRegionId) || null : null,
-      }
-    },
-    [`product-detail-${id}`],
-    {
-      revalidate: 60,
-      tags: ['products', `product-${id}`],
+    if (productRes.error || !productRes.data) {
+      return null
     }
-  )
 
-  const product = await fetcher()
+    const product = productRes.data
+    const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+    const finalRegionId = product.region_id || product.seller?.region_id
+    const finalAlamat = product.alamat || product.seller?.alamat
+    const finalLat = product.latitude ?? product.seller?.latitude ?? null
+    const finalLng = product.longitude ?? product.seller?.longitude ?? null
+
+    return {
+      ...product,
+      alamat: finalAlamat,
+      latitude: finalLat,
+      longitude: finalLng,
+      region: finalRegionId ? regionMap.get(finalRegionId) || null : null,
+    }
+  },
+  ['product-detail-cache'],
+  {
+    revalidate: 60,
+    tags: ['products'],
+  }
+)
+
+export async function getProductDetail(id: string) {
+  const product = await fetchProductDetailInternal(id)
   if (!product) return null
 
   // Jika produk belum approved (misal: pending/rejected), cek otorisasi pemilik atau admin

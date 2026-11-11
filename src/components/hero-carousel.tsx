@@ -273,7 +273,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 {/* Subtle top pill for category if available */}
                 {product.category && (
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-block rounded-full bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1 text-[11px] font-medium text-white/90">
+                    <span className="inline-block rounded-full bg-[#186049]/80 backdrop-blur-md border border-[#ECE8AF]/30 px-3 py-1 text-[11px] font-medium text-[#ECE8AF]">
                       {product.category.nama}
                     </span>
                   </div>
@@ -285,13 +285,13 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                     {product.nama}
                   </h3>
 
-                  <p className="mt-2 text-sm sm:text-base font-medium text-emerald-400 drop-shadow">
+                  <p className="mt-2 text-sm sm:text-base font-semibold text-[#4A943E] dark:text-[#6ec961] drop-shadow">
                     {formatRupiah(product.harga)}
                   </p>
 
                   {product.seller && (
-                    <div className="mt-1 flex items-center justify-center gap-1.5 text-xs text-neutral-300">
-                      <Store className="h-3 w-3 text-neutral-400" />
+                    <div className="mt-1 flex items-center justify-center gap-1.5 text-xs text-[#ECE8AF]/90">
+                      <Store className="h-3 w-3 text-[#ECE8AF]/70" />
                       <span className="truncate max-w-[180px]">{product.seller.nama}</span>
                     </div>
                   )}
@@ -300,7 +300,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   {isCenter && (
                     <Link
                       href={`/produk/${product.id}`}
-                      className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white text-black px-4 py-1.5 text-xs font-semibold hover:bg-neutral-100 transition-all hover:scale-105 shadow-lg"
+                      className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 px-4 py-1.5 text-xs font-semibold transition-all hover:scale-105 shadow-lg"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <span>Lihat Produk</span>
@@ -335,8 +335,8 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
               aria-label={`Ke slide ${i + 1}`}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 i === activeIndex
-                  ? 'w-6 bg-emerald-500 dark:bg-white'
-                  : 'w-1.5 bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-500'
+                  ? 'w-6 bg-[#D98327]'
+                  : 'w-1.5 bg-[#186049]/30 dark:bg-white/20 hover:bg-[#186049]/50 dark:hover:bg-white/40'
               }`}
             />
           ))}

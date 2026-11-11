@@ -3,18 +3,30 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  --background: #fbfaf5;
+  --foreground: #111a16;
+  --brand-orange: #D98327;
+  --brand-cream: #ECE8AF;
+  --brand-green: #4A943E;
+  --brand-forest: #186049;
 }
 
 .dark {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #0a110e;
+  --foreground: #f4f5ef;
+  --brand-orange: #D98327;
+  --brand-cream: #ECE8AF;
+  --brand-green: #4A943E;
+  --brand-forest: #186049;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-green: var(--brand-green);
+  --color-brand-forest: var(--brand-forest);
   --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: var(--font-serif), "Playfair Display", "Cormorant Garamond", Georgia, serif;
 }

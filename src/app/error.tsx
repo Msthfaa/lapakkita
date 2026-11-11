@@ -39,7 +39,7 @@ export default function ErrorBoundary({
       )}
 
       <div className="mt-6 flex items-center gap-3">
-        <Button onClick={() => reset()} className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
+        <Button onClick={() => reset()} className="gap-2 bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20">
           <RotateCcw className="h-4 w-4" /> Coba Muat Ulang
         </Button>
         <Button asChild variant="outline">

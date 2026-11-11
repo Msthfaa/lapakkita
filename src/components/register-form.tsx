@@ -83,13 +83,13 @@ export function RegisterForm({ regions }: RegisterFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-xl shadow-md border-neutral-200">
+    <Card className="w-full max-w-xl shadow-md border-[#186049]/15 dark:border-[#186049]/30 bg-white dark:bg-[#0d1612]">
       <CardHeader className="text-center space-y-2">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#186049]/15 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/20">
           <Store className="h-6 w-6" />
         </div>
-        <CardTitle className="text-2xl font-bold">Daftar Penjual UMKM</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-2xl font-serif font-bold text-[#186049] dark:text-[#ECE8AF]">Daftar Penjual UMKM</CardTitle>
+        <CardDescription className="dark:text-neutral-400">
           Buka lapak digital Anda, tentukan lokasi toko di peta, dan hubungkan langsung dengan pembeli lokal via WhatsApp.
         </CardDescription>
       </CardHeader>
@@ -98,8 +98,8 @@ export function RegisterForm({ regions }: RegisterFormProps) {
         <CardContent className="space-y-4">
           {/* Nama Penjual / Nama Usaha */}
           <div className="space-y-1.5">
-            <Label htmlFor="nama" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-              <Store className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="nama" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+              <Store className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Nama Lengkap / Nama Usaha *
             </Label>
             <Input
@@ -109,15 +109,15 @@ export function RegisterForm({ regions }: RegisterFormProps) {
               {...register('nama')}
             />
             {errors.nama && (
-              <p className="text-xs text-rose-600 font-medium">{errors.nama.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.nama.message}</p>
             )}
           </div>
 
           {/* Email & Kata Sandi */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                <Mail className="h-4 w-4 text-emerald-600" />
+              <Label htmlFor="email" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+                <Mail className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Email Login *
               </Label>
               <Input
@@ -128,13 +128,13 @@ export function RegisterForm({ regions }: RegisterFormProps) {
                 {...register('email')}
               />
               {errors.email && (
-                <p className="text-xs text-rose-600 font-medium">{errors.email.message}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.email.message}</p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                <Lock className="h-4 w-4 text-emerald-600" />
+              <Label htmlFor="password" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+                <Lock className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 Kata Sandi *
               </Label>
               <Input
@@ -145,15 +145,15 @@ export function RegisterForm({ regions }: RegisterFormProps) {
                 {...register('password')}
               />
               {errors.password && (
-                <p className="text-xs text-rose-600 font-medium">{errors.password.message}</p>
+                <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.password.message}</p>
               )}
             </div>
           </div>
 
           {/* Nomor WhatsApp */}
           <div className="space-y-1.5">
-            <Label htmlFor="no_wa" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-              <Phone className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="no_wa" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+              <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Nomor WhatsApp Toko / Usaha *
             </Label>
             <Input
@@ -162,23 +162,23 @@ export function RegisterForm({ regions }: RegisterFormProps) {
               disabled={loading}
               {...register('no_wa')}
             />
-            <p className="text-[11px] text-neutral-500">
+            <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
               Calon pembeli akan menghubungi Anda langsung ke nomor ini saat memesan produk.
             </p>
             {errors.no_wa && (
-              <p className="text-xs text-rose-600 font-medium">{errors.no_wa.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.no_wa.message}</p>
             )}
           </div>
 
           {/* Daerah / Kota Toko */}
           <div className="space-y-1.5">
-            <Label htmlFor="region_id" className="font-semibold text-neutral-800 flex items-center gap-1.5">
-              <MapPin className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="region_id" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+              <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Kota / Wilayah Utama Toko
             </Label>
             <select
               id="region_id"
-              className="flex h-10 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+              className="flex h-10 w-full rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2 text-sm text-neutral-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 cursor-pointer"
               disabled={loading}
               {...register('region_id', {
                 setValueAs: (v) => (v ? parseInt(v, 10) : null),
@@ -194,9 +194,9 @@ export function RegisterForm({ regions }: RegisterFormProps) {
 
           {/* Alamat Lengkap Manual */}
           <div className="space-y-1.5">
-            <Label htmlFor="alamat" className="font-semibold text-neutral-800 flex items-center justify-between">
+            <Label htmlFor="alamat" className="font-semibold text-neutral-800 dark:text-neutral-200 flex items-center justify-between">
               <span>Alamat Lengkap Toko / Patokan Lokasi</span>
-              <span className="text-[11px] font-normal text-neutral-400">Dapat diisi manual atau via peta</span>
+              <span className="text-[11px] font-normal text-neutral-400 dark:text-neutral-500">Dapat diisi manual atau via peta</span>
             </Label>
             <Input
               id="alamat"
@@ -205,23 +205,23 @@ export function RegisterForm({ regions }: RegisterFormProps) {
               {...register('alamat')}
             />
             {errors.alamat && (
-              <p className="text-xs text-rose-600 font-medium">{errors.alamat.message}</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.alamat.message}</p>
             )}
           </div>
 
           {/* Bagian Titik Lokasi Peta (Maps) */}
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50/70 p-3 space-y-2">
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/60 p-3 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <MapPin className="h-4 w-4 text-emerald-600" />
-                <span className="text-xs font-bold text-neutral-900">Titik Koordinat Peta (Maps)</span>
+                <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-xs font-bold text-neutral-900 dark:text-white">Titik Koordinat Peta (Maps)</span>
               </div>
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowMap(!showMap)}
-                className="h-7 text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:bg-emerald-100/50 gap-1 cursor-pointer"
+                className="h-7 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/40 gap-1 cursor-pointer"
               >
                 {showMap ? (
                   <>
@@ -236,11 +236,11 @@ export function RegisterForm({ regions }: RegisterFormProps) {
             </div>
 
             {currentLat && currentLng ? (
-              <p className="text-xs text-emerald-800 font-medium bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+              <p className="text-xs text-emerald-800 dark:text-emerald-200 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2 py-1 rounded border border-emerald-200 dark:border-emerald-800">
                 ✓ Titik toko tersimpan: ({currentLat.toFixed(5)}, {currentLng.toFixed(5)})
               </p>
             ) : (
-              <p className="text-xs text-neutral-500">
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
                 Pilih titik di peta agar produk Anda menampilkan peta mini lokasi toko yang bisa langsung dibuka pembeli di Google Maps.
               </p>
             )}
@@ -261,7 +261,7 @@ export function RegisterForm({ regions }: RegisterFormProps) {
         <CardFooter className="flex flex-col space-y-4 pt-2">
           <Button
             type="submit"
-            className="w-full bg-emerald-600 hover:bg-emerald-700 font-medium"
+            className="w-full bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 font-medium"
             disabled={loading}
           >
             {loading ? (
@@ -274,9 +274,9 @@ export function RegisterForm({ regions }: RegisterFormProps) {
             )}
           </Button>
 
-          <div className="text-center text-xs text-neutral-500">
+          <div className="text-center text-xs text-neutral-500 dark:text-neutral-400">
             Sudah memiliki akun?{' '}
-            <Link href="/masuk" className="font-semibold text-emerald-600 hover:underline">
+            <Link href="/masuk" className="font-semibold text-[#D98327] hover:underline">
               Masuk di sini
             </Link>
           </div>
