@@ -27,53 +27,53 @@ export function AdminWeeklyChart({ data, totalModerations = 0 }: AdminWeeklyChar
   const activeItem = data[activeIdx] || data[0]
 
   return (
-    <div className="rounded-3xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 p-5 sm:p-6 shadow-2xs transition-all duration-300 flex flex-col justify-between">
+    <div className="rounded-3xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 p-6 sm:p-7 shadow-2xs transition-all duration-300 flex flex-col justify-between">
       {/* Header Card */}
-      <div className="flex items-center justify-between pb-2">
+      <div className="flex items-center justify-between pb-3">
         <div>
-          <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
+          <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
             Aktivitas Mingguan
           </h3>
-          <p className="text-[11px] text-neutral-400 dark:text-neutral-500 font-medium">
-            Frekuensi produk masuk &amp; verifikasi
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 font-medium mt-0.5">
+            Frekuensi produk masuk &amp; verifikasi sistem
           </p>
         </div>
-        <div className="flex items-center gap-1.5 rounded-full bg-neutral-100 dark:bg-neutral-900 px-2.5 py-1 text-[11px] font-semibold text-neutral-600 dark:text-neutral-300">
-          <Calendar className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-2 rounded-full bg-neutral-100 dark:bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+          <Calendar className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>7 Hari Terakhir</span>
         </div>
       </div>
 
-      {/* Pill Bars Area (Exact Donezo Style with Motion Springs) */}
-      <div className="relative pt-6 pb-2">
-        <div className="flex items-end justify-between gap-2 sm:gap-3 h-36 px-1">
+      {/* Pill Bars Area (Donezo Style with Motion Springs - Scaled Up) */}
+      <div className="relative pt-8 pb-3">
+        <div className="flex items-end justify-between gap-3 sm:gap-4 h-48 px-1">
           {data.map((item, idx) => {
             const isActive = idx === activeIdx
-            const heightPercent = Math.max(20, item.percentage)
+            const heightPercent = Math.max(18, item.percentage)
 
             return (
               <div
                 key={item.label}
-                className="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer relative"
+                className="flex-1 flex flex-col items-center gap-2 group cursor-pointer relative"
                 onClick={() => setActiveIdx(idx)}
                 onMouseEnter={() => setActiveIdx(idx)}
               >
-                {/* Active Tooltip Pill on top (Donezo 74% style) */}
+                {/* Active Tooltip Pill on top */}
                 {isActive && (
                   <motion.div
                     layoutId="chartTooltip"
-                    className="absolute -top-7 z-20 flex flex-col items-center"
+                    className="absolute -top-9 z-20 flex flex-col items-center"
                     transition={{ type: 'spring', damping: 25, stiffness: 350 }}
                   >
-                    <span className="rounded-full bg-neutral-950 dark:bg-emerald-500 px-2 py-0.5 text-[9px] font-bold text-white shadow-md whitespace-nowrap">
+                    <span className="rounded-full bg-neutral-950 dark:bg-emerald-500 px-2.5 py-1 text-[11px] font-bold text-white shadow-lg whitespace-nowrap">
                       {item.count > 0 ? `${item.count} Produk` : `${item.percentage}%`}
                     </span>
-                    <span className="h-1 w-1 -mt-0.5 rotate-45 bg-neutral-950 dark:bg-emerald-500" />
+                    <span className="h-1.5 w-1.5 -mt-0.5 rotate-45 bg-neutral-950 dark:bg-emerald-500" />
                   </motion.div>
                 )}
 
                 {/* Pill-shaped Bar */}
-                <div className="relative w-full max-w-[34px] h-32 flex items-end justify-center">
+                <div className="relative w-full max-w-[42px] h-40 flex items-end justify-center">
                   <motion.div
                     initial={{ height: '0%' }}
                     animate={{ height: `${heightPercent}%` }}
@@ -94,7 +94,7 @@ export function AdminWeeklyChart({ data, totalModerations = 0 }: AdminWeeklyChar
 
                 {/* Day Letter */}
                 <span
-                  className={`text-[10px] font-medium transition-colors ${
+                  className={`text-xs font-semibold transition-colors mt-0.5 ${
                     isActive
                       ? 'font-bold text-emerald-600 dark:text-emerald-400'
                       : 'text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300'
@@ -109,12 +109,12 @@ export function AdminWeeklyChart({ data, totalModerations = 0 }: AdminWeeklyChar
       </div>
 
       {/* Footer Insight */}
-      <div className="mt-1 pt-2.5 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 text-[11px]">
-          <TrendingUp className="h-3 w-3 text-emerald-600" />
-          <span>Fokus: <strong className="text-neutral-900 dark:text-white">{activeItem.label}</strong></span>
+      <div className="mt-2 pt-3.5 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-between text-xs sm:text-sm">
+        <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-400">
+          <TrendingUp className="h-4 w-4 text-emerald-600" />
+          <span>Fokus: <strong className="text-neutral-900 dark:text-white font-semibold">{activeItem.label}</strong></span>
         </div>
-        <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+        <span className="font-bold text-emerald-600 dark:text-emerald-400">
           {activeItem.count} item tercatat
         </span>
       </div>

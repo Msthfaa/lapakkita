@@ -33,53 +33,53 @@ export function AdminSystemPulse({ totalWaClicks = 0, totalProducts = 0 }: Admin
   }, [])
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#06241B] via-[#093527] to-[#0D4433] p-5 text-white shadow-md flex flex-col justify-between min-h-[160px] transition-all">
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#06241B] via-[#093527] to-[#0D4433] p-6 sm:p-7 text-white shadow-md flex flex-col justify-between min-h-[190px] transition-all">
       {/* Title & Live Pulse Indicator */}
-      <div className="relative z-10 flex items-center justify-between pb-1">
-        <span className="text-xs font-semibold text-emerald-300">
+      <div className="relative z-10 flex items-center justify-between pb-2">
+        <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
           Status Sistem &amp; Jam
         </span>
-        <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-300 border border-emerald-400/30">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+        <div className="flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 border border-emerald-400/30">
+          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
           <span>Live Online</span>
         </div>
       </div>
 
-      {/* Center Big Digital Timer (Donezo 01:24:08 Replica) */}
-      <div className="relative z-10 my-2 text-center">
-        <div className="font-mono text-3xl sm:text-4xl font-extrabold tracking-wider text-white drop-shadow-md">
+      {/* Center Big Digital Timer (Donezo Time Tracker Replica) */}
+      <div className="relative z-10 my-3 text-center">
+        <div className="font-mono text-4xl sm:text-5xl font-black tracking-wider text-white drop-shadow-md">
           {mounted ? time : '--:--:--'}
         </div>
-        <p className="text-[10px] text-emerald-300/80 font-medium mt-0.5">
-          Waktu Indonesia Barat (WIB)
+        <p className="text-xs text-emerald-300/80 font-medium mt-1">
+          Waktu Indonesia Barat (WIB) &bull; Sinkron
         </p>
       </div>
 
       {/* Footer Controls & Quick Metric (Donezo Circular Buttons Replica) */}
-      <div className="relative z-10 pt-2 border-t border-white/10 flex items-center justify-between">
-        <div className="text-[11px] text-white/80">
-          <strong className="text-emerald-300">{totalWaClicks}</strong> klik WhatsApp etalase
+      <div className="relative z-10 pt-3 border-t border-white/10 flex items-center justify-between">
+        <div className="text-xs sm:text-sm text-white/90">
+          <strong className="text-emerald-300 font-bold">{totalWaClicks}</strong> klik WhatsApp etalase
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             type="button"
             onClick={() => window.location.reload()}
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white transition-colors cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white transition-colors cursor-pointer"
             title="Muat Ulang Halaman"
           >
-            <RotateCcw className="h-3.5 w-3.5" />
+            <RotateCcw className="h-4 w-4" />
           </motion.button>
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <Link
               href="/"
               target="_blank"
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 transition-colors"
               title="Lihat Etalase Publik"
             >
-              <ExternalLink className="h-3.5 w-3.5" />
+              <ExternalLink className="h-4 w-4" />
             </Link>
           </motion.div>
         </div>

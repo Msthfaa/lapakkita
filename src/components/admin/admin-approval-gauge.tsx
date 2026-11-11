@@ -22,27 +22,27 @@ export function AdminApprovalGauge({
   const strokeDashoffset = arcLength * (1 - clampedRate / 100)
 
   return (
-    <div className="rounded-3xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 p-5 sm:p-6 shadow-2xs transition-all duration-300 flex flex-col justify-between">
+    <div className="rounded-3xl bg-white dark:bg-neutral-950 border border-neutral-200/80 dark:border-neutral-900 p-6 sm:p-7 shadow-2xs transition-all duration-300 flex flex-col justify-between">
       {/* Title */}
-      <div className="flex items-center justify-between pb-1">
+      <div className="flex items-center justify-between pb-2">
         <div>
-          <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
+          <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
             Tingkat Kurasi Mutu
           </h3>
-          <p className="text-[11px] text-neutral-400 dark:text-neutral-500 font-medium">
-            Rasio produk lolos seleksi
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 font-medium mt-0.5">
+            Rasio persentase produk UMKM lolos seleksi
           </p>
         </div>
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
-          <Award className="h-3.5 w-3.5" />
+        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+          <Award className="h-4.5 w-4.5" />
         </div>
       </div>
 
-      {/* SVG Semi-Circle Gauge (Donezo 41% Gauge replica) */}
-      <div className="relative flex flex-col items-center justify-center pt-1 pb-1">
+      {/* SVG Semi-Circle Gauge (Donezo 41% Gauge replica - Scaled Up) */}
+      <div className="relative flex flex-col items-center justify-center pt-2 pb-2">
         <svg
           viewBox="0 0 190 105"
-          className="w-48 max-w-full overflow-visible"
+          className="w-56 sm:w-64 max-w-full overflow-visible"
         >
           {/* Background Track Arc */}
           <path
@@ -77,32 +77,32 @@ export function AdminApprovalGauge({
 
         {/* Center Text inside the Semi Circle */}
         <div className="absolute bottom-0 text-center flex flex-col items-center justify-center">
-          <span className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-none">
+          <span className="text-4xl sm:text-5xl font-black tracking-tight text-neutral-900 dark:text-white leading-none">
             {clampedRate}%
           </span>
-          <span className="text-[10px] text-neutral-400 dark:text-neutral-500 font-medium mt-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mt-1.5">
             Lolos Seleksi
           </span>
         </div>
       </div>
 
-      {/* Legend Dots (Donezo Style) */}
-      <div className="mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-around text-[10px]">
-        <div className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#0B3B2C] dark:bg-emerald-400" />
-          <span className="text-neutral-600 dark:text-neutral-400">
+      {/* Legend Dots */}
+      <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-around text-xs font-medium">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-[#0B3B2C] dark:bg-emerald-400" />
+          <span className="text-neutral-700 dark:text-neutral-300">
             Setuju ({approvedCount})
           </span>
         </div>
-        <div className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-          <span className="text-neutral-600 dark:text-neutral-400">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-amber-500" />
+          <span className="text-neutral-700 dark:text-neutral-300">
             Pending ({pendingCount})
           </span>
         </div>
-        <div className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
-          <span className="text-neutral-600 dark:text-neutral-400">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-rose-500" />
+          <span className="text-neutral-700 dark:text-neutral-300">
             Revisi ({rejectedCount})
           </span>
         </div>

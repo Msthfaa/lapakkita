@@ -236,42 +236,42 @@ export function AdminUserDetailView({
       </div>
 
       {/* Kartu Profil Pengguna */}
-      <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-xs">
+      <div className="rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-6 sm:p-7 shadow-2xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-4">
             <div
               className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl text-2xl font-bold shadow-xs ${
                 user.role === 'admin'
-                  ? 'bg-purple-100 text-purple-700 border border-purple-200'
-                  : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                  ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60'
+                  : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60'
               }`}
             >
               {user.nama ? user.nama.charAt(0).toUpperCase() : 'U'}
             </div>
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-bold text-neutral-900">{user.nama}</h1>
+                <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">{user.nama}</h1>
                 {user.role === 'admin' ? (
-                  <Badge className="bg-purple-100 text-purple-800 border-purple-200 gap-1 font-semibold">
+                  <Badge className="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/60 gap-1 font-semibold rounded-full px-3 py-0.5">
                     <Shield className="h-3 w-3" />
                     Administrator
                   </Badge>
                 ) : (
-                  <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 gap-1 font-semibold">
+                  <Badge className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60 gap-1 font-semibold rounded-full px-3 py-0.5">
                     <Store className="h-3 w-3" />
                     Penjual UMKM
                   </Badge>
                 )}
                 {isCurrent && (
-                  <span className="rounded bg-neutral-200 px-2 py-0.5 text-xs font-semibold text-neutral-700">
+                  <span className="rounded-full bg-neutral-200 dark:bg-neutral-800 px-2.5 py-0.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
                     Akun Anda
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-500 pt-1">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400 pt-1">
                 <div className="flex items-center gap-1 font-mono">
                   <span>ID:</span>
-                  <span className="text-neutral-700">{user.id}</span>
+                  <span className="text-neutral-700 dark:text-neutral-300">{user.id}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3.5 w-3.5 text-neutral-400" />

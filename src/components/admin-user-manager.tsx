@@ -138,62 +138,62 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-7 w-full">
       {/* Kartu Ringkasan Akun */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-xs">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
-            <Users className="h-5 w-5" />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="flex items-center gap-4 rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-6 shadow-2xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400">
+            <Users className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-xl font-bold text-neutral-900">{totalUsers}</div>
-            <div className="text-xs text-neutral-500 font-medium">Total Akun Terdaftar</div>
+            <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white">{totalUsers}</div>
+            <div className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">Total Akun Terdaftar</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-xs">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-            <Store className="h-5 w-5" />
+        <div className="flex items-center gap-4 rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-6 shadow-2xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
+            <Store className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-xl font-bold text-emerald-950">{totalSellers}</div>
-            <div className="text-xs text-emerald-700 font-medium">Penjual UMKM</div>
+            <div className="text-2xl sm:text-3xl font-black text-emerald-900 dark:text-emerald-300">{totalSellers}</div>
+            <div className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">Penjual UMKM</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-xl border border-purple-200 bg-purple-50/40 p-4 shadow-xs">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
-            <Shield className="h-5 w-5" />
+        <div className="flex items-center gap-4 rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-6 shadow-2xs">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400">
+            <Shield className="h-6 w-6" />
           </div>
           <div>
-            <div className="text-xl font-bold text-purple-950">{totalAdmins}</div>
-            <div className="text-xs text-purple-700 font-medium">Administrator</div>
+            <div className="text-2xl sm:text-3xl font-black text-purple-900 dark:text-purple-300">{totalAdmins}</div>
+            <div className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">Administrator</div>
           </div>
         </div>
       </div>
 
       {/* Filter & Pencarian Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-5 shadow-2xs">
         {/* Input Cari */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 dark:text-neutral-500" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari nama atau email pengguna..."
-            className="pl-9 text-sm"
+            className="pl-10 h-11 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border-neutral-200/80 dark:border-neutral-800 text-sm"
           />
         </div>
 
         {/* Filter Role */}
-        <div className="flex items-center gap-1.5 self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setRoleFilter('all')}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer ${
               roleFilter === 'all'
-                ? 'bg-neutral-900 text-white'
-                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             Semua ({totalUsers})
@@ -201,10 +201,10 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
           <button
             type="button"
             onClick={() => setRoleFilter('seller')}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer ${
               roleFilter === 'seller'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                ? 'bg-white dark:bg-neutral-800 text-emerald-700 dark:text-emerald-300 shadow-xs'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             Penjual ({totalSellers})
@@ -212,10 +212,10 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
           <button
             type="button"
             onClick={() => setRoleFilter('admin')}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all cursor-pointer ${
               roleFilter === 'admin'
-                ? 'bg-purple-700 text-white'
-                : 'bg-purple-50 text-purple-800 hover:bg-purple-100'
+                ? 'bg-white dark:bg-neutral-800 text-purple-700 dark:text-purple-300 shadow-xs'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
             Admin ({totalAdmins})
@@ -225,72 +225,72 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
 
       {/* Daftar Pengguna */}
       {filteredUsers.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-neutral-300 bg-white p-12 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 text-neutral-400">
-            <Users className="h-6 w-6" />
+        <div className="rounded-3xl border-2 border-dashed border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-12 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-400">
+            <Users className="h-7 w-7" />
           </div>
-          <h3 className="mt-4 text-base font-semibold text-neutral-800">
+          <h3 className="mt-4 text-base font-bold text-neutral-900 dark:text-white">
             Tidak Ada Pengguna Ditemukan
           </h3>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
             {search
               ? `Tidak ada hasil yang cocok dengan kata kunci "${search}".`
               : 'Belum ada pengguna pada kategori ini.'}
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
+        <div className="overflow-hidden rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 shadow-2xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-neutral-700">
-              <thead className="border-b border-neutral-200 bg-neutral-50/80 text-xs font-bold uppercase tracking-wider text-neutral-500">
+            <table className="w-full text-left text-sm text-neutral-700 dark:text-neutral-300">
+              <thead className="border-b border-neutral-200/80 dark:border-neutral-900 bg-neutral-50/80 dark:bg-neutral-900/60 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
                 <tr>
-                  <th scope="col" className="px-6 py-3.5">
+                  <th scope="col" className="px-6 py-4">
                     Pengguna
                   </th>
-                  <th scope="col" className="px-4 py-3.5">
+                  <th scope="col" className="px-4 py-4">
                     Role
                   </th>
-                  <th scope="col" className="px-4 py-3.5">
+                  <th scope="col" className="px-4 py-4">
                     Jumlah Produk
                   </th>
-                  <th scope="col" className="px-4 py-3.5">
+                  <th scope="col" className="px-4 py-4">
                     Bergabung
                   </th>
-                  <th scope="col" className="px-6 py-3.5 text-right">
+                  <th scope="col" className="px-6 py-4 text-right">
                     Aksi
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-200">
+              <tbody className="divide-y divide-neutral-200/80 dark:divide-neutral-900">
                 {filteredUsers.map((user) => {
                   const isCurrent = user.id === currentUserId
                   return (
                     <tr
                       key={user.id}
-                      className="hover:bg-neutral-50/60 transition-colors"
+                      className="hover:bg-neutral-50/60 dark:hover:bg-neutral-900/40 transition-colors"
                     >
                       {/* Kolom Profil Pengguna */}
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3.5">
                           <div
-                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-sm ${
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl font-bold text-sm ${
                               user.role === 'admin'
-                                ? 'bg-purple-100 text-purple-700 border border-purple-200'
-                                : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                                ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60'
+                                : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60'
                             }`}
                           >
                             {user.nama ? user.nama.charAt(0).toUpperCase() : 'U'}
                           </div>
                           <div className="min-w-0">
-                            <div className="flex items-center gap-1.5 font-bold text-neutral-900 truncate">
+                            <div className="flex items-center gap-1.5 font-bold text-neutral-900 dark:text-white truncate">
                               <span>{user.nama}</span>
                               {isCurrent && (
-                                <span className="rounded bg-neutral-200 px-1.5 py-0.5 text-[10px] font-semibold text-neutral-700">
+                                <span className="rounded-full bg-neutral-200 dark:bg-neutral-800 px-2 py-0.5 text-[10px] font-semibold text-neutral-700 dark:text-neutral-300">
                                   Anda
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-neutral-500 truncate">
+                            <div className="text-xs text-neutral-400 dark:text-neutral-500 truncate mt-0.5">
                               {user.email !== '-' ? user.email : 'ID: ' + user.id.slice(0, 8) + '...'}
                             </div>
                           </div>
@@ -300,12 +300,12 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                       {/* Kolom Role */}
                       <td className="px-4 py-4 whitespace-nowrap">
                         {user.role === 'admin' ? (
-                          <Badge className="bg-purple-100 text-purple-800 border-purple-200 gap-1 font-semibold">
+                          <Badge className="bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/60 gap-1.5 font-semibold rounded-full px-3 py-1">
                             <Shield className="h-3 w-3" />
                             Admin
                           </Badge>
                         ) : (
-                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 gap-1 font-semibold">
+                          <Badge className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/60 gap-1.5 font-semibold rounded-full px-3 py-1">
                             <Store className="h-3 w-3" />
                             Penjual UMKM
                           </Badge>
@@ -321,7 +321,7 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                         ) : (
                           <Link
                             href={`/admin/users/${user.id}`}
-                            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-colors"
                           >
                             <Package className="h-3.5 w-3.5 text-neutral-500" />
                             <span>{user.product_count} Produk</span>
@@ -330,8 +330,8 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
                       </td>
 
                       {/* Kolom Tanggal */}
-                      <td className="px-4 py-4 whitespace-nowrap text-xs text-neutral-500">
-                        <div className="flex items-center gap-1">
+                      <td className="px-4 py-4 whitespace-nowrap text-xs text-neutral-500 dark:text-neutral-400">
+                        <div className="flex items-center gap-1.5">
                           <Calendar className="h-3.5 w-3.5 text-neutral-400" />
                           <span>{formatTanggal(user.created_at)}</span>
                         </div>

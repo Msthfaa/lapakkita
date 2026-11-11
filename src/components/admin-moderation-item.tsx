@@ -153,10 +153,10 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 p-5 border border-neutral-200 rounded-xl bg-white shadow-xs">
+    <div className="flex flex-col md:flex-row gap-5 sm:gap-6 p-6 border border-neutral-200/80 dark:border-neutral-900 rounded-3xl bg-white dark:bg-neutral-950 shadow-2xs transition-colors">
       {/* Kolom Gambar Produk & Thumbnail Multi-Foto */}
-      <div className="flex flex-col gap-2 w-full md:w-48 shrink-0">
-        <div className="relative h-44 w-full rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
+      <div className="flex flex-col gap-2.5 w-full md:w-52 shrink-0">
+        <div className="relative h-48 w-full rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800">
           {currentPhoto ? (
             <Image
               src={currentPhoto}
@@ -171,7 +171,7 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
           )}
 
           {allImages.length > 1 && (
-            <div className="absolute bottom-1.5 right-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-xs">
+            <div className="absolute bottom-2 right-2 rounded-lg bg-black/60 px-2 py-0.5 text-xs font-semibold text-white backdrop-blur-xs">
               {activePhotoIdx + 1} / {allImages.length}
             </div>
           )}
@@ -179,23 +179,23 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
 
         {/* Thumbnail multi-foto jika lebih dari 1 */}
         {allImages.length > 1 && (
-          <div className="flex gap-1.5 overflow-x-auto pb-1">
+          <div className="flex gap-2 overflow-x-auto pb-1">
             {allImages.map((img, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => setActivePhotoIdx(idx)}
-                className={`relative h-11 w-11 shrink-0 rounded-md overflow-hidden border-2 transition cursor-pointer ${
+                className={`relative h-12 w-12 shrink-0 rounded-xl overflow-hidden border-2 transition cursor-pointer ${
                   activePhotoIdx === idx
-                    ? 'border-emerald-600 ring-1 ring-emerald-500'
-                    : 'border-neutral-200 opacity-60 hover:opacity-100'
+                    ? 'border-emerald-600 ring-2 ring-emerald-500/30'
+                    : 'border-neutral-200 dark:border-neutral-800 opacity-60 hover:opacity-100'
                 }`}
               >
                 <Image
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
                   fill
-                  sizes="44px"
+                  sizes="48px"
                   className="object-cover"
                 />
               </button>
@@ -206,68 +206,68 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
 
       {/* Info Detail */}
       <div className="flex-1 flex flex-col justify-between">
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-1.5">
             <StatusBadge status={product.status} />
 
             {/* Status Etalase (Aktif vs Nonaktif) */}
             {!product.is_active ? (
-              <span className="text-xs bg-neutral-800 text-white font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span className="text-xs bg-neutral-800 text-white font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
                 ⏸️ Nonaktif oleh Penjual
               </span>
             ) : (
-              <span className="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span className="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
                 🟢 Aktif
               </span>
             )}
 
             {/* Status Stok */}
             {product.kondisi_stok === 'ready_stock' && (
-              <span className="text-xs bg-emerald-50 text-emerald-700 font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
-                <CheckCircle2 className="h-3 w-3" />
+              <span className="text-xs bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+                <CheckCircle2 className="h-3.5 w-3.5" />
                 Ready
               </span>
             )}
             {product.kondisi_stok === 'pre_order' && (
-              <span className="text-xs bg-blue-50 text-blue-700 font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
-                <Clock className="h-3 w-3" />
+              <span className="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5" />
                 PO
               </span>
             )}
             {product.kondisi_stok === 'stok_terbatas' && (
-              <span className="text-xs bg-amber-50 text-amber-700 font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
-                <AlertCircle className="h-3 w-3" />
+              <span className="text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+                <AlertCircle className="h-3.5 w-3.5" />
                 Stok Terbatas
               </span>
             )}
 
             {product.category && (
-              <span className="text-xs bg-neutral-100 text-neutral-700 font-medium px-2.5 py-0.5 rounded-full">
+              <span className="text-xs bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 font-medium px-2.5 py-1 rounded-full">
                 {product.category.nama}
               </span>
             )}
             {product.region && (
-              <span className="text-xs bg-purple-50 text-purple-700 font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
+              <span className="text-xs bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+                <MapPin className="h-3.5 w-3.5" />
                 {product.region.nama}
               </span>
             )}
             {product.is_featured && (
-              <span className="text-xs bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
+              <span className="text-xs bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
+                <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
                 Unggulan
               </span>
             )}
           </div>
 
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">{product.nama}</h3>
-            <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-base font-extrabold text-emerald-600">
+            <h3 className="text-lg sm:text-xl font-bold text-neutral-900 dark:text-white">{product.nama}</h3>
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">
                 {formatRupiah(product.harga)}
               </span>
               {product.satuan && (
-                <span className="text-xs font-medium text-neutral-500">
+                <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
                   / {product.satuan}
                 </span>
               )}
@@ -278,78 +278,78 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
           {(product.varian || product.no_izin || (product.metode_pengiriman && product.metode_pengiriman.length > 0)) && (
             <div className="flex flex-wrap gap-2 text-xs">
               {product.varian && (
-                <div className="inline-flex items-center gap-1 rounded bg-neutral-100 px-2 py-1 text-neutral-700">
-                  <Layers className="h-3 w-3 text-emerald-600" />
+                <div className="inline-flex items-center gap-1.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 px-2.5 py-1 text-neutral-700 dark:text-neutral-300">
+                  <Layers className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>Varian: <strong>{product.varian}</strong></span>
                 </div>
               )}
               {product.no_izin && (
-                <div className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 text-emerald-800 border border-emerald-200">
-                  <FileCheck2 className="h-3 w-3 text-emerald-600" />
+                <div className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                  <FileCheck2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>Izin: <strong>{product.no_izin}</strong></span>
                 </div>
               )}
               {product.metode_pengiriman && product.metode_pengiriman.length > 0 && (
-                <div className="inline-flex items-center gap-1 rounded bg-neutral-100 px-2 py-1 text-neutral-700">
-                  <Truck className="h-3 w-3 text-emerald-600" />
+                <div className="inline-flex items-center gap-1.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 px-2.5 py-1 text-neutral-700 dark:text-neutral-300">
+                  <Truck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                   <span>Kirim: {product.metode_pengiriman.map((k) => SHIPPING_LABELS[k] || k).join(', ')}</span>
                 </div>
               )}
             </div>
           )}
 
-          <p className="text-xs text-neutral-600 whitespace-pre-line line-clamp-3 bg-neutral-50 p-2.5 rounded-md border border-neutral-100">
+          <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 whitespace-pre-line line-clamp-3 bg-neutral-50 dark:bg-neutral-900/60 p-3 rounded-2xl border border-neutral-100 dark:border-neutral-900">
             {product.deskripsi || 'Tidak ada deskripsi.'}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-neutral-500 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 pt-1">
             <div className="flex items-center gap-1.5">
-              <Store className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
-              <span>Penjual: <strong>{product.seller?.nama || 'Anonim'}</strong></span>
+              <Store className="h-4 w-4 text-neutral-400 shrink-0" />
+              <span>Penjual: <strong className="text-neutral-800 dark:text-neutral-200">{product.seller?.nama || 'Anonim'}</strong></span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Phone className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+              <Phone className="h-4 w-4 text-neutral-400 shrink-0" />
               <span>WA: +{product.no_wa}</span>
             </div>
             {product.alamat && (
               <div className="flex items-center gap-1.5 sm:col-span-2">
-                <MapPin className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                <MapPin className="h-4 w-4 text-neutral-400 shrink-0" />
                 <span>Lokasi: {product.alamat}</span>
               </div>
             )}
             <div className="flex items-center gap-1.5 sm:col-span-2 text-neutral-400">
-              <Calendar className="h-3.5 w-3.5 shrink-0" />
+              <Calendar className="h-4 w-4 shrink-0" />
               <span>Diajukan: {formatTanggal(product.created_at)}</span>
             </div>
           </div>
 
           {!product.is_active && (
-            <div className="rounded-md bg-amber-50 p-2.5 text-xs text-amber-900 border border-amber-200 mt-2">
+            <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/40 p-3 text-xs sm:text-sm text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 mt-2">
               <strong>ℹ️ Catatan Moderasi:</strong> Produk ini sedang disetel <strong>Nonaktif</strong> oleh penjual. Jika Anda menyetujui, statusnya menjadi Disetujui tetapi produk <strong>tetap tidak tampil di katalog publik</strong> sampai penjual mengaktifkannya sendiri di dashboard.
             </div>
           )}
 
           {product.status === 'rejected' && product.alasan_tolak && (
-            <div className="rounded-md bg-rose-50 p-2.5 text-xs text-rose-800 border border-rose-200 mt-2">
+            <div className="rounded-2xl bg-rose-50 dark:bg-rose-950/40 p-3 text-xs sm:text-sm text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 mt-2">
               <strong>Alasan ditolak:</strong> {product.alasan_tolak}
             </div>
           )}
         </div>
 
         {/* Action Toolbar */}
-        <div className="mt-4 pt-3 border-t border-neutral-100 flex flex-wrap items-center gap-2">
+        <div className="mt-5 pt-3.5 border-t border-neutral-100 dark:border-neutral-900 flex flex-wrap items-center gap-2.5">
           {/* Tombol Setujui */}
           {product.status !== 'approved' && (
             <Button
               size="sm"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium gap-1"
+              className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm gap-1.5 px-4 h-10 shadow-xs"
               disabled={loadingApprove}
               onClick={handleApprove}
             >
               {loadingApprove ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <Check className="h-3.5 w-3.5" />
+                <Check className="h-4 w-4" />
               )}
               Setujui Produk
             </Button>
@@ -360,26 +360,26 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
             <Button
               size="sm"
               variant="destructive"
-              className="font-medium gap-1"
+              className="rounded-xl font-semibold text-xs sm:text-sm gap-1.5 px-4 h-10 shadow-xs"
               disabled={loadingReject}
               onClick={() => setRejectDialogOpen(true)}
             >
-              <X className="h-3.5 w-3.5" />
+              <X className="h-4 w-4" />
               Tolak Produk
             </Button>
           )}
 
-          {/* Toggle Unggulan (hanya untuk approved) */}
+          {/* Toggle Unggulan */}
           {product.status === 'approved' && (
             <Button
               size="sm"
               variant={product.is_featured ? 'secondary' : 'outline'}
-              className="gap-1.5 font-medium"
+              className="rounded-xl gap-2 font-semibold text-xs sm:text-sm px-4 h-10 border-neutral-200 dark:border-neutral-800"
               disabled={loadingFeatured}
               onClick={handleToggleFeatured}
             >
               <Star
-                className={`h-3.5 w-3.5 ${
+                className={`h-4 w-4 ${
                   product.is_featured
                     ? 'fill-amber-500 text-amber-500'
                     : 'text-neutral-400'
@@ -390,9 +390,9 @@ export function AdminModerationItem({ product }: AdminModerationItemProps) {
           )}
 
           {/* Lihat Pratinjau Publik */}
-          <Button asChild size="sm" variant="ghost" className="ml-auto text-xs text-neutral-500">
+          <Button asChild size="sm" variant="ghost" className="rounded-xl ml-auto text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white h-10">
             <Link href={`/produk/${product.id}`} target="_blank">
-              <ExternalLink className="h-3.5 w-3.5 mr-1" />
+              <ExternalLink className="h-4 w-4 mr-1.5" />
               Lihat Detail
             </Link>
           </Button>

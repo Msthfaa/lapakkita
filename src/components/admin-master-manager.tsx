@@ -132,29 +132,29 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
   return (
     <div className="space-y-6">
       {/* Tab Switcher & Tombol Tambah */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 pb-4">
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 w-fit">
           <button
             onClick={() => setActiveTab('kategori')}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all cursor-pointer ${
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'kategori'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            <Tag className="h-4 w-4" />
-            Kategori Produk ({categories.length})
+            <Tag className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Kategori Produk ({categories.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('daerah')}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all cursor-pointer ${
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
               activeTab === 'daerah'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            <MapPin className="h-4 w-4" />
-            Daerah / Wilayah ({regions.length})
+            <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Daerah / Wilayah ({regions.length})</span>
           </button>
         </div>
 
@@ -163,10 +163,10 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
             setNewName('')
             setAddDialogOpen(true)
           }}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 self-start sm:self-auto font-medium"
+          className="rounded-2xl bg-[#0B3B2C] hover:bg-[#0D4433] dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm px-5 h-11 shadow-xs gap-2 self-start sm:self-auto"
         >
           <Plus className="h-4 w-4" />
-          Tambah {activeTab === 'kategori' ? 'Kategori Baru' : 'Daerah Baru'}
+          <span>Tambah {activeTab === 'kategori' ? 'Kategori Baru' : 'Daerah Baru'}</span>
         </Button>
       </div>
 
@@ -188,25 +188,25 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
 
       {/* Grid Kartu Master Data */}
       {items.length === 0 ? (
-        <div className="rounded-xl border-2 border-dashed border-neutral-200 p-12 text-center text-neutral-500 bg-white">
+        <div className="rounded-3xl border-2 border-dashed border-neutral-200 dark:border-neutral-800 p-12 text-center text-sm text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-950">
           Belum ada {activeTab} yang didaftarkan. Klik tombol di atas untuk menambah data baru.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between p-3.5 rounded-lg border border-neutral-200 bg-white shadow-xs hover:border-purple-200 transition-all"
+              className="flex items-center justify-between p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 shadow-2xs hover:border-emerald-300 dark:hover:border-emerald-800 transition-all group"
             >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-purple-50 text-purple-700">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
                   {activeTab === 'kategori' ? (
-                    <Tag className="h-3.5 w-3.5" />
+                    <Tag className="h-4 w-4" />
                   ) : (
-                    <MapPin className="h-3.5 w-3.5" />
+                    <MapPin className="h-4 w-4" />
                   )}
                 </div>
-                <span className="font-semibold text-neutral-900 text-sm truncate">
+                <span className="font-bold text-neutral-900 dark:text-white text-sm truncate">
                   {item.nama}
                 </span>
               </div>
@@ -215,23 +215,23 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 text-neutral-500 hover:text-purple-600"
+                  className="h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400"
                   onClick={() => {
                     setEditItem(item)
                     setEditName(item.nama)
                   }}
                   title="Ubah nama"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
+                  <Edit2 className="h-4 w-4" />
                 </Button>
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 w-7 p-0 text-neutral-500 hover:text-rose-600"
+                  className="h-8 w-8 p-0 rounded-lg text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400"
                   onClick={() => setDeleteItem(item)}
                   title="Hapus"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </div>
