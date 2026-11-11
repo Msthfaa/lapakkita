@@ -3,7 +3,8 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { Input } from '@/components/ui/input'
-import { Search, X } from 'lucide-react'
+import { CustomDropdown } from '@/components/ui/custom-dropdown'
+import { Search, X, Layers, MapPin } from 'lucide-react'
 
 interface OptionItem {
   id: number
@@ -45,14 +46,12 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
     applyFilters(q, kategori, daerah)
   }
 
-  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const val = e.target.value
+  function handleCategoryChange(val: string) {
     setKategori(val)
     applyFilters(q, val, daerah)
   }
 
-  function handleRegionChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const val = e.target.value
+  function handleRegionChange(val: string) {
     setDaerah(val)
     applyFilters(q, kategori, val)
   }
@@ -70,7 +69,7 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
 
   return (
     <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-3 sm:p-4 shadow-xs transition-colors duration-300">
-      <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-3">
+      <form onSubmit={handleSearchSubmit} className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
         {/* Kolom Pencarian */}
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-neutral-400 dark:text-neutral-500" />
@@ -94,40 +93,32 @@ export function CatalogFilters({ categories, regions }: CatalogFiltersProps) {
           )}
         </div>
 
-        {/* Dropdown Kategori */}
-        <div id="kategori" className="w-full md:w-48 flex items-center scroll-mt-24">
-          <select
+        {/* Dropdown Estetik Kategori */}
+        <div id="kategori" className="w-full md:w-52 scroll-mt-24">
+          <CustomDropdown
             value={kategori}
             onChange={handleCategoryChange}
-            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/60 dark:bg-neutral-900/60 px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 cursor-pointer"
-          >
-            <option value="">Semua Kategori</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.nama}
-              </option>
-            ))}
-          </select>
+            options={categories}
+            placeholder="Pilih Kategori"
+            allOptionLabel="Semua Kategori"
+            icon={<Layers className="h-4 w-4" />}
+          />
         </div>
 
-        {/* Dropdown Daerah */}
-        <div id="daerah" className="w-full md:w-48 flex items-center scroll-mt-24">
-          <select
+        {/* Dropdown Estetik Daerah */}
+        <div id="daerah" className="w-full md:w-52 scroll-mt-24">
+          <CustomDropdown
             value={daerah}
             onChange={handleRegionChange}
-            className="flex h-11 w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/60 dark:bg-neutral-900/60 px-3.5 py-2 text-sm text-neutral-800 dark:text-neutral-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 cursor-pointer"
-          >
-            <option value="">Semua Daerah</option>
-            {regions.map((reg) => (
-              <option key={reg.id} value={reg.id}>
-                {reg.nama}
-              </option>
-            ))}
-          </select>
+            options={regions}
+            placeholder="Pilih Daerah"
+            allOptionLabel="Semua Daerah"
+            icon={<MapPin className="h-4 w-4" />}
+          />
         </div>
 
         {/* Tombol Aksi */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <button
             type="submit"
             disabled={isPending}
