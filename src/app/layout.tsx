@@ -54,6 +54,16 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html { background-color: #FAF9F5; color-scheme: light dark; }
+              html.dark { background-color: #000000; }
+              body { background-color: #FAF9F5; }
+              .dark body { background-color: #000000; }
+            `,
+          }}
+        />
       </head>
       <body className="relative flex min-h-full flex-col bg-[#FAF9F5] dark:bg-[#000000] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300 selection:bg-[#186049]/30">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
