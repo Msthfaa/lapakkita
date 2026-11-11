@@ -95,12 +95,25 @@
   --color-leaf: #4A943E;
   --color-amber-gold: #D98327;
   --color-cream: #ECE8AF;
+
+  /* Skala ukuran font dinaikkan 3px secara global */
+  --text-xs: 0.9375rem; /* 15px (12px + 3px) */
+  --text-sm: 1.0625rem; /* 17px (14px + 3px) */
+  --text-base: 1.1875rem; /* 19px (16px + 3px) */
+  --text-lg: 1.3125rem; /* 21px (18px + 3px) */
+  --text-xl: 1.4375rem; /* 23px (20px + 3px) */
+  --text-2xl: 1.6875rem; /* 27px (24px + 3px) */
+  --text-3xl: 2.0625rem; /* 33px (30px + 3px) */
+  --text-4xl: 2.4375rem; /* 39px (36px + 3px) */
+  --text-5xl: 3.1875rem; /* 51px (48px + 3px) */
+  --text-6xl: 3.9375rem; /* 63px (60px + 3px) */
 }
 
 html {
   scroll-behavior: smooth;
   background-color: #FAF9F5;
   font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 19px; /* Base font-size naik 3px (16px + 3px) */
 }
 
 html.dark,
@@ -112,6 +125,7 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 19px;
   transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100%;
 }
@@ -141,6 +155,17 @@ div {
 .font-serif,
 .font-sans {
   font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Penyesuaian ukuran arbitrary font (+3px) */
+.text-\[9px\] {
+  font-size: 12px !important;
+}
+.text-\[10px\] {
+  font-size: 13px !important;
+}
+.text-\[11px\] {
+  font-size: 14px !important;
 }
 
 /* 3D perspective stage */
