@@ -1,10 +1,11 @@
 import { getUserAndProfile } from '@/features/auth/actions'
+import { getAdminStats } from '@/features/admin/queries'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { ShieldCheck, BarChart3, CheckSquare, Layers, Users } from 'lucide-react'
+import { AdminSidebar } from '@/components/admin/admin-sidebar'
+import { AdminHeader } from '@/components/admin/admin-header'
 
 export const metadata = {
-  title: 'Admin Panel - LapakKita',
+  title: 'Panel Administrator - LapakKita',
 }
 
 export default async function AdminLayout({
@@ -23,60 +24,22 @@ export default async function AdminLayout({
     redirect('/dashboard')
   }
 
+  const stats = await getAdminStats()
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Admin Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-neutral-200">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
-              <ShieldCheck className="h-5 w-5" />
-            </div>
-            <h1 className="text-2xl font-bold text-neutral-900">Panel Administrator</h1>
-          </div>
-          <p className="text-sm text-neutral-500 mt-1">
-            Pengelolaan & verifikasi produk UMKM LapakKita
-          </p>
+    <div className="min-h-screen bg-[#F8FAF8] dark:bg-[#070A08] transition-colors duration-300">
+      <div className="mx-auto max-w-[1560px] p-4 sm:p-6 lg:p-8 flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
+        {/* Desktop Sidebar (Donezo style) */}
+        <div className="hidden md:block sticky top-8 self-start">
+          <AdminSidebar pendingCount={stats.pendingCount} profileName={profile.nama} />
         </div>
 
-        {/* Tab Navigasi Admin */}
-        <div className="flex items-center gap-2 rounded-lg bg-neutral-100 p-1 self-start">
-          <Link
-            href="/admin"
-            prefetch={true}
-            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-white hover:shadow-xs transition-all"
-          >
-            <BarChart3 className="h-3.5 w-3.5" />
-            Ringkasan Statistik
-          </Link>
-          <Link
-            href="/admin/moderasi"
-            prefetch={true}
-            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-white hover:shadow-xs transition-all"
-          >
-            <CheckSquare className="h-3.5 w-3.5" />
-            Moderasi Produk
-          </Link>
-          <Link
-            href="/admin/master"
-            prefetch={true}
-            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-white hover:shadow-xs transition-all"
-          >
-            <Layers className="h-3.5 w-3.5" />
-            Master Data
-          </Link>
-          <Link
-            href="/admin/users"
-            prefetch={true}
-            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-white hover:shadow-xs transition-all"
-          >
-            <Users className="h-3.5 w-3.5" />
-            Pengguna & Penjual
-          </Link>
+        {/* Main Workspace Area */}
+        <div className="flex-1 w-full min-w-0 space-y-6">
+          <AdminHeader user={user} profile={profile} pendingCount={stats.pendingCount} />
+          <main className="w-full">{children}</main>
         </div>
       </div>
-
-      <div className="mt-8">{children}</div>
     </div>
   )
 }
