@@ -60,6 +60,11 @@ export function FloatingRouteLoader() {
       const currentUrl = window.location.pathname + window.location.search
       if (href === currentUrl) return
 
+      // Lewati rute detail produk (/produk/...) sesuai instruksi (tanpa loading)
+      if (href.startsWith('/produk/') || href === '/produk') {
+        return
+      }
+
       isNavigatingRef.current = true
       setCompleted(false)
       setLoading(true)

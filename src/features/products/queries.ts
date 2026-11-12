@@ -270,79 +270,85 @@ export async function getApprovedProducts({
 }
 
 /**
- * Mengambil detail produk publik dengan cache server.
+ * Mengambil detail produk publik secara andal dengan retry otomatis.
  */
-const fetchProductDetailInternal = unstable_cache(
-  async (id: string) => {
-    const supabase = getPublicClient()
-    const [productRes, regions] = await Promise.all([
-      supabase
-        .from('products')
-        .select(
-          `
-          *,
-          category:categories(id, nama),
-          seller:profiles(id, nama, region_id, alamat, latitude, longitude, no_wa)
-        `
-        )
-        .eq('id', id)
-        .single(),
-      getRegions().catch(() => []),
-    ])
-
-    if (productRes.error || !productRes.data) {
-      return null
-    }
-
-    const product = productRes.data
-    const regionMap = new Map((regions || []).map((r) => [r.id, r]))
-    const finalRegionId = product.region_id || product.seller?.region_id
-    const finalAlamat = product.alamat || product.seller?.alamat
-    const finalLat = product.latitude ?? product.seller?.latitude ?? null
-    const finalLng = product.longitude ?? product.seller?.longitude ?? null
-
-    return {
-      ...product,
-      alamat: finalAlamat,
-      latitude: finalLat,
-      longitude: finalLng,
-      region: finalRegionId ? regionMap.get(finalRegionId) || null : null,
-    }
-  },
-  ['product-detail-cache'],
-  {
-    revalidate: 60,
-    tags: ['products'],
-  }
-)
-
 export async function getProductDetail(id: string) {
-  const product = await fetchProductDetailInternal(id)
-  if (!product) return null
+  if (!id) return null
 
-  // Jika produk belum approved (misal: pending/rejected), cek otorisasi pemilik atau admin
-  if (product.status !== 'approved') {
-    const supabase = await createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const supabase = getPublicClient()
+      const [productRes, regions] = await Promise.all([
+        supabase
+          .from('products')
+          .select(
+            `
+            *,
+            category:categories(id, nama),
+            seller:profiles(id, nama, region_id, alamat, latitude, longitude, no_wa)
+          `
+          )
+          .eq('id', id)
+          .single(),
+        getRegions().catch(() => []),
+      ])
 
-    if (!user) return null
-
-    if (user.id !== product.seller_id) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-
-      if (profile?.role !== 'admin') {
+      if (productRes.error || !productRes.data) {
+        if (attempt < 3 && productRes.error?.message?.includes('fetch failed')) {
+          await new Promise((r) => setTimeout(r, 200 * attempt))
+          continue
+        }
         return null
       }
+
+      const product = productRes.data
+      const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+      const finalRegionId = product.region_id || product.seller?.region_id
+      const finalAlamat = product.alamat || product.seller?.alamat
+      const finalLat = product.latitude ?? product.seller?.latitude ?? null
+      const finalLng = product.longitude ?? product.seller?.longitude ?? null
+
+      const fullProduct = {
+        ...product,
+        alamat: finalAlamat,
+        latitude: finalLat,
+        longitude: finalLng,
+        region: finalRegionId ? regionMap.get(finalRegionId) || null : null,
+      }
+
+      // Jika produk belum approved (misal: pending/rejected), cek otorisasi pemilik atau admin
+      if (fullProduct.status !== 'approved') {
+        const authSupabase = await createClient()
+        const {
+          data: { user },
+        } = await authSupabase.auth.getUser()
+
+        if (!user) return null
+
+        if (user.id !== fullProduct.seller_id) {
+          const { data: profile } = await authSupabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+          if (profile?.role !== 'admin') {
+            return null
+          }
+        }
+      }
+
+      return fullProduct
+    } catch (err: unknown) {
+      if (attempt < 3) {
+        await new Promise((r) => setTimeout(r, 200 * attempt))
+        continue
+      }
+      return null
     }
   }
 
-  return product
+  return null
 }
 
 /**

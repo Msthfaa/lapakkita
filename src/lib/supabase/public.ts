@@ -1,11 +1,6 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database'
 import { env } from '@/lib/env'
-import dns from 'node:dns'
-
-try {
-  dns.setDefaultResultOrder('ipv4first')
-} catch {}
 
 /**
  * Client Supabase publik tanpa cookie untuk query publik & server components.
