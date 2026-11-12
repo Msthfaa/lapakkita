@@ -30,7 +30,7 @@ export default async function DashboardPage() {
   const pendingProducts = products.filter((p) => p.status === 'pending').length
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+    <div className="mx-auto max-w-7xl px-4 pt-24 sm:pt-28 pb-12 sm:px-6 lg:px-8 space-y-8">
       {/* Header Utama */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-6 border-b border-[#186049]/15 dark:border-[#186049]/30">
         <div className="space-y-1">

@@ -234,13 +234,21 @@ export function Navbar({ user, profile }: NavbarProps) {
             <div className="flex h-11 items-center gap-1 rounded-full glass-pill p-1.5">
               <Link
                 href="/masuk"
-                className="h-8 px-3.5 flex items-center justify-center text-xs font-semibold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors rounded-full"
+                className={`h-8 px-3.5 flex items-center justify-center text-xs font-semibold rounded-full transition-colors ${
+                  pathname === '/masuk'
+                    ? 'bg-[#186049]/15 text-[#186049] dark:text-[#ECE8AF] font-bold'
+                    : 'text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white'
+                }`}
               >
                 Masuk
               </Link>
               <Link
                 href="/daftar"
-                className="flex h-8 px-4 items-center justify-center rounded-full bg-[#186049] hover:bg-[#124b39] text-white text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95"
+                className={`flex h-8 px-4 items-center justify-center rounded-full text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${
+                  pathname === '/daftar'
+                    ? 'bg-[#186049] text-[#ECE8AF] ring-2 ring-[#4A943E]'
+                    : 'bg-[#186049] hover:bg-[#124b39] text-white'
+                }`}
               >
                 Daftar
               </Link>

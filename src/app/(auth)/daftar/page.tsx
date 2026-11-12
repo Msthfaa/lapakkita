@@ -11,8 +11,10 @@ export default async function DaftarPage() {
   const regions = await getRegions().catch(() => [])
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
-      <RegisterForm regions={regions} />
+    <div className="flex min-h-screen flex-col items-center justify-start sm:justify-center px-4 pt-28 pb-16 sm:pt-36 sm:pb-24">
+      <div className="my-auto w-full max-w-xl">
+        <RegisterForm regions={regions} />
+      </div>
     </div>
   )
 }

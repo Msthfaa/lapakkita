@@ -22,7 +22,7 @@ export default async function ProfilTokoPage() {
   const regions = await getRegions().catch(() => [])
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl px-4 pt-24 sm:pt-28 pb-12 sm:px-6 lg:px-8">
       <SellerProfileForm initialProfile={profile} regions={regions} />
     </div>
   )
