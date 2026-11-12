@@ -7,24 +7,19 @@ try {
   dns.setDefaultResultOrder('ipv4first')
 } catch {}
 
-let publicClient: ReturnType<typeof createSupabaseClient<Database>> | null = null
-
 /**
- * Client Supabase publik tanpa cookie untuk query publik & server caching.
- * Menggunakan koneksi reusable (keep-alive) dan aman digunakan di dalam unstable_cache.
+ * Client Supabase publik tanpa cookie untuk query publik & server components.
+ * Selalu membuat instance andal tanpa risiko socket hangup/ECONNRESET.
  */
 export function getPublicClient() {
-  if (!publicClient) {
-    publicClient = createSupabaseClient<Database>(
-      env.NEXT_PUBLIC_SUPABASE_URL,
-      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-      {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-        },
-      }
-    )
-  }
-  return publicClient
+  return createSupabaseClient<Database>(
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    }
+  )
 }

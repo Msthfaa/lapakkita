@@ -192,7 +192,7 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
             )}
           </div>
 
-          <h3 className="font-semibold text-neutral-900 dark:text-[#f4f5ef] text-base sm:text-lg tracking-tight group-hover:text-[#186049] dark:group-hover:text-[#ECE8AF] transition-colors">
+          <h3 className="font-semibold text-neutral-900 dark:text-[#f4f5ef] text-base sm:text-lg tracking-tight group-hover:text-[#186049] dark:group-hover:text-white transition-colors">
             {product.nama}
           </h3>
 
@@ -295,7 +295,7 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
             asChild
             size="sm"
             variant="ghost"
-            className="h-8 px-3 text-xs font-medium gap-1.5 rounded-lg text-neutral-600 hover:text-[#186049] dark:text-neutral-400 dark:hover:text-[#ECE8AF] hover:bg-[#186049]/10"
+            className="h-8 px-3 text-xs font-medium gap-1.5 rounded-lg text-neutral-600 hover:text-[#186049] dark:text-neutral-400 dark:hover:text-white hover:bg-[#186049]/10"
           >
             <Link href={`/produk/${product.id}`} target="_blank">
               <ExternalLink className="h-3.5 w-3.5" />

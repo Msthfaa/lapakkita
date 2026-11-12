@@ -21,7 +21,7 @@ const buttonVariants = cva(
         green:
           "bg-[#4A943E] text-white shadow hover:bg-[#3d7c33] transition-all",
         ghost:
-          "hover:bg-[#186049]/10 text-neutral-700 dark:text-neutral-300 hover:text-[#186049] dark:hover:text-[#ECE8AF]",
+          "hover:bg-[#186049]/10 text-neutral-700 dark:text-neutral-300 hover:text-[#186049] dark:hover:text-white",
         link: "text-[#186049] dark:text-white underline-offset-4 hover:underline hover:text-[#D98327]",
         whatsapp:
           "bg-[#25D366] text-white shadow hover:bg-[#1EBE5D] font-semibold",

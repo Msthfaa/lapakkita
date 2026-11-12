@@ -17,20 +17,20 @@ export const getCategories = unstable_cache(
 
     if (error) {
       console.error('Error fetching categories:', error.message)
-      return []
+      throw error
     }
 
     return data || []
   },
-  ['categories-list-cache'],
+  ['categories-list-cache-v2'],
   {
-    revalidate: 120,
+    revalidate: 60,
     tags: ['categories'],
   }
 )
 
 /**
- * Mengambil daftar daerah dengan cache server 120 detik (tag: 'regions').
+ * Mengambil daftar daerah dengan cache server 60 detik (tag: 'regions').
  */
 export const getRegions = unstable_cache(
   async () => {
@@ -41,14 +41,15 @@ export const getRegions = unstable_cache(
       .order('nama', { ascending: true })
 
     if (error) {
-      return []
+      console.error('Error fetching regions:', error.message)
+      throw error
     }
 
     return data || []
   },
-  ['regions-list-cache'],
+  ['regions-list-cache-v2'],
   {
-    revalidate: 120,
+    revalidate: 60,
     tags: ['regions'],
   }
 )
@@ -167,81 +168,8 @@ interface GetApprovedProductsParams {
 }
 
 /**
- * Mengambil produk katalog publik dengan cache server berdasarkan parameter.
+ * Mengambil produk katalog publik secara langsung dan andal dengan retry otomatis.
  */
-const fetchApprovedProductsInternal = unstable_cache(
-  async (cleanQuery: string, categoryId?: number, regionId?: number, page: number = 1) => {
-    const supabase = getPublicClient()
-    const from = (page - 1) * ITEMS_PER_PAGE
-    const to = from + ITEMS_PER_PAGE - 1
-
-    let builder = supabase
-      .from('products')
-      .select(
-        `
-        *,
-        category:categories(id, nama),
-        seller:profiles(id, nama, region_id, alamat)
-      `,
-        { count: 'exact' }
-      )
-      .eq('status', 'approved')
-      .eq('is_active', true)
-
-    if (cleanQuery) {
-      builder = builder.or(`nama.ilike.%${cleanQuery}%,deskripsi.ilike.%${cleanQuery}%`)
-    }
-
-    if (categoryId && !isNaN(categoryId)) {
-      builder = builder.eq('category_id', categoryId)
-    }
-
-    if (regionId && !isNaN(regionId)) {
-      builder = builder.eq('region_id', regionId)
-    }
-
-    const [res, regions] = await Promise.all([
-      builder.order('created_at', { ascending: false }).range(from, to),
-      getRegions().catch(() => []),
-    ])
-
-    if (res.error) {
-      console.error('Error fetching public products:', res.error.message)
-      return {
-        products: [],
-        total: 0,
-        totalPages: 1,
-        currentPage: page,
-      }
-    }
-
-    const total = res.count || 0
-    const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE))
-    const regionMap = new Map((regions || []).map((r) => [r.id, r]))
-
-    const products = (res.data || []).map((prod) => {
-      const regId = prod.region_id || prod.seller?.region_id
-      return {
-        ...prod,
-        alamat: prod.alamat || prod.seller?.alamat || null,
-        region: regId ? regionMap.get(regId) || null : null,
-      }
-    })
-
-    return {
-      products,
-      total,
-      totalPages,
-      currentPage: page,
-    }
-  },
-  ['approved-products-cache'],
-  {
-    revalidate: 60,
-    tags: ['products', 'approved-products'],
-  }
-)
-
 export async function getApprovedProducts({
   query = '',
   categoryId,
@@ -249,7 +177,96 @@ export async function getApprovedProducts({
   page = 1,
 }: GetApprovedProductsParams) {
   const cleanQuery = query.trim().toLowerCase()
-  return fetchApprovedProductsInternal(cleanQuery, categoryId, regionId, page)
+  const from = (page - 1) * ITEMS_PER_PAGE
+  const to = from + ITEMS_PER_PAGE - 1
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const supabase = getPublicClient()
+      let builder = supabase
+        .from('products')
+        .select(
+          `
+          *,
+          category:categories(id, nama),
+          seller:profiles(id, nama, region_id, alamat)
+        `,
+          { count: 'exact' }
+        )
+        .eq('status', 'approved')
+        .eq('is_active', true)
+
+      if (cleanQuery) {
+        builder = builder.or(`nama.ilike.%${cleanQuery}%,deskripsi.ilike.%${cleanQuery}%`)
+      }
+
+      if (categoryId && !isNaN(categoryId)) {
+        builder = builder.eq('category_id', categoryId)
+      }
+
+      if (regionId && !isNaN(regionId)) {
+        builder = builder.eq('region_id', regionId)
+      }
+
+      const [res, regions] = await Promise.all([
+        builder.order('created_at', { ascending: false }).range(from, to),
+        getRegions().catch(() => []),
+      ])
+
+      if (res.error) {
+        console.error(`Attempt ${attempt} error fetching public products:`, res.error.message)
+        if (attempt < 3) {
+          await new Promise((resolve) => setTimeout(resolve, 200 * attempt))
+          continue
+        }
+        return {
+          products: [],
+          total: 0,
+          totalPages: 1,
+          currentPage: page,
+        }
+      }
+
+      const total = res.count || 0
+      const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE))
+      const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+
+      const products = (res.data || []).map((prod) => {
+        const regId = prod.region_id || prod.seller?.region_id
+        return {
+          ...prod,
+          alamat: prod.alamat || prod.seller?.alamat || null,
+          region: regId ? regionMap.get(regId) || null : null,
+        }
+      })
+
+      return {
+        products,
+        total,
+        totalPages,
+        currentPage: page,
+      }
+    } catch (err: unknown) {
+      console.error(`Attempt ${attempt} exception fetching products:`, err)
+      if (attempt < 3) {
+        await new Promise((resolve) => setTimeout(resolve, 200 * attempt))
+        continue
+      }
+      return {
+        products: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: page,
+      }
+    }
+  }
+
+  return {
+    products: [],
+    total: 0,
+    totalPages: 1,
+    currentPage: page,
+  }
 }
 
 /**

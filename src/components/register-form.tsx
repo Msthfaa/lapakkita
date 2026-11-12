@@ -83,15 +83,17 @@ export function RegisterForm({ regions }: RegisterFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-xl shadow-md border-[#186049]/15 dark:border-[#186049]/30 bg-white dark:bg-[#0d1612]">
-      <CardHeader className="text-center space-y-2">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#186049]/15 text-[#186049] dark:text-white border border-[#186049]/20">
-          <Store className="h-6 w-6" />
+    <Card className="w-full max-w-xl rounded-3xl border border-neutral-200/80 dark:border-white/10 bg-white/95 dark:bg-neutral-900/90 backdrop-blur-xl shadow-2xl transition-all">
+      <CardHeader className="text-center space-y-3 pb-6">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#186049] to-[#257d5a] text-white shadow-lg shadow-[#186049]/20 ring-4 ring-[#186049]/10">
+          <Store className="h-7 w-7" />
         </div>
-        <CardTitle className="text-2xl font-serif font-bold text-[#186049] dark:text-white">Daftar Penjual UMKM</CardTitle>
-        <CardDescription className="dark:text-neutral-400">
-          Buka lapak digital Anda, tentukan lokasi toko di peta, dan hubungkan langsung dengan pembeli lokal via WhatsApp.
-        </CardDescription>
+        <div>
+          <CardTitle className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 dark:text-white">Daftar Penjual UMKM</CardTitle>
+          <CardDescription className="mt-1.5 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
+            Buka lapak digital Anda, tentukan lokasi toko di peta, dan hubungkan langsung dengan pembeli lokal via WhatsApp.
+          </CardDescription>
+        </div>
       </CardHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -261,12 +263,12 @@ export function RegisterForm({ regions }: RegisterFormProps) {
         <CardFooter className="flex flex-col space-y-4 pt-2">
           <Button
             type="submit"
-            className="w-full bg-[#186049] hover:bg-[#124b39] text-[#ECE8AF] border border-[#ECE8AF]/20 font-medium"
+            className="h-11 w-full bg-[#186049] hover:bg-[#124b39] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer"
             disabled={loading}
           >
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
                 Mendaftarkan Lapak Anda...
               </>
             ) : (
