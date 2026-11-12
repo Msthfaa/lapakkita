@@ -50,10 +50,10 @@ export default function MasukPage() {
       <div className="my-auto w-full max-w-md">
         <Card className="w-full shadow-md border-[#186049]/15 dark:border-[#186049]/30 bg-white dark:bg-[#0d1612]">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#186049]/15 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/20">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#186049]/15 text-[#186049] dark:text-white border border-[#186049]/20">
             <Store className="h-6 w-6" />
           </div>
-          <CardTitle className="text-2xl font-serif font-bold text-[#186049] dark:text-[#ECE8AF]">Masuk ke LapakKita</CardTitle>
+          <CardTitle className="text-2xl font-serif font-bold text-[#186049] dark:text-white">Masuk ke LapakKita</CardTitle>
           <CardDescription className="dark:text-neutral-400">
             Kelola produk UMKM Anda atau masuk sebagai admin
           </CardDescription>
@@ -89,7 +89,7 @@ export default function MasukPage() {
             </div>
 
             <div className="rounded-xl bg-[#ECE8AF]/15 dark:bg-white/[0.03] p-3 border border-[#186049]/15 dark:border-[#186049]/30 text-xs">
-              <p className="font-semibold text-[#186049] dark:text-[#ECE8AF] mb-2">Akun Demo (Klik untuk isi cepat):</p>
+              <p className="font-semibold text-[#186049] dark:text-white mb-2">Akun Demo (Klik untuk isi cepat):</p>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"

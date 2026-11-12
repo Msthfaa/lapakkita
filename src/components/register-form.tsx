@@ -85,10 +85,10 @@ export function RegisterForm({ regions }: RegisterFormProps) {
   return (
     <Card className="w-full max-w-xl shadow-md border-[#186049]/15 dark:border-[#186049]/30 bg-white dark:bg-[#0d1612]">
       <CardHeader className="text-center space-y-2">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#186049]/15 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/20">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[#186049]/15 text-[#186049] dark:text-white border border-[#186049]/20">
           <Store className="h-6 w-6" />
         </div>
-        <CardTitle className="text-2xl font-serif font-bold text-[#186049] dark:text-[#ECE8AF]">Daftar Penjual UMKM</CardTitle>
+        <CardTitle className="text-2xl font-serif font-bold text-[#186049] dark:text-white">Daftar Penjual UMKM</CardTitle>
         <CardDescription className="dark:text-neutral-400">
           Buka lapak digital Anda, tentukan lokasi toko di peta, dan hubungkan langsung dengan pembeli lokal via WhatsApp.
         </CardDescription>
@@ -229,7 +229,7 @@ export function RegisterForm({ regions }: RegisterFormProps) {
                   </>
                 ) : (
                   <>
-                    {currentLat && currentLng ? '📍 Ubah Titik di Peta' : '📍 Buka Peta & Tentukan Titik'} <ChevronDown className="h-3.5 w-3.5" />
+                    {currentLat && currentLng ? 'ðŸ“ Ubah Titik di Peta' : 'ðŸ“ Buka Peta & Tentukan Titik'} <ChevronDown className="h-3.5 w-3.5" />
                   </>
                 )}
               </Button>
@@ -237,7 +237,7 @@ export function RegisterForm({ regions }: RegisterFormProps) {
 
             {currentLat && currentLng ? (
               <p className="text-xs text-emerald-800 dark:text-emerald-200 font-medium bg-emerald-50 dark:bg-emerald-950/40 px-2 py-1 rounded border border-emerald-200 dark:border-emerald-800">
-                ✓ Titik toko tersimpan: ({currentLat.toFixed(5)}, {currentLng.toFixed(5)})
+                âœ“ Titik toko tersimpan: ({currentLat.toFixed(5)}, {currentLng.toFixed(5)})
               </p>
             ) : (
               <p className="text-xs text-neutral-500 dark:text-neutral-400">

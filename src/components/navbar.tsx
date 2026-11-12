@@ -212,9 +212,9 @@ export function Navbar({ user, profile }: NavbarProps) {
                 <Link
                   href="/admin"
                   prefetch={true}
-                  className="flex h-8 items-center gap-1 text-xs font-bold text-[#186049] dark:text-[#ECE8AF] bg-[#ECE8AF]/70 dark:bg-white/10 border border-[#186049]/20 dark:border-white/20 transition-colors px-3 rounded-full hover:scale-105"
+                  className="flex h-8 items-center gap-1 text-xs font-bold text-[#186049] dark:text-white bg-[#ECE8AF]/70 dark:bg-white/10 border border-[#186049]/20 dark:border-white/20 transition-colors px-3 rounded-full hover:scale-105"
                 >
-                  <ShieldCheck className="h-3.5 w-3.5 text-[#186049] dark:text-[#ECE8AF]" />
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#186049] dark:text-white" />
                   <span className="hidden lg:inline">Admin</span>
                 </Link>
               )}
@@ -308,7 +308,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                     <Link
                       href="/admin"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block text-sm py-1.5 text-[#186049] dark:text-[#ECE8AF] font-bold"
+                      className="block text-sm py-1.5 text-[#186049] dark:text-white font-bold"
                     >
                       Panel Admin
                     </Link>

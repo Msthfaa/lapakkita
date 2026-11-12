@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { RotateCcw, ExternalLink, Activity, Sparkles, CheckCircle2 } from 'lucide-react'
+import { RotateCcw, ExternalLink, Activity, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 

@@ -124,7 +124,7 @@ export function FloatingRouteLoader() {
             transition={{ type: 'spring', damping: 25, stiffness: 350 }}
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none select-none"
           >
-            <div className="flex items-center gap-3 rounded-full bg-[#186049] text-white dark:bg-[#0A1A14] dark:text-[#ECE8AF] border border-[#ECE8AF]/30 dark:border-[#186049]/60 px-4 py-2 shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-3 rounded-full bg-[#186049] text-white dark:bg-[#0A1A14] dark:text-white border border-[#ECE8AF]/30 dark:border-[#186049]/60 px-4 py-2 shadow-xl backdrop-blur-md">
               {completed ? (
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#4A943E] text-white">
                   <Check className="h-3 w-3 stroke-[3]" />

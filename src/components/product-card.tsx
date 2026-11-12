@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatRupiah } from '@/lib/format'
-import { Store, MapPin, Sparkles, Image as ImageIcon, Layers } from 'lucide-react'
+import { Store, MapPin, Image as ImageIcon, Layers } from 'lucide-react'
 
 interface ProductCardProps {
   product: {
@@ -25,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/produk/${product.id}`} className="group block h-full">
-      <div className="h-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 transition-all duration-300 hover:border-[#186049]/40 dark:hover:border-[#ECE8AF]/30 hover:shadow-lg flex flex-col">
+      <div className="h-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 transition-all duration-300 hover:border-[#186049]/40 dark:hover:border-white/30 hover:shadow-lg flex flex-col">
         {/* Foto Produk */}
         <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900">
           {product.foto_url ? (
@@ -44,15 +44,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Badge Unggulan */}
           {product.is_featured && (
-            <div className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-[#186049] px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-md">
-              <Sparkles className="h-3 w-3" />
+            <div className="absolute left-3 top-3 flex items-center rounded-full bg-[#186049] px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-md">
               Unggulan
             </div>
           )}
 
           {/* Badge Kategori */}
           {product.category && (
-            <div className="absolute right-3 top-3 rounded-full bg-[#ECE8AF] dark:bg-neutral-900 px-2.5 py-0.5 text-[10px] font-semibold text-[#186049] dark:text-[#ECE8AF] shadow-2xs border border-[#186049]/15 dark:border-white/10">
+            <div className="absolute right-3 top-3 rounded-full bg-[#ECE8AF] dark:bg-neutral-900 px-2.5 py-0.5 text-[10px] font-semibold text-[#186049] dark:text-white shadow-2xs border border-[#186049]/15 dark:border-white/10">
               {product.category.nama}
             </div>
           )}
@@ -81,7 +80,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Info Konten */}
         <div className="p-5 flex-1 flex flex-col justify-between">
           <div>
-            <h3 className="font-serif text-base font-normal text-neutral-900 dark:text-white group-hover:text-[#186049] dark:group-hover:text-[#ECE8AF] line-clamp-2 leading-snug transition-colors">
+            <h3 className="font-serif text-base font-normal text-neutral-900 dark:text-white group-hover:text-[#186049] dark:group-hover:text-white line-clamp-2 leading-snug transition-colors">
               {product.nama}
             </h3>
             <div className="mt-2 flex items-baseline gap-1">

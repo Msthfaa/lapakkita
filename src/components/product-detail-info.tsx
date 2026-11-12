@@ -9,7 +9,6 @@ import {
   Star,
   ShieldCheck,
   Truck,
-  Sparkles,
   Layers,
   Clock,
   AlertCircle,
@@ -122,8 +121,7 @@ export function ProductDetailInfo({ product, isOwner }: ProductDetailInfoProps) 
         )}
 
         {product.is_featured && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#186049] to-[#257d5a] text-white px-3 py-1 text-xs font-medium shadow-2xs">
-            <Sparkles className="h-3 w-3" />
+          <span className="inline-flex items-center rounded-full bg-gradient-to-r from-[#186049] to-[#257d5a] text-white px-3 py-1 text-xs font-medium shadow-2xs">
             Produk Pilihan
           </span>
         )}
@@ -246,7 +244,7 @@ export function ProductDetailInfo({ product, isOwner }: ProductDetailInfoProps) 
           <span className="font-medium">Kirim Fleksibel</span>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 p-2 rounded-xl bg-neutral-50/80 dark:bg-neutral-900/60 border border-neutral-200/60 dark:border-neutral-800 text-[11px] sm:text-xs">
-          <Sparkles className="h-4 w-4 text-[#186049] dark:text-[#4A943E] shrink-0" />
+          <Check className="h-4 w-4 text-[#186049] dark:text-[#4A943E] shrink-0" />
           <span className="font-medium">Tanpa Biaya Admin</span>
         </div>
       </div>

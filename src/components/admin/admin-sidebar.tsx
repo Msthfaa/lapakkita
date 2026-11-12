@@ -9,7 +9,6 @@ import {
   Users,
   ExternalLink,
   LogOut,
-  Sparkles,
   ShieldCheck,
   ChevronRight,
 } from 'lucide-react'
@@ -75,7 +74,7 @@ export function AdminSidebar({ pendingCount = 0 }: AdminSidebarProps) {
                 <span className="font-serif font-bold text-lg text-neutral-900 dark:text-white tracking-tight">
                   LapakKita
                 </span>
-                <span className="rounded-md bg-[#ECE8AF] dark:bg-[#186049]/80 border border-[#186049]/20 dark:border-[#4A943E]/40 px-2 py-0.5 text-[10px] font-bold text-[#186049] dark:text-[#ECE8AF]">
+                <span className="rounded-md bg-[#ECE8AF] dark:bg-[#186049]/80 border border-[#186049]/20 dark:border-[#4A943E]/40 px-2 py-0.5 text-[10px] font-bold text-[#186049] dark:text-white">
                   ADMIN
                 </span>
               </div>
@@ -159,8 +158,8 @@ export function AdminSidebar({ pendingCount = 0 }: AdminSidebarProps) {
         {/* Banner Mini Estetik */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#186049] to-[#124b39] p-4 text-white shadow-xs">
           <div className="relative z-10 space-y-1">
-            <div className="flex items-center gap-1.5 text-[#ECE8AF] text-xs font-semibold">
-              <Sparkles className="h-3.5 w-3.5" />
+            <div className="flex items-center gap-1.5 text-white text-xs font-semibold">
+              <ShieldCheck className="h-3.5 w-3.5" />
               <span>Sistem Terverifikasi</span>
             </div>
             <p className="text-xs text-white/90 leading-relaxed">

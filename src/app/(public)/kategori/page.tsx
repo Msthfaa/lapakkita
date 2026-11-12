@@ -112,7 +112,7 @@ async function KategoriResults({ searchParams }: PageProps) {
             </span>
           )}
           {activeCategory && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#ECE8AF]/60 dark:bg-neutral-800 px-3 py-1 font-medium text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/20 dark:border-neutral-700">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#ECE8AF]/60 dark:bg-neutral-800 px-3 py-1 font-medium text-[#186049] dark:text-white border border-[#186049]/20 dark:border-neutral-700">
               Kategori: {activeCategory}
               <Link
                 href={`/kategori?${new URLSearchParams({
@@ -142,7 +142,7 @@ async function KategoriResults({ searchParams }: PageProps) {
 
           <Link
             href="/kategori"
-            className="text-xs font-semibold text-[#186049] dark:text-[#ECE8AF] hover:underline ml-1"
+            className="text-xs font-semibold text-[#186049] dark:text-white hover:underline ml-1"
           >
             Hapus Semua Filter
           </Link>
@@ -224,7 +224,7 @@ export default function KategoriPage({ searchParams }: PageProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header Kategori & Pencarian */}
         <div className="mx-auto max-w-3xl text-center mb-10">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-neutral-900 border border-[#186049]/15 dark:border-white/10 px-3.5 py-1 text-xs font-semibold text-[#186049] dark:text-[#ECE8AF] mb-4 shadow-2xs">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-neutral-900 border border-[#186049]/15 dark:border-white/10 px-3.5 py-1 text-xs font-semibold text-[#186049] dark:text-white mb-4 shadow-2xs">
             <Layers className="h-3.5 w-3.5 text-[#186049]" />
             <span>Pencarian &amp; Kategori UMKM</span>
           </div>

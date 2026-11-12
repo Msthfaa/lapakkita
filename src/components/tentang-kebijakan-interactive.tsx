@@ -68,7 +68,7 @@ export function TentangKebijakanInteractive() {
               <h3
                 className={`font-serif text-base sm:text-lg font-semibold transition-colors ${
                   isOpen
-                    ? 'text-[#186049] dark:text-[#ECE8AF]'
+                    ? 'text-[#186049] dark:text-white'
                     : 'text-neutral-900 dark:text-white'
                 }`}
               >
@@ -80,7 +80,7 @@ export function TentangKebijakanInteractive() {
                 transition={{ duration: 0.25, ease: 'easeInOut' }}
                 className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${
                   isOpen
-                    ? 'bg-[#186049]/10 text-[#186049] dark:bg-white/10 dark:text-[#ECE8AF]'
+                    ? 'bg-[#186049]/10 text-[#186049] dark:bg-white/10 dark:text-white'
                     : 'text-neutral-400'
                 }`}
               >

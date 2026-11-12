@@ -63,7 +63,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="relative flex min-h-full flex-col bg-[#FAF9F5] dark:bg-[#000000] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-300 selection:bg-[#186049]/30">
+      <body className="relative flex min-h-full flex-col bg-[#FAF9F5] dark:bg-[#000000] text-neutral-900 dark:text-white font-sans transition-colors duration-300 selection:bg-[#186049]/30">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {/* FULL VIEWPORT AMBIENT LIQUID GRADIENT (GRADASI HIJAU & OREN SEPERTI GAMBAR) */}
           <LiquidBackground />

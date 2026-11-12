@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Sparkles, Heart, Store, ShieldCheck, ShoppingBag, ArrowRight } from 'lucide-react'
+import { Heart, Store, ShieldCheck, ShoppingBag, ArrowRight } from 'lucide-react'
 
 // Color Palette Reference:
 // #186049 (Deep Pine Forest Green)
@@ -219,28 +219,19 @@ export function InteractiveLoadingScreen({
                 <Store className="h-3.5 w-3.5 text-[#ECE8AF]/80" />
               </div>
             </div>
-
-            {/* Sparkles Hiasan di Pojok */}
-            <motion.div
-              animate={{ rotate: [0, 360], scale: [0.8, 1.1, 0.8] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }}
-              className="absolute -top-1 -right-2 text-[#D98327]"
-            >
-              <Sparkles className="h-5 w-5 fill-[#D98327]" />
-            </motion.div>
           </motion.div>
 
           {/* Hint Klik Interaktif */}
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-[#186049]/40 border border-[#186049]/20 px-3 py-1 text-[11px] font-bold text-[#186049] dark:text-[#ECE8AF] cursor-pointer hover:scale-105 transition-transform"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-[#186049]/40 border border-[#186049]/20 px-3 py-1 text-[11px] font-bold text-[#186049] dark:text-white cursor-pointer hover:scale-105 transition-transform"
             onClick={handleMascotClick}
           >
-            <Sparkles className="h-3 w-3 text-[#D98327]" />
+            <Heart className="h-3 w-3 text-[#D98327]" />
             <span>
               {cheerCount === 0
-                ? 'Ketuk maskot sambil menunggu! ✨'
+                ? 'Ketuk maskot sambil menunggu!'
                 : `Disemangati ${cheerCount}x! Terima kasih ❤️`}
             </span>
           </motion.div>
@@ -313,7 +304,7 @@ export function InteractiveLoadingScreen({
             <span>Katalog Lokal</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-xl bg-white/70 dark:bg-neutral-900/70 border border-neutral-200/80 dark:border-neutral-800 px-2.5 py-1 text-[11px] font-medium text-neutral-600 dark:text-neutral-400 shadow-2xs">
-            <Sparkles className="h-3 w-3 text-[#186049] dark:text-[#ECE8AF]" />
+            <ShieldCheck className="h-3 w-3 text-[#186049] dark:text-white" />
             <span>Cepat &amp; Aman</span>
           </div>
         </div>

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, Bell, ShieldCheck, CheckSquare, Sparkles, User, ExternalLink, X, ArrowRight } from 'lucide-react'
+import { Search, Bell, ShieldCheck, CheckSquare, User, ExternalLink, X, ArrowRight } from 'lucide-react'
 import { ThemeToggle } from '@/components/theme-toggle'
 
 interface AdminHeaderProps {

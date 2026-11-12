@@ -34,11 +34,11 @@ export default async function DashboardPage() {
       {/* Header Utama */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-6 border-b border-[#186049]/15 dark:border-[#186049]/30">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-medium bg-[#186049]/10 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/30">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-medium bg-[#186049]/10 dark:bg-[#186049]/25 text-[#186049] dark:text-white border border-[#186049]/30">
             <span className="h-1.5 w-1.5 rounded-full bg-[#4A943E] animate-pulse" />
             LapakKita &bull; Ruang Penjual
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-semibold tracking-tight text-[#186049] dark:text-[#ECE8AF]">
+          <h1 className="text-2xl sm:text-3xl font-serif font-semibold tracking-tight text-[#186049] dark:text-white">
             Dashboard Penjual
           </h1>
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
           <Button
             asChild
             variant="outline"
-            className="h-10 px-4 text-xs font-medium gap-2 rounded-xl border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0d1612] hover:bg-[#186049]/10 text-[#186049] dark:text-[#ECE8AF] shadow-2xs"
+            className="h-10 px-4 text-xs font-medium gap-2 rounded-xl border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0d1612] hover:bg-[#186049]/10 text-[#186049] dark:text-white shadow-2xs"
           >
             <Link href="/dashboard/profil">
               <Store className="h-4 w-4 text-[#4A943E]" />
@@ -76,12 +76,12 @@ export default async function DashboardPage() {
         <div className="rounded-2xl border border-[#186049]/15 dark:border-[#186049]/30 bg-white dark:bg-[#0d1612] p-4 sm:p-5 shadow-2xs transition-all hover:border-[#186049]/40">
           <div className="flex items-center justify-between text-neutral-500 dark:text-neutral-400">
             <span className="text-xs font-medium">Total Produk</span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#ECE8AF]/30 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#ECE8AF]/30 dark:bg-[#186049]/30 text-[#186049] dark:text-white">
               <Package className="h-4 w-4" />
             </div>
           </div>
           <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#186049] dark:text-[#ECE8AF]">
+            <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#186049] dark:text-white">
               {totalProducts}
             </span>
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
@@ -117,7 +117,7 @@ export default async function DashboardPage() {
             </div>
           </div>
           <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#186049] dark:text-[#ECE8AF]">
+            <span className="text-2xl sm:text-3xl font-bold tracking-tight text-[#186049] dark:text-white">
               {totalClicks}
             </span>
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">

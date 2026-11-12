@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Sparkles, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface ProductGalleryProps {
   images: string[]
@@ -49,8 +49,7 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
 
         {/* Badge Produk Pilihan Hijau */}
         {isFeatured && (
-          <div className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-[#186049] px-3 py-1 text-xs font-semibold text-white shadow-md">
-            <Sparkles className="h-3.5 w-3.5" />
+          <div className="absolute left-4 top-4 flex items-center rounded-full bg-[#186049] px-3 py-1 text-xs font-semibold text-white shadow-md">
             Produk Pilihan
           </div>
         )}

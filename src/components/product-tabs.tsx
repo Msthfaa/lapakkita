@@ -13,7 +13,6 @@ import {
   Check,
   ShieldCheck,
   Award,
-  Sparkles,
 } from 'lucide-react'
 
 interface ProductTabsProps {

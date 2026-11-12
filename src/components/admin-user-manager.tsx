@@ -176,7 +176,7 @@ export function AdminUserManager({ users, currentUserId }: AdminUserManagerProps
       {/* Kartu Ringkasan Akun (Palette: #186049, #4A943E, #D98327, #ECE8AF) */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div className="flex items-center gap-4 rounded-3xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 p-6 shadow-2xs">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ECE8AF]/60 text-[#186049] dark:bg-[#186049]/40 dark:text-[#ECE8AF]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ECE8AF]/60 text-[#186049] dark:bg-[#186049]/40 dark:text-white">
             <Users className="h-6 w-6" />
           </div>
           <div>

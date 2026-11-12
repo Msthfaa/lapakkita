@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowUpRight, Clock, CheckCircle2, Users, AlertOctagon, Sparkles } from 'lucide-react'
+import { ArrowUpRight, Clock, CheckCircle2, Users, AlertOctagon } from 'lucide-react'
 import { motion } from 'motion/react'
 
 interface AdminKpiCardsProps {

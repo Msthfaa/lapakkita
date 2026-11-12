@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Calendar, TrendingUp, Sparkles } from 'lucide-react'
+import { Calendar, TrendingUp } from 'lucide-react'
 import { motion } from 'motion/react'
 
 interface DayStat {

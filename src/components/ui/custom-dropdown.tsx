@@ -83,7 +83,7 @@ export function CustomDropdown({
           isOpen
             ? 'border-[#186049] ring-2 ring-[#186049]/20 bg-white dark:bg-neutral-900 shadow-sm'
             : isSelected
-              ? 'border-[#186049]/50 dark:border-[#ECE8AF]/30 bg-neutral-50/80 dark:bg-neutral-900/80 text-[#186049] dark:text-[#ECE8AF] font-semibold'
+              ? 'border-[#186049]/50 dark:border-[#ECE8AF]/30 bg-neutral-50/80 dark:bg-neutral-900/80 text-[#186049] dark:text-white font-semibold'
               : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50/60 dark:bg-neutral-900/60 text-neutral-800 dark:text-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700'
         }`}
       >

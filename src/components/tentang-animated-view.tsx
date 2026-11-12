@@ -47,7 +47,7 @@ export function TentangAnimatedView() {
             className="lg:col-span-5 rounded-3xl bg-[#186049] p-8 sm:p-10 text-white flex flex-col justify-between shadow-lg relative overflow-hidden"
           >
             <div className="space-y-4 relative z-10">
-              <span className="text-xs font-semibold tracking-wider text-[#ECE8AF] uppercase">
+              <span className="text-xs font-semibold tracking-wider text-white/90 uppercase">
                 Filosofi Kami
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-medium leading-snug">
@@ -63,7 +63,7 @@ export function TentangAnimatedView() {
 
             <div className="pt-8 border-t border-white/15 mt-8 flex items-center gap-3 relative z-10">
               <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                <HeartHandshake className="h-5 w-5 text-[#ECE8AF]" />
+                <HeartHandshake className="h-5 w-5 text-white" />
               </div>
               <div className="text-xs">
                 <div className="font-semibold text-white">Gerakan Mandiri UMKM</div>
@@ -81,7 +81,7 @@ export function TentangAnimatedView() {
               className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 sm:p-7 space-y-2 shadow-xs hover:border-[#186049]/40 hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
+                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#186049] dark:text-white flex items-center justify-center shrink-0">
                   <BadgePercent className="h-5 w-5" />
                 </div>
                 <h3 className="font-serif text-lg font-semibold text-neutral-900 dark:text-white">
@@ -100,7 +100,7 @@ export function TentangAnimatedView() {
               className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 sm:p-7 space-y-2 shadow-xs hover:border-[#186049]/40 hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
+                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#186049] dark:text-white flex items-center justify-center shrink-0">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <h3 className="font-serif text-lg font-semibold text-neutral-900 dark:text-white">
@@ -119,7 +119,7 @@ export function TentangAnimatedView() {
               className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/90 p-6 sm:p-7 space-y-2 shadow-xs hover:border-[#186049]/40 hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#186049] dark:text-[#ECE8AF] flex items-center justify-center shrink-0">
+                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-[#186049] dark:text-white flex items-center justify-center shrink-0">
                   <Users className="h-5 w-5" />
                 </div>
                 <h3 className="font-serif text-lg font-semibold text-neutral-900 dark:text-white">

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react'
 import { useState, useEffect } from 'react'
-import { Sparkles, Store, CheckCircle2 } from 'lucide-react'
+import { Store, CheckCircle2 } from 'lucide-react'
 
 interface CuteLapakLoaderProps {
   message?: string
@@ -52,30 +52,6 @@ export function CuteLapakLoader({
           className="absolute h-24 w-24 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-300 dark:from-emerald-600 dark:to-teal-500 blur-xl pointer-events-none"
         />
 
-        {/* Bintang-bintang Sparkle Melayang */}
-        <motion.div
-          animate={{
-            y: [-6, 6, -6],
-            rotate: [0, 15, -15, 0],
-            opacity: [0.6, 1, 0.6],
-          }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-1 -right-1 text-amber-400"
-        >
-          <Sparkles className="h-5 w-5 fill-amber-300" />
-        </motion.div>
-
-        <motion.div
-          animate={{
-            y: [5, -5, 5],
-            rotate: [0, -20, 20, 0],
-            opacity: [0.4, 0.9, 0.4],
-          }}
-          transition={{ duration: 2.3, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-          className="absolute -bottom-1 -left-2 text-emerald-400"
-        >
-          <Sparkles className="h-4 w-4 fill-emerald-300" />
-        </motion.div>
 
         {/* Maskot Toko / Kotak UMKM Lucu */}
         <motion.div

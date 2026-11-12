@@ -13,16 +13,16 @@ const buttonVariants = cva(
         destructive:
           "bg-rose-600 text-white shadow-sm hover:bg-rose-700",
         outline:
-          "border border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] shadow-2xs hover:bg-[#186049]/5 dark:hover:bg-[#186049]/20 text-[#186049] dark:text-[#ECE8AF]",
+          "border border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] shadow-2xs hover:bg-[#186049]/5 dark:hover:bg-[#186049]/20 text-[#186049] dark:text-white",
         secondary:
-          "bg-[#ECE8AF]/30 dark:bg-[#186049]/30 text-[#186049] dark:text-[#ECE8AF] shadow-2xs hover:bg-[#ECE8AF]/50 dark:hover:bg-[#186049]/50",
+          "bg-[#ECE8AF]/30 dark:bg-[#186049]/30 text-[#186049] dark:text-white shadow-2xs hover:bg-[#ECE8AF]/50 dark:hover:bg-[#186049]/50",
         accent:
           "bg-[#D98327] text-white shadow hover:bg-[#c0721e] active:scale-[0.98] transition-all",
         green:
           "bg-[#4A943E] text-white shadow hover:bg-[#3d7c33] transition-all",
         ghost:
           "hover:bg-[#186049]/10 text-neutral-700 dark:text-neutral-300 hover:text-[#186049] dark:hover:text-[#ECE8AF]",
-        link: "text-[#186049] dark:text-[#ECE8AF] underline-offset-4 hover:underline hover:text-[#D98327]",
+        link: "text-[#186049] dark:text-white underline-offset-4 hover:underline hover:text-[#D98327]",
         whatsapp:
           "bg-[#25D366] text-white shadow hover:bg-[#1EBE5D] font-semibold",
       },

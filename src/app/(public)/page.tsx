@@ -5,7 +5,7 @@ import {
 } from '@/features/products/queries'
 import { ProductCard } from '@/components/product-card'
 import { HeroCarousel } from '@/components/hero-carousel'
-import { Sparkles, ArrowDown, ArrowRight, Layers } from 'lucide-react'
+import { ArrowDown, ArrowRight, Layers } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function HomePage() {
@@ -61,23 +61,18 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-5">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#186049]/15 text-[#186049]">
-                <Sparkles className="h-4 w-4" />
-              </div>
-              <div>
-                <h2 className="font-serif text-2xl font-normal text-neutral-900 dark:text-white">
-                  Produk Unggulan Kurasi
-                </h2>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                  Produk UMKM pilihan dengan kualitas terverifikasi dan siap dihubungi langsung
-                </p>
-              </div>
+            <div>
+              <h2 className="font-serif text-2xl font-normal text-neutral-900 dark:text-white">
+                Produk Unggulan Kurasi
+              </h2>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                Produk UMKM pilihan dengan kualitas terverifikasi dan siap dihubungi langsung
+              </p>
             </div>
 
             <Link
               href="/kategori"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#186049] dark:text-[#ECE8AF] hover:text-[#4A943E] transition-colors self-start sm:self-auto"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#186049] dark:text-white hover:text-[#4A943E] transition-colors self-start sm:self-auto"
             >
               <span>Buka Semua Kategori &amp; Pencarian</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -100,7 +95,7 @@ export default async function HomePage() {
           {/* Banner Eksplorasi Kategori & Pencarian */}
           <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/60 p-8 sm:p-10 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-white/10 px-3 py-1 text-[11px] font-semibold text-[#186049] dark:text-[#ECE8AF]">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-white/10 px-3 py-1 text-[11px] font-semibold text-[#186049] dark:text-white">
                 <Layers className="h-3 w-3 text-[#186049] dark:text-[#4A943E]" />
                 <span>Eksplorasi Lengkap</span>
               </div>

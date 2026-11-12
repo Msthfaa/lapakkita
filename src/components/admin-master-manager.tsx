@@ -22,7 +22,7 @@ import {
   deleteRegionAction,
 } from '@/features/admin/actions'
 import { swalDeleteConfirm, swalSuccess, swalError } from '@/lib/sweetalert'
-import { Plus, Edit2, Trash2, Tag, MapPin, Loader2, AlertTriangle, Sparkles } from 'lucide-react'
+import { Plus, Edit2, Trash2, Tag, MapPin, Loader2, AlertTriangle } from 'lucide-react'
 
 interface ItemData {
   id: number
@@ -272,7 +272,7 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
               className="flex items-center justify-between p-4 rounded-2xl border border-neutral-200/80 dark:border-neutral-900 bg-white dark:bg-neutral-950 shadow-2xs hover:border-[#4A943E]/50 dark:hover:border-[#4A943E]/40 transition-all group"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#ECE8AF]/50 dark:bg-[#186049]/40 text-[#186049] dark:text-[#ECE8AF]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#ECE8AF]/50 dark:bg-[#186049]/40 text-[#186049] dark:text-white">
                   {activeTab === 'kategori' ? (
                     <Tag className="h-4 w-4" />
                   ) : (
@@ -318,8 +318,8 @@ export function AdminMasterManager({ categories, regions }: AdminMasterManagerPr
           <form onSubmit={handleAddSubmit}>
             <DialogHeader className="space-y-2">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#ECE8AF] text-[#186049] font-bold">
-                  <Sparkles className="h-4 w-4" />
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#186049] text-white font-bold">
+                  <Plus className="h-4 w-4" />
                 </div>
                 <DialogTitle className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white">
                   Tambah {activeTab === 'kategori' ? 'Kategori Produk' : 'Daerah Baru'}

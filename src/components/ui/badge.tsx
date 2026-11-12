@@ -10,10 +10,10 @@ const badgeVariants = cva(
         default:
           "border-transparent bg-[#186049] text-[#ECE8AF] hover:bg-[#124b39]",
         secondary:
-          "border-[#ECE8AF]/30 dark:border-white/[0.08] bg-[#ECE8AF]/15 dark:bg-white/[0.04] text-[#186049] dark:text-[#ECE8AF]",
+          "border-[#ECE8AF]/30 dark:border-white/[0.08] bg-[#ECE8AF]/15 dark:bg-white/[0.04] text-[#186049] dark:text-white",
         destructive:
           "border-rose-500/20 bg-rose-500/10 text-rose-700 dark:text-rose-300",
-        outline: "text-[#186049] dark:text-[#ECE8AF] border-[#186049]/30 dark:border-[#186049]/40 bg-transparent",
+        outline: "text-[#186049] dark:text-white border-[#186049]/30 dark:border-[#186049]/40 bg-transparent",
         success:
           "border-[#4A943E]/30 bg-[#4A943E]/15 text-[#4A943E] dark:text-[#6ec961]",
         warning:
@@ -21,7 +21,7 @@ const badgeVariants = cva(
         danger:
           "border-rose-500/20 bg-rose-500/10 text-rose-700 dark:text-rose-300",
         forest:
-          "border-[#186049]/30 bg-[#186049]/15 text-[#186049] dark:text-[#ECE8AF]",
+          "border-[#186049]/30 bg-[#186049]/15 text-[#186049] dark:text-white",
         amber:
           "border-[#D98327]/30 bg-[#D98327]/15 text-[#D98327] dark:text-[#f7a348]",
       },

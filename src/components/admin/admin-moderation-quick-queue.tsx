@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { CheckSquare, ArrowRight, Clock, ShieldCheck, Sparkles } from 'lucide-react'
+import { CheckSquare, ArrowRight, Clock, ShieldCheck } from 'lucide-react'
 import { formatRupiah } from '@/lib/format'
 import { motion } from 'motion/react'
 
@@ -37,7 +37,7 @@ export function AdminModerationQuickQueue({
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
             pendingCount > 0
               ? 'bg-[#D98327]/15 text-[#D98327] dark:bg-[#D98327]/25 animate-pulse'
-              : 'bg-[#ECE8AF]/60 text-[#186049] dark:bg-[#186049]/40 dark:text-[#ECE8AF]'
+              : 'bg-[#ECE8AF]/60 text-[#186049] dark:bg-[#186049]/40 dark:text-white'
           }`}
         >
           {pendingCount > 0 ? (

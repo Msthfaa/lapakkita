@@ -8,7 +8,7 @@ import { AdminMasterOverview } from '@/components/admin/admin-master-overview'
 import { AdminSystemPulse } from '@/components/admin/admin-system-pulse'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { CheckSquare, Sparkles, ShieldCheck, ArrowRight } from 'lucide-react'
+import { CheckSquare, ShieldCheck, ArrowRight } from 'lucide-react'
 
 export const metadata = {
   title: 'Dashboard Admin - LapakKita',
@@ -27,7 +27,7 @@ export default async function AdminDashboardPage() {
               Dashboard
             </h1>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/70 px-3 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               Sistem Aktif
             </span>
           </div>

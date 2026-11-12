@@ -177,7 +177,7 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
 
             {/* Kategori */}
             {product.category && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#ECE8AF]/30 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/15 dark:border-[#186049]/30 px-2.5 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#ECE8AF]/30 dark:bg-[#186049]/25 text-[#186049] dark:text-white border border-[#186049]/15 dark:border-[#186049]/30 px-2.5 py-0.5 rounded-full">
                 <Tag className="h-2.5 w-2.5 opacity-70" />
                 {product.category.nama}
               </span>
@@ -185,7 +185,7 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
 
             {/* Daerah */}
             {product.region && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#ECE8AF]/30 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/15 dark:border-[#186049]/30 px-2.5 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-[#ECE8AF]/30 dark:bg-[#186049]/25 text-[#186049] dark:text-white border border-[#186049]/15 dark:border-[#186049]/30 px-2.5 py-0.5 rounded-full">
                 <MapPin className="h-2.5 w-2.5 text-[#D98327]" />
                 {product.region.nama}
               </span>
@@ -208,7 +208,7 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
           </div>
 
           {/* Klik WA Chip */}
-          <div className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-lg text-xs font-medium bg-[#186049]/10 dark:bg-[#186049]/25 text-[#186049] dark:text-[#ECE8AF] border border-[#186049]/25">
+          <div className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-lg text-xs font-medium bg-[#186049]/10 dark:bg-[#186049]/25 text-[#186049] dark:text-white border border-[#186049]/25">
             <MessageCircle className="h-3.5 w-3.5 text-[#4A943E]" />
             <span>{product.total_clicks} kali diklik pembeli via WhatsApp</span>
           </div>
@@ -255,10 +255,10 @@ export function SellerProductItem({ product }: SellerProductItemProps) {
             asChild
             size="sm"
             variant="outline"
-            className="h-8 px-3 text-xs font-medium gap-1.5 rounded-lg border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] hover:bg-[#186049]/10 text-[#186049] dark:text-[#ECE8AF]"
+            className="h-8 px-3 text-xs font-medium gap-1.5 rounded-lg border-[#186049]/25 dark:border-[#186049]/40 bg-white/80 dark:bg-[#0f1915] hover:bg-[#186049]/10 text-[#186049] dark:text-white"
           >
             <Link href={`/dashboard/produk/${product.id}/ubah`}>
-              <Edit className="h-3.5 w-3.5 text-[#186049] dark:text-[#ECE8AF]" />
+              <Edit className="h-3.5 w-3.5 text-[#186049] dark:text-white" />
               Edit
             </Link>
           </Button>
