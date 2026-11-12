@@ -73,11 +73,11 @@ export function FloatingRouteLoader() {
         setTargetContext('general')
       }
 
-      // Jika transisi butuh lebih dari 120ms, tampilkan full interactive overlay
+      // Jika transisi butuh lebih dari 400ms, tampilkan full interactive overlay yang halus
       if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current)
       overlayTimerRef.current = setTimeout(() => {
         setShowFullOverlay(true)
-      }, 120)
+      }, 400)
     }
 
     document.addEventListener('click', handleClick)
@@ -89,7 +89,7 @@ export function FloatingRouteLoader() {
 
   return (
     <>
-      {/* Full-Screen Interactive Overlay saat transisi halaman butuh waktu muat */}
+      {/* Full-Screen Interactive Overlay saat transisi halaman butuh waktu muat >400ms */}
       <AnimatePresence>
         {showFullOverlay && (
           <motion.div
@@ -118,36 +118,37 @@ export function FloatingRouteLoader() {
       <AnimatePresence>
         {loading && !showFullOverlay && (
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            initial={{ opacity: 0, y: 24, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ type: 'spring', damping: 25, stiffness: 350 }}
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none select-none"
           >
-            <div className="flex items-center gap-3 rounded-full bg-[#186049] text-white dark:bg-[#0A1A14] dark:text-white border border-[#ECE8AF]/30 dark:border-[#186049]/60 px-4 py-2 shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-2.5 rounded-full bg-[#186049] text-white dark:bg-[#101814] dark:text-white border border-white/20 dark:border-white/15 px-3.5 py-1.5 shadow-2xl backdrop-blur-md">
               {completed ? (
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#4A943E] text-white">
-                  <Check className="h-3 w-3 stroke-[3]" />
+                  <Check className="h-3 w-3 stroke-[2.5]" />
                 </div>
               ) : (
-                <motion.div
-                  animate={{ y: [-2, 2, -2], rotate: [-6, 6, -6] }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
-                  className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D98327] text-white shadow-xs"
-                >
-                  <Store className="h-3.5 w-3.5" />
-                </motion.div>
+                <div className="relative flex h-5 w-5 items-center justify-center">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-0 rounded-full border-2 border-white/25 border-t-white"
+                  />
+                  <Store className="h-2.5 w-2.5 text-white" />
+                </div>
               )}
-              <div className="flex items-center gap-1.5 text-xs font-bold tracking-wide">
-                <span>{completed ? 'Halaman Siap!' : 'Memuat Data...'}</span>
+              <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-white dark:text-white">
+                <span>{completed ? 'Halaman Siap' : 'Memuat data...'}</span>
                 {!completed && (
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 ml-0.5">
                     {[0, 1, 2].map((i) => (
                       <motion.span
                         key={i}
-                        animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
+                        animate={{ opacity: [0.35, 1, 0.35], scale: [0.85, 1.15, 0.85] }}
                         transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                        className="h-1.5 w-1.5 rounded-full bg-[#ECE8AF]"
+                        className="h-1 w-1 rounded-full bg-white dark:bg-white"
                       />
                     ))}
                   </div>
