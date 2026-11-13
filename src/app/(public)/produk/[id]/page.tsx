@@ -72,8 +72,8 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-24 sm:pt-28 pb-20 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
-      {/* 1. Navigasi Atas & Breadcrumb */}
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+      {/* 1. Tombol Kembali ke Katalog */}
+      <div className="flex items-center justify-start text-xs">
         <Link
           href="/kategori"
           className="inline-flex items-center gap-2 rounded-full glass-btn px-4 py-2 text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:text-[#186049] dark:hover:text-white transition-all shadow-xs group"
@@ -81,31 +81,6 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
           <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
           <span>Kembali ke Katalog</span>
         </Link>
-
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400">
-          <Link href="/" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
-            Beranda
-          </Link>
-          <ChevronRight className="h-3 w-3 text-neutral-400" />
-          <Link href="/kategori" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
-            Katalog
-          </Link>
-          {product.category && (
-            <>
-              <ChevronRight className="h-3 w-3 text-neutral-400" />
-              <Link
-                href={`/kategori?kategori=${product.category.id}`}
-                className="hover:text-neutral-900 dark:hover:text-white transition-colors"
-              >
-                {product.category.nama}
-              </Link>
-            </>
-          )}
-          <ChevronRight className="h-3 w-3 text-neutral-400" />
-          <span className="text-neutral-900 dark:text-white font-medium truncate max-w-[160px] sm:max-w-[240px]">
-            {product.nama}
-          </span>
-        </nav>
       </div>
 
       {/* 2. Banner Peringatan Jika Produk Dinonaktifkan */}
