@@ -2,18 +2,26 @@ import {
   getCategories,
   getFeaturedProducts,
   getPopularProducts,
+  getApprovedProducts,
 } from '@/features/products/queries'
 import { ProductCard } from '@/components/product-card'
 import { HeroCarousel } from '@/components/hero-carousel'
-import { ArrowDown, ArrowRight, Layers } from 'lucide-react'
+import { HomeCatalogExplorer } from '@/components/home-catalog-explorer'
+import { ArrowDown, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function HomePage() {
   // Fetch data for homepage
-  const [categories, featuredProducts, popularProducts] = await Promise.all([
+  const [
+    categories,
+    featuredProducts,
+    popularProducts,
+    { products: latestProducts, total: totalCount },
+  ] = await Promise.all([
     getCategories(),
     getFeaturedProducts(),
     getPopularProducts(14),
+    getApprovedProducts({ page: 1 }),
   ])
 
   // Products prioritized for the 3D hero carousel
@@ -56,13 +64,13 @@ export default async function HomePage() {
       {/* ===== SECTION PRODUK UNGGULAN KURASI ===== */}
       <section
         id="unggulan"
-        className="scroll-mt-24 border-t border-neutral-200/50 dark:border-neutral-800/60 bg-transparent py-16 transition-colors duration-300"
+        className="scroll-mt-24 border-t border-neutral-200/50 dark:border-neutral-800/60 bg-transparent py-10 sm:py-16 transition-colors duration-300"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-5">
             <div>
-              <h2 className="font-serif text-2xl font-normal text-neutral-900 dark:text-white">
+              <h2 className="font-serif text-xl sm:text-2xl font-normal text-neutral-900 dark:text-white">
                 Produk Unggulan Kurasi
               </h2>
               <p className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -81,7 +89,7 @@ export default async function HomePage() {
 
           {/* Grid Produk Unggulan */}
           {featuredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -91,45 +99,15 @@ export default async function HomePage() {
               Belum ada produk yang ditandai sebagai unggulan.
             </div>
           )}
-
-          {/* Banner Eksplorasi Kategori & Pencarian */}
-          <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-900/60 p-8 sm:p-10 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="space-y-2 text-center md:text-left">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#ECE8AF]/60 dark:bg-white/10 px-3 py-1 text-[11px] font-semibold text-[#186049] dark:text-white">
-                <Layers className="h-3 w-3 text-[#186049] dark:text-[#4A943E]" />
-                <span>Eksplorasi Lengkap</span>
-              </div>
-              <h3 className="font-serif text-xl sm:text-2xl font-normal text-neutral-900 dark:text-white">
-                Cari Produk Berdasarkan Kategori &amp; Daerah
-              </h3>
-              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
-                Ingin mencari produk spesifik? Jelajahi tab kategori untuk memfilter kuliner, kerajinan, fashion, hingga hasil pertanian dari berbagai daerah.
-              </p>
-
-              {/* Quick Category Chips Preview */}
-              <div className="flex flex-wrap gap-2 pt-2 justify-center md:justify-start">
-                {categories.slice(0, 5).map((cat) => (
-                  <Link
-                    key={cat.id}
-                    href={`/kategori?kategori=${cat.id}`}
-                    className="rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-[#ECE8AF]/60 px-3 py-1 text-xs text-neutral-700 dark:text-neutral-300 transition-colors"
-                  >
-                    {cat.nama}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <Link
-              href="/kategori"
-              className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-[#186049] hover:bg-[#124b39] text-white px-6 py-3.5 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md active:scale-95"
-            >
-              <span>Buka Tab Kategori &amp; Pencarian</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
         </div>
       </section>
+
+      {/* ===== SECTION ETALASE RAGAM PRODUK (KATALOG EXPLORER) ===== */}
+      <HomeCatalogExplorer
+        categories={categories}
+        products={latestProducts}
+        totalCount={totalCount}
+      />
     </div>
   )
 }

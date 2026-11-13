@@ -20,7 +20,7 @@ export default function PublicLoading() {
       {/* Grid Kartu Produk Shimmer */}
       <div className="space-y-4">
         <div className="h-6 w-48 rounded-lg bg-neutral-200/60 dark:bg-neutral-800" />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {[...Array(8)].map((_, i) => (
             <div
               key={i}

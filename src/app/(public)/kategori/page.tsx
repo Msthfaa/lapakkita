@@ -180,7 +180,7 @@ async function KategoriResults({ searchParams }: PageProps) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -209,7 +209,7 @@ function KategoriLoadingSkeleton() {
         <div className="h-8 w-20 rounded-full bg-neutral-200 dark:bg-neutral-800" />
       </div>
       <div className="mx-auto max-w-4xl h-16 rounded-2xl bg-neutral-200 dark:bg-neutral-900" />
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-6">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
           <div key={n} className="aspect-square rounded-2xl bg-neutral-100 dark:bg-neutral-900" />
         ))}

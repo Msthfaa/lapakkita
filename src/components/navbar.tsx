@@ -326,7 +326,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                   <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 px-3 py-1">
                     Navigasi Halaman
                   </div>
-                  {NAV_ITEMS.map((item) => {
+                  {NAV_ITEMS.filter((item) => item.id !== 'unggulan').map((item) => {
                     const isActive = activeTab === item.id
                     return (
                       <Link

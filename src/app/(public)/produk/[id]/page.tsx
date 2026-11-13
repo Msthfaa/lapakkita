@@ -171,7 +171,7 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
         </div>
 
         {displayProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {displayProducts.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
