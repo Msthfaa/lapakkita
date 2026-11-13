@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOutAction } from '@/features/auth/actions'
@@ -9,7 +10,6 @@ import {
   LayoutDashboard,
   Menu,
   X,
-  Store,
   Sun,
   Moon,
   LogIn,
@@ -142,14 +142,24 @@ export function Navbar({ user, profile }: NavbarProps) {
                 setActiveTab('beranda')
               }
             }}
-            className="group flex h-11 items-center gap-2.5 rounded-full glass-pill px-4 transition-transform duration-200 hover:scale-[1.02] active:scale-95"
+            className="group flex h-11 items-center rounded-full glass-pill px-4 transition-transform duration-200 hover:scale-[1.02] active:scale-95"
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-tr from-[#186049] via-[#2a7a58] to-[#4A943E] text-white shadow-xs font-serif font-bold text-xs shrink-0">
-              <Store className="h-4 w-4 text-white drop-shadow-xs" />
-            </div>
-            <span className="font-serif text-base font-semibold tracking-tight text-[#186049] dark:text-white transition-colors select-none">
-              Lapak<span className="text-[#4A943E] dark:text-[#5ebd4f] font-bold">Kita</span>
-            </span>
+            <Image
+              src="/logo.png"
+              alt="LapakKita"
+              width={956}
+              height={214}
+              priority
+              className="h-6 sm:h-6.5 w-auto block dark:hidden object-contain select-none"
+            />
+            <Image
+              src="/logo-dark.png"
+              alt="LapakKita"
+              width={956}
+              height={214}
+              priority
+              className="h-6 sm:h-6.5 w-auto hidden dark:block object-contain select-none"
+            />
           </Link>
         </div>
 
@@ -303,14 +313,32 @@ export function Navbar({ user, profile }: NavbarProps) {
               <div className="flex flex-col space-y-4">
                 {/* Header Menu */}
                 <div className="flex items-center justify-between pb-3 border-b border-neutral-200/70 dark:border-white/10">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-tr from-[#186049] via-[#2a7a58] to-[#4A943E] text-white shadow-xs font-serif font-bold text-xs">
-                      <Store className="h-3.5 w-3.5 text-white" />
-                    </div>
-                    <span className="font-serif text-base font-semibold tracking-tight text-[#186049] dark:text-white">
-                      Lapak<span className="text-[#4A943E] dark:text-[#5ebd4f]">Kita</span>
-                    </span>
-                  </div>
+                  <Link
+                    href="/"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      if (isHomePage) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                        setActiveTab('beranda')
+                      }
+                    }}
+                    className="flex items-center"
+                  >
+                    <Image
+                      src="/logo.png"
+                      alt="LapakKita"
+                      width={956}
+                      height={214}
+                      className="h-6 w-auto block dark:hidden object-contain select-none"
+                    />
+                    <Image
+                      src="/logo-dark.png"
+                      alt="LapakKita"
+                      width={956}
+                      height={214}
+                      className="h-6 w-auto hidden dark:block object-contain select-none"
+                    />
+                  </Link>
                   <button
                     type="button"
                     onClick={() => setMobileMenuOpen(false)}
