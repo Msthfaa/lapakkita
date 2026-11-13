@@ -54,13 +54,18 @@ export const getRegions = unstable_cache(
   }
 )
 
-export async function getMyProducts() {
+export async function getMyProducts(providedUserId?: string) {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let userId = providedUserId
 
-  if (!user) return []
+  if (!userId) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) return []
+    userId = user.id
+  }
 
   const [productsRes, regions] = await Promise.all([
     supabase
@@ -72,7 +77,7 @@ export async function getMyProducts() {
         wa_clicks(count)
       `
       )
-      .eq('seller_id', user.id)
+      .eq('seller_id', userId)
       .order('created_at', { ascending: false }),
     getRegions().catch(() => []),
   ])

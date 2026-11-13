@@ -24,9 +24,20 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Jika bukan rute terlindungi dan bukan rute login, dan tidak ada cookie auth,
-  // langsung loloskan request (0ms network latency untuk pengunjung publik)
-  if (!isProtectedPath && !isAuthPath && !hasAuthCookie) {
+  // Fast-path untuk rute publik (/, /kategori, /tentang, dll):
+  // Jika bukan rute terlindungi (/dashboard, /admin) dan bukan rute auth (/masuk, /daftar),
+  // langsung loloskan request (0ms network latency tanpa memanggil auth.getUser())
+  if (!isProtectedPath && !isAuthPath) {
+    return NextResponse.next({ request })
+  }
+
+  // Cek apakah request merupakan prefetch dari Next.js router
+  const isPrefetch =
+    request.headers.get('next-router-prefetch') === '1' ||
+    request.headers.get('purpose') === 'prefetch'
+
+  // Lewati pemeriksaan auth.getUser() untuk request prefetch guna mencegah token lock & network overhead
+  if (isPrefetch) {
     return NextResponse.next({ request })
   }
 

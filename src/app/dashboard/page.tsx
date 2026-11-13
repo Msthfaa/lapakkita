@@ -21,7 +21,7 @@ export default async function DashboardPage() {
     redirect('/admin')
   }
 
-  const products = await getMyProducts()
+  const products = await getMyProducts(user.id)
 
   // Ringkasan metrik toko
   const totalProducts = products.length
