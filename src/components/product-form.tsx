@@ -812,13 +812,13 @@ export function ProductForm({
                 onClick={() => setShowMap(!showMap)}
                 className="h-7 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/50"
               >
-                {showMap ? 'Sembunyikan Peta' : 'ðŸ“ Atur Titik di Peta'}
+                {showMap ? 'Sembunyikan Peta' : 'Atur Titik di Peta'}
               </Button>
             </div>
 
             {currentLat && currentLng ? (
               <p className="text-xs text-emerald-800 dark:text-emerald-300 font-medium bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-1 rounded border border-emerald-200 dark:border-emerald-800/60">
-                âœ“ Koordinat tersimpan: ({currentLat.toFixed(5)}, {currentLng.toFixed(5)})
+                ✓ Koordinat tersimpan: ({currentLat.toFixed(5)}, {currentLng.toFixed(5)})
               </p>
             ) : (
               <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
@@ -874,7 +874,7 @@ export function ProductForm({
                     : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
                 }`}
               >
-                {currentIsActive ? 'ðŸŸ¢ Siap Tayang / Aktif' : 'â¸ï¸ Disembunyikan / Nonaktif'}
+                {currentIsActive ? 'Siap Tayang / Aktif' : 'Disembunyikan / Nonaktif'}
               </span>
             </div>
             <p className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -897,7 +897,7 @@ export function ProductForm({
                   className="mt-1 h-4 w-4 text-emerald-600 focus:ring-emerald-500"
                 />
                 <div className="text-xs">
-                  <span className="font-bold text-neutral-900 dark:text-white block">ðŸŸ¢ Aktifkan Produk</span>
+                  <span className="font-bold text-neutral-900 dark:text-white block">Aktifkan Produk</span>
                   <span className="text-neutral-500 dark:text-neutral-400">
                     Produk akan langsung tampil di etalase publik setelah disetujui admin.
                   </span>
@@ -919,7 +919,7 @@ export function ProductForm({
                   className="mt-1 h-4 w-4 text-neutral-600 focus:ring-neutral-500"
                 />
                 <div className="text-xs">
-                  <span className="font-bold text-neutral-900 dark:text-white block">â¸ï¸ Nonaktifkan Sementara</span>
+                  <span className="font-bold text-neutral-900 dark:text-white block">Nonaktifkan Sementara</span>
                   <span className="text-neutral-500 dark:text-neutral-400">
                     Sembunyikan dari katalog publik. Anda bisa mengaktifkannya kapan saja di Dashboard.
                   </span>
