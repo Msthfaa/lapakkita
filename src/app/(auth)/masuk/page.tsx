@@ -7,12 +7,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginInput } from '@/features/auth/schema'
 import { signInAction } from '@/features/auth/actions'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { Loader2, Store } from 'lucide-react'
+import { Loader2, Store, Mail, Lock, Sparkles, Shield, UserCheck } from 'lucide-react'
+import { AuthScenicBackground } from '@/components/auth-scenic-background'
 
 export default function MasukPage() {
   const router = useRouter()
@@ -35,8 +32,8 @@ export default function MasukPage() {
         toast.error(res.error || 'Gagal masuk. Periksa email dan password.')
       } else {
         toast.success('Berhasil masuk!')
-        router.push(res.redirectTo || '/dashboard')
-        router.refresh()
+        // Gunakan navigasi langsung agar cookie session terbaca penuh oleh browser & server
+        window.location.href = res.redirectTo || '/dashboard'
       }
     } catch {
       toast.error('Terjadi kesalahan saat masuk. Coba lagi nanti.')
@@ -46,126 +43,152 @@ export default function MasukPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-start sm:justify-center px-4 pt-28 pb-16 sm:pt-36 sm:pb-24">
-      <div className="my-auto w-full max-w-md">
-        <Card className="w-full rounded-3xl border border-neutral-200/80 dark:border-white/10 bg-white/95 dark:bg-neutral-900/90 backdrop-blur-xl shadow-2xl transition-all">
-          <CardHeader className="text-center space-y-3 pb-6">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#186049] to-[#257d5a] text-white shadow-lg shadow-[#186049]/20 ring-4 ring-[#186049]/10">
-              <Store className="h-7 w-7" />
+    <AuthScenicBackground>
+      <div className="w-full max-w-lg sm:max-w-[540px] mx-auto relative z-10 px-4 py-8">
+        <div className="w-full bg-[#0E3D2F] dark:bg-[#0A2D23] rounded-[2.5rem] p-9 sm:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] border border-white/20 backdrop-blur-md text-white transition-all">
+          {/* Header */}
+          <div className="text-center space-y-3 pb-6">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-white shadow-inner border border-white/20">
+              <Store className="h-8 w-8 text-[#ECE8AF]" />
             </div>
             <div>
-              <CardTitle className="text-2xl sm:text-3xl font-serif font-normal text-neutral-900 dark:text-white">
-                Masuk ke LapakKita
-              </CardTitle>
-              <CardDescription className="mt-1.5 text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-serif">
+                Masuk
+              </h1>
+              <p className="mt-2 text-sm sm:text-base text-[#ECE8AF] font-medium">
                 Kelola produk UMKM Anda atau masuk sebagai admin
-              </CardDescription>
+              </p>
             </div>
-          </CardHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <CardContent className="space-y-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-xs font-semibold text-neutral-700 dark:text-neutral-200">
-                  Alamat Email
-                </Label>
-                <Input
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Email Field */}
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-bold text-white tracking-wide block">
+                Alamat Email
+              </label>
+              <div className="relative">
+                <input
                   id="email"
                   type="email"
                   placeholder="nama@contoh.com"
                   disabled={loading}
-                  className="h-11 rounded-xl bg-neutral-50/70 dark:bg-neutral-800/60 border-neutral-200 dark:border-neutral-700/80 text-sm focus-visible:ring-2 focus-visible:ring-[#186049] transition-all"
+                  className="w-full h-14 rounded-full bg-[#29745A] dark:bg-[#338568] text-white placeholder-[#ECE8AF]/80 border border-white/20 px-6 pr-14 text-base focus:outline-none focus:ring-2 focus:ring-[#ECE8AF] focus:border-transparent transition-all shadow-inner"
                   {...register('email')}
                 />
-                {errors.email && (
-                  <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.email.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-xs font-semibold text-neutral-700 dark:text-neutral-200">
-                    Kata Sandi
-                  </Label>
+                <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+                  <Mail className="h-5 w-5" />
                 </div>
-                <Input
+              </div>
+              {errors.email && (
+                <p className="text-xs sm:text-sm text-amber-200 font-medium mt-1.5">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Password Field */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="password" className="text-sm font-bold text-white tracking-wide block">
+                  Kata Sandi
+                </label>
+              </div>
+              <div className="relative">
+                <input
                   id="password"
                   type="password"
                   placeholder="Masukkan kata sandi"
                   disabled={loading}
-                  className="h-11 rounded-xl bg-neutral-50/70 dark:bg-neutral-800/60 border-neutral-200 dark:border-neutral-700/80 text-sm focus-visible:ring-2 focus-visible:ring-[#186049] transition-all"
+                  className="w-full h-14 rounded-full bg-[#29745A] dark:bg-[#338568] text-white placeholder-[#ECE8AF]/80 border border-white/20 px-6 pr-14 text-base focus:outline-none focus:ring-2 focus:ring-[#ECE8AF] focus:border-transparent transition-all shadow-inner"
                   {...register('password')}
                 />
-                {errors.password && (
-                  <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">{errors.password.message}</p>
-                )}
-              </div>
-
-              <div className="rounded-2xl bg-neutral-50 dark:bg-neutral-800/40 p-3.5 border border-neutral-200/80 dark:border-neutral-800 text-xs">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-semibold text-neutral-800 dark:text-white">
-                    Akun Demo (Klik untuk isi cepat)
-                  </span>
-                  <span className="text-[10px] font-medium text-neutral-400">1-Klik</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValue('email', 'admin@gmail.com')
-                      setValue('password', '123456')
-                    }}
-                    className="group text-left p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-neutral-900 hover:border-[#D98327] dark:hover:border-[#D98327] hover:shadow-xs transition-all cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-neutral-800 dark:text-white text-xs">Admin</span>
-                      <span className="text-[10px] font-mono text-[#D98327] font-semibold bg-[#D98327]/10 px-1.5 py-0.5 rounded">123456</span>
-                    </div>
-                    <div className="text-neutral-500 dark:text-neutral-400 text-[11px] truncate mt-0.5">admin@gmail.com</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValue('email', 'penjual@gmail.com')
-                      setValue('password', '123456')
-                    }}
-                    className="group text-left p-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-neutral-900 hover:border-[#4A943E] dark:hover:border-[#4A943E] hover:shadow-xs transition-all cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-neutral-800 dark:text-white text-xs">Penjual</span>
-                      <span className="text-[10px] font-mono text-[#4A943E] font-semibold bg-[#4A943E]/10 px-1.5 py-0.5 rounded">123456</span>
-                    </div>
-                    <div className="text-neutral-500 dark:text-neutral-400 text-[11px] truncate mt-0.5">penjual@gmail.com</div>
-                  </button>
+                <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+                  <Lock className="h-5 w-5" />
                 </div>
               </div>
-            </CardContent>
+              {errors.password && (
+                <p className="text-xs sm:text-sm text-amber-200 font-medium mt-1.5">{errors.password.message}</p>
+              )}
+            </div>
 
-            <CardFooter className="flex flex-col space-y-4 pt-2">
-              <Button
+            {/* 1-Click Demo Account Pills */}
+            <div className="rounded-2xl bg-black/25 backdrop-blur-md p-4 border border-white/20 text-xs mt-3">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-bold text-sm text-[#ECE8AF] flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#ECE8AF]" />
+                  Akun Demo (Klik untuk isi cepat)
+                </span>
+                <span className="text-[11px] font-bold text-[#0E3D2F] bg-[#ECE8AF] px-2.5 py-0.5 rounded-full shadow-sm">
+                  1-Klik
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setValue('email', 'admin@gmail.com')
+                    setValue('password', '123456')
+                  }}
+                  className="group text-left p-3 rounded-2xl border border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/35 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white text-sm flex items-center gap-1.5">
+                      <Shield className="h-3.5 w-3.5 text-[#ECE8AF]" /> Admin
+                    </span>
+                    <span className="text-xs font-mono text-[#0E3D2F] font-extrabold bg-[#ECE8AF] px-2 py-0.5 rounded-md shadow-sm">
+                      123456
+                    </span>
+                  </div>
+                  <div className="text-[#ECE8AF]/90 text-xs truncate mt-1.5 font-medium">admin@gmail.com</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setValue('email', 'penjual@gmail.com')
+                    setValue('password', '123456')
+                  }}
+                  className="group text-left p-3 rounded-2xl border border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/35 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white text-sm flex items-center gap-1.5">
+                      <UserCheck className="h-3.5 w-3.5 text-[#ECE8AF]" /> Penjual
+                    </span>
+                    <span className="text-xs font-mono text-[#0E3D2F] font-extrabold bg-[#ECE8AF] px-2 py-0.5 rounded-md shadow-sm">
+                      123456
+                    </span>
+                  </div>
+                  <div className="text-[#ECE8AF]/90 text-xs truncate mt-1.5 font-medium">penjual@gmail.com</div>
+                </button>
+              </div>
+            </div>
+
+            {/* Primary Submit Button */}
+            <div className="pt-3">
+              <button
                 type="submit"
-                className="h-11 w-full bg-[#186049] hover:bg-[#124b39] text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer"
                 disabled={loading}
+                className="w-full h-14 bg-white text-[#0E3D2F] hover:bg-[#ECE8AF] font-extrabold rounded-full text-base sm:text-lg shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center cursor-pointer disabled:opacity-70 disabled:hover:scale-100"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
+                    <Loader2 className="mr-2 h-6 w-6 animate-spin text-[#0E3D2F]" />
                     Sedang Masuk...
                   </>
                 ) : (
                   'Masuk ke Akun'
                 )}
-              </Button>
+              </button>
+            </div>
 
-              <div className="text-center text-xs text-neutral-500 dark:text-neutral-400 pt-1">
-                Belum punya akun penjual?{' '}
-                <Link href="/daftar" className="font-semibold text-[#D98327] hover:underline underline-offset-2">
-                  Daftar sekarang
-                </Link>
-              </div>
-            </CardFooter>
+            {/* Link to Register */}
+            <div className="text-center text-sm text-[#ECE8AF] pt-3 font-medium">
+              Belum punya akun penjual?{' '}
+              <Link href="/daftar" className="font-extrabold text-white hover:text-[#ECE8AF] underline underline-offset-4 decoration-2 transition-colors">
+                Daftar sekarang
+              </Link>
+            </div>
           </form>
-        </Card>
+        </div>
       </div>
-    </div>
+    </AuthScenicBackground>
   )
 }

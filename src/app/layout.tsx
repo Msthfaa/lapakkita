@@ -9,6 +9,7 @@ import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
 import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
 import { NavbarWrapper } from '@/components/navbar-wrapper'
+import { FooterWrapper } from '@/components/footer-wrapper'
 import { LiquidBackground } from '@/components/liquid-background'
 import { connection } from 'next/server'
 
@@ -91,14 +92,18 @@ export default function RootLayout({
           </Suspense>
           <main className="relative z-10 flex-1">{children}</main>
           
-          {/* Footer Bersih dan Transparan agar Gradasi Terlihat Seperti Gambar yang Diminta */}
-          <footer className="relative z-10 border-t border-neutral-200/50 dark:border-neutral-800/60 bg-transparent py-8 text-center text-xs text-neutral-600 dark:text-neutral-400">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <p>
-                &copy; 2026 <strong className="text-neutral-900 dark:text-neutral-200">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
-              </p>
-            </div>
-          </footer>
+          {/* Footer Adaptif (Otomatis menyesuaikan kontras di auth, disupresi di admin, dan bersih di rute publik) */}
+          <Suspense fallback={null}>
+            <FooterWrapper>
+              <footer className="relative z-10 border-t border-neutral-200/50 dark:border-neutral-800/60 bg-transparent py-8 text-center text-xs text-neutral-600 dark:text-neutral-400">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <p>
+                    &copy; 2026 <strong className="text-neutral-900 dark:text-neutral-200">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
+                  </p>
+                </div>
+              </footer>
+            </FooterWrapper>
+          </Suspense>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

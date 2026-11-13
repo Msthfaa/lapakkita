@@ -16,8 +16,8 @@ export const getCategories = unstable_cache(
       .order('nama', { ascending: true })
 
     if (error) {
-      console.error('Error fetching categories:', error.message)
-      throw error
+      console.warn('Warning fetching categories:', error.message)
+      return []
     }
 
     return data || []
@@ -41,8 +41,8 @@ export const getRegions = unstable_cache(
       .order('nama', { ascending: true })
 
     if (error) {
-      console.error('Error fetching regions:', error.message)
-      throw error
+      console.warn('Warning fetching regions:', error.message)
+      return []
     }
 
     return data || []
@@ -54,13 +54,18 @@ export const getRegions = unstable_cache(
   }
 )
 
-export async function getMyProducts() {
+export async function getMyProducts(providedUserId?: string) {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let userId = providedUserId
 
-  if (!user) return []
+  if (!userId) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) return []
+    userId = user.id
+  }
 
   const [productsRes, regions] = await Promise.all([
     supabase
@@ -72,7 +77,7 @@ export async function getMyProducts() {
         wa_clicks(count)
       `
       )
-      .eq('seller_id', user.id)
+      .eq('seller_id', userId)
       .order('created_at', { ascending: false }),
     getRegions().catch(() => []),
   ])

@@ -29,7 +29,7 @@ export function ThemeToggle() {
       title={isDark ? 'Mode Terang (Light Mode)' : 'Mode Gelap (Dark Mode)'}
     >
       {isDark ? (
-        <Sun className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-[#ECE8AF]" />
+        <Sun className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45 text-white" />
       ) : (
         <Moon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12 text-[#186049]" />
       )}

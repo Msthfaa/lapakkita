@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRegions } from '@/features/products/queries'
+import { cache } from 'react'
 
-export async function getAdminStats() {
+export const getAdminStats = cache(async () => {
   const supabase = await createClient()
 
   const [pendingRes, approvedRes, rejectedRes, sellersRes] = await Promise.all([
@@ -29,7 +30,7 @@ export async function getAdminStats() {
     rejectedCount: rejectedRes.count || 0,
     sellersCount: sellersRes.count || 0,
   }
-}
+})
 
 export interface AdminDashboardData {
   stats: {

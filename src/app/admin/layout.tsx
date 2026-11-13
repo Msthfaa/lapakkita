@@ -24,7 +24,12 @@ export default async function AdminLayout({
     redirect('/dashboard')
   }
 
-  const stats = await getAdminStats()
+  const stats = await getAdminStats().catch(() => ({
+    pendingCount: 0,
+    approvedCount: 0,
+    rejectedCount: 0,
+    sellersCount: 0,
+  }))
 
   return (
     <div className="min-h-screen bg-[#F8FAF8] dark:bg-[#070A08] transition-colors duration-300">
