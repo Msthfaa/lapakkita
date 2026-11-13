@@ -44,27 +44,27 @@ export default function MasukPage() {
 
   return (
     <AuthScenicBackground>
-      <div className="w-full max-w-md mx-auto relative z-10 px-4 py-8">
-        <div className="w-full bg-[#186049] dark:bg-[#104434] rounded-[2.25rem] p-8 sm:p-10 shadow-2xl border border-white/15 backdrop-blur-md text-white transition-all">
+      <div className="w-full max-w-lg sm:max-w-[540px] mx-auto relative z-10 px-4 py-8">
+        <div className="w-full bg-[#0E3D2F] dark:bg-[#0A2D23] rounded-[2.5rem] p-9 sm:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] border border-white/20 backdrop-blur-md text-white transition-all">
           {/* Header */}
           <div className="text-center space-y-3 pb-6">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-white shadow-inner border border-white/20">
-              <Store className="h-7 w-7 text-[#ECE8AF]" />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-white shadow-inner border border-white/20">
+              <Store className="h-8 w-8 text-[#ECE8AF]" />
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-serif">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-serif">
                 Masuk
               </h1>
-              <p className="mt-2 text-sm text-[#ECE8AF]/80">
+              <p className="mt-2 text-sm sm:text-base text-[#ECE8AF] font-medium">
                 Kelola produk UMKM Anda atau masuk sebagai admin
               </p>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Email Field */}
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-semibold text-white/90 block">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-bold text-white tracking-wide block">
                 Alamat Email
               </label>
               <div className="relative">
@@ -73,22 +73,22 @@ export default function MasukPage() {
                   type="email"
                   placeholder="nama@contoh.com"
                   disabled={loading}
-                  className="w-full h-12 rounded-full bg-[#257056] dark:bg-[#2D7A5E] text-white placeholder-[#ECE8AF]/60 border border-white/10 px-5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-[#4A943E] focus:border-transparent transition-all"
+                  className="w-full h-14 rounded-full bg-[#29745A] dark:bg-[#338568] text-white placeholder-[#ECE8AF]/80 border border-white/20 px-6 pr-14 text-base focus:outline-none focus:ring-2 focus:ring-[#ECE8AF] focus:border-transparent transition-all shadow-inner"
                   {...register('email')}
                 />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/80">
+                <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white">
                   <Mail className="h-5 w-5" />
                 </div>
               </div>
               {errors.email && (
-                <p className="text-xs text-[#FED7AA] font-medium mt-1">{errors.email.message}</p>
+                <p className="text-xs sm:text-sm text-amber-200 font-medium mt-1.5">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password Field */}
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-xs font-semibold text-white/90">
+                <label htmlFor="password" className="text-sm font-bold text-white tracking-wide block">
                   Kata Sandi
                 </label>
               </div>
@@ -98,47 +98,47 @@ export default function MasukPage() {
                   type="password"
                   placeholder="Masukkan kata sandi"
                   disabled={loading}
-                  className="w-full h-12 rounded-full bg-[#257056] dark:bg-[#2D7A5E] text-white placeholder-[#ECE8AF]/60 border border-white/10 px-5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-[#4A943E] focus:border-transparent transition-all"
+                  className="w-full h-14 rounded-full bg-[#29745A] dark:bg-[#338568] text-white placeholder-[#ECE8AF]/80 border border-white/20 px-6 pr-14 text-base focus:outline-none focus:ring-2 focus:ring-[#ECE8AF] focus:border-transparent transition-all shadow-inner"
                   {...register('password')}
                 />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/80">
+                <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-white">
                   <Lock className="h-5 w-5" />
                 </div>
               </div>
               {errors.password && (
-                <p className="text-xs text-[#FED7AA] font-medium mt-1">{errors.password.message}</p>
+                <p className="text-xs sm:text-sm text-amber-200 font-medium mt-1.5">{errors.password.message}</p>
               )}
             </div>
 
             {/* 1-Click Demo Account Pills */}
-            <div className="rounded-2xl bg-black/15 backdrop-blur-md p-3.5 border border-white/10 text-xs mt-2">
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="font-semibold text-[#ECE8AF] flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-[#ECE8AF]" />
+            <div className="rounded-2xl bg-black/25 backdrop-blur-md p-4 border border-white/20 text-xs mt-3">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-bold text-sm text-[#ECE8AF] flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#ECE8AF]" />
                   Akun Demo (Klik untuk isi cepat)
                 </span>
-                <span className="text-[10px] font-medium text-white/60 bg-white/10 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold text-[#0E3D2F] bg-[#ECE8AF] px-2.5 py-0.5 rounded-full shadow-sm">
                   1-Klik
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
                   onClick={() => {
                     setValue('email', 'admin@gmail.com')
                     setValue('password', '123456')
                   }}
-                  className="group text-left p-2.5 rounded-xl border border-white/15 bg-white/10 hover:bg-white/20 hover:border-white/30 transition-all cursor-pointer"
+                  className="group text-left p-3 rounded-2xl border border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/35 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white text-xs flex items-center gap-1">
-                      <Shield className="h-3 w-3 text-[#ECE8AF]" /> Admin
+                    <span className="font-bold text-white text-sm flex items-center gap-1.5">
+                      <Shield className="h-3.5 w-3.5 text-[#ECE8AF]" /> Admin
                     </span>
-                    <span className="text-[10px] font-mono text-[#D98327] font-bold bg-[#ECE8AF] px-1.5 py-0.5 rounded">
+                    <span className="text-xs font-mono text-[#0E3D2F] font-extrabold bg-[#ECE8AF] px-2 py-0.5 rounded-md shadow-sm">
                       123456
                     </span>
                   </div>
-                  <div className="text-white/70 text-[11px] truncate mt-1">admin@gmail.com</div>
+                  <div className="text-[#ECE8AF]/90 text-xs truncate mt-1.5 font-medium">admin@gmail.com</div>
                 </button>
                 <button
                   type="button"
@@ -146,31 +146,31 @@ export default function MasukPage() {
                     setValue('email', 'penjual@gmail.com')
                     setValue('password', '123456')
                   }}
-                  className="group text-left p-2.5 rounded-xl border border-white/15 bg-white/10 hover:bg-white/20 hover:border-white/30 transition-all cursor-pointer"
+                  className="group text-left p-3 rounded-2xl border border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/35 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white text-xs flex items-center gap-1">
-                      <UserCheck className="h-3 w-3 text-[#ECE8AF]" /> Penjual
+                    <span className="font-bold text-white text-sm flex items-center gap-1.5">
+                      <UserCheck className="h-3.5 w-3.5 text-[#ECE8AF]" /> Penjual
                     </span>
-                    <span className="text-[10px] font-mono text-[#186049] font-bold bg-[#ECE8AF] px-1.5 py-0.5 rounded">
+                    <span className="text-xs font-mono text-[#0E3D2F] font-extrabold bg-[#ECE8AF] px-2 py-0.5 rounded-md shadow-sm">
                       123456
                     </span>
                   </div>
-                  <div className="text-white/70 text-[11px] truncate mt-1">penjual@gmail.com</div>
+                  <div className="text-[#ECE8AF]/90 text-xs truncate mt-1.5 font-medium">penjual@gmail.com</div>
                 </button>
               </div>
             </div>
 
             {/* Primary Submit Button */}
-            <div className="pt-2">
+            <div className="pt-3">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-white text-[#186049] hover:bg-[#ECE8AF] font-bold rounded-full text-base shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center cursor-pointer disabled:opacity-70 disabled:hover:scale-100"
+                className="w-full h-14 bg-white text-[#0E3D2F] hover:bg-[#ECE8AF] font-extrabold rounded-full text-base sm:text-lg shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center cursor-pointer disabled:opacity-70 disabled:hover:scale-100"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin text-[#186049]" />
+                    <Loader2 className="mr-2 h-6 w-6 animate-spin text-[#0E3D2F]" />
                     Sedang Masuk...
                   </>
                 ) : (
@@ -180,9 +180,9 @@ export default function MasukPage() {
             </div>
 
             {/* Link to Register */}
-            <div className="text-center text-xs text-[#ECE8AF]/80 pt-2">
+            <div className="text-center text-sm text-[#ECE8AF] pt-3 font-medium">
               Belum punya akun penjual?{' '}
-              <Link href="/daftar" className="font-bold text-white hover:text-[#ECE8AF] underline underline-offset-2">
+              <Link href="/daftar" className="font-extrabold text-white hover:text-[#ECE8AF] underline underline-offset-4 decoration-2 transition-colors">
                 Daftar sekarang
               </Link>
             </div>

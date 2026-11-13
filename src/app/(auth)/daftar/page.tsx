@@ -13,7 +13,7 @@ export default async function DaftarPage() {
 
   return (
     <AuthScenicBackground>
-      <div className="w-full max-w-xl mx-auto relative z-10 px-4 py-8">
+      <div className="w-full max-w-2xl mx-auto relative z-10 px-4 py-8">
         <RegisterForm regions={regions} />
       </div>
     </AuthScenicBackground>
