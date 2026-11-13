@@ -2,12 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { Database } from '@/types/database'
 import { env } from '@/lib/env'
-import dns from 'node:dns'
-
-// Pastikan resolusi DNS IPv4 diprioritaskan di semua worker server untuk mencegah latency
-try {
-  dns.setDefaultResultOrder('ipv4first')
-} catch {}
 
 export async function createClient() {
   const cookieStore = await cookies()

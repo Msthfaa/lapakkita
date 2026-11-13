@@ -35,8 +35,8 @@ export default function MasukPage() {
         toast.error(res.error || 'Gagal masuk. Periksa email dan password.')
       } else {
         toast.success('Berhasil masuk!')
-        router.push(res.redirectTo || '/dashboard')
-        router.refresh()
+        // Gunakan navigasi langsung agar cookie session terbaca penuh oleh browser & server
+        window.location.href = res.redirectTo || '/dashboard'
       }
     } catch {
       toast.error('Terjadi kesalahan saat masuk. Coba lagi nanti.')

@@ -16,8 +16,8 @@ export const getCategories = unstable_cache(
       .order('nama', { ascending: true })
 
     if (error) {
-      console.error('Error fetching categories:', error.message)
-      throw error
+      console.warn('Warning fetching categories:', error.message)
+      return []
     }
 
     return data || []
@@ -41,8 +41,8 @@ export const getRegions = unstable_cache(
       .order('nama', { ascending: true })
 
     if (error) {
-      console.error('Error fetching regions:', error.message)
-      throw error
+      console.warn('Warning fetching regions:', error.message)
+      return []
     }
 
     return data || []

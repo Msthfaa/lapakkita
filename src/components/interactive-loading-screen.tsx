@@ -160,28 +160,27 @@ export function InteractiveLoadingScreen({
         <div className="w-full max-w-xs space-y-2.5">
           <div className="relative h-[2.5px] w-full overflow-hidden rounded-full bg-neutral-200/80 dark:bg-neutral-800">
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-[#186049] via-[#4A943E] to-[#D98327] relative"
-              initial={{ width: '15%' }}
-              animate={{ width: `${progress}%` }}
-              transition={{ type: 'spring', damping: 22, stiffness: 75 }}
-            >
-              {/* Kilauan Shimmer Halus */}
-              <motion.div
-                animate={{ x: ['-100%', '250%'] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12"
-              />
-            </motion.div>
+              className="h-full rounded-full bg-gradient-to-r from-[#186049] via-[#4A943E] to-[#D98327]"
+              animate={{
+                x: ['-100%', '200%'],
+                width: ['30%', '50%', '30%'],
+              }}
+              transition={{
+                duration: 1.8,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
           </div>
 
-          {/* Indikator Persentase & Status Aman */}
+          {/* Indikator Status Aman */}
           <div className="flex items-center justify-between text-[11px] font-medium text-neutral-500 dark:text-white px-0.5">
             <span className="flex items-center gap-1.5 text-[#186049] dark:text-white">
               <ShieldCheck className="h-3.5 w-3.5 text-[#4A943E] dark:text-white" />
               <span>Sistem Terverifikasi</span>
             </span>
-            <span className="font-mono font-semibold text-neutral-700 dark:text-white">
-              {progress}%
+            <span className="text-[11px] text-neutral-400 dark:text-neutral-400">
+              Sinkronisasi...
             </span>
           </div>
         </div>

@@ -190,5 +190,39 @@ export const getUserAndProfile = cache(async () => {
     .eq('id', user.id)
     .single()
 
-  return { user, profile }
+  if (profile) {
+    return { user, profile }
+  }
+
+  // Fallback jika join region bermasalah
+  const { data: fallbackProfile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (fallbackProfile) {
+    return { user, profile: fallbackProfile }
+  }
+
+  // Fallback darurat jika baris profiles belum ada: gunakan metadata auth
+  const metadataRole = (user.user_metadata?.role as 'admin' | 'seller') || 'seller'
+  const emergencyProfile = {
+    id: user.id,
+    nama:
+      (user.user_metadata?.full_name as string) ||
+      (user.user_metadata?.nama as string) ||
+      user.email?.split('@')[0] ||
+      'Pengguna',
+    role: metadataRole,
+    created_at: user.created_at,
+    alamat: null,
+    latitude: null,
+    longitude: null,
+    no_wa: null,
+    region_id: null,
+    deskripsi_toko: null,
+  }
+
+  return { user, profile: emergencyProfile }
 })

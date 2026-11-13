@@ -18,7 +18,7 @@ export default async function AdminModerasiPage({ searchParams }: ModerasiPagePr
     ? (params.status as StatusType)
     : 'pending'
 
-  const products = await getModerationProducts(status)
+  const products = await getModerationProducts(status).catch(() => [])
 
   return (
     <div className="space-y-6 sm:space-y-7 w-full">
