@@ -10,10 +10,6 @@ import {
   Menu,
   X,
   Store,
-  Home,
-  Flame,
-  Layers,
-  Info,
   Sun,
   Moon,
   LogIn,
@@ -30,10 +26,10 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'beranda', label: 'Beranda', href: '/', icon: Home },
-  { id: 'unggulan', label: 'Unggulan', href: '/#unggulan', icon: Flame },
-  { id: 'kategori', label: 'Kategori', href: '/kategori', icon: Layers },
-  { id: 'tentang', label: 'Tentang Kami', href: '/tentang', icon: Info },
+  { id: 'beranda', label: 'Beranda', href: '/' },
+  { id: 'unggulan', label: 'Unggulan', href: '/#unggulan' },
+  { id: 'kategori', label: 'Kategori', href: '/kategori' },
+  { id: 'tentang', label: 'Tentang Kami', href: '/tentang' },
 ]
 
 export function Navbar({ user, profile }: NavbarProps) {
@@ -332,7 +328,6 @@ export function Navbar({ user, profile }: NavbarProps) {
                   </div>
                   {NAV_ITEMS.map((item) => {
                     const isActive = activeTab === item.id
-                    const Icon = item.icon
                     return (
                       <Link
                         key={item.id}
@@ -344,10 +339,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                             : 'text-neutral-800 dark:text-neutral-200 hover:bg-black/5 dark:hover:bg-white/10'
                         }`}
                       >
-                        <span className="flex items-center gap-2.5">
-                          <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-neutral-500 dark:text-neutral-400'}`} />
-                          <span>{item.label}</span>
-                        </span>
+                        <span>{item.label}</span>
                         {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </Link>
                     )
