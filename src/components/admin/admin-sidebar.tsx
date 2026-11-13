@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -71,9 +72,20 @@ export function AdminSidebar({ pendingCount = 0 }: AdminSidebarProps) {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-serif font-bold text-lg text-neutral-900 dark:text-white tracking-tight">
-                  LapakKita
-                </span>
+                <Image
+                  src="/logo.png"
+                  alt="LapakKita"
+                  width={956}
+                  height={214}
+                  className="h-5 w-auto block dark:hidden object-contain"
+                />
+                <Image
+                  src="/logo-dark.png"
+                  alt="LapakKita"
+                  width={956}
+                  height={214}
+                  className="h-5 w-auto hidden dark:block object-contain"
+                />
                 <span className="rounded-md bg-[#ECE8AF] dark:bg-[#186049]/80 border border-[#186049]/20 dark:border-[#4A943E]/40 px-2 py-0.5 text-[10px] font-bold text-[#186049] dark:text-white">
                   ADMIN
                 </span>
