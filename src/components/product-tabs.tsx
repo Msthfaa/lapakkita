@@ -78,13 +78,16 @@ export function ProductTabs({ product }: ProductTabsProps) {
     .filter(Boolean)
 
   return (
-    <div className="rounded-3xl border border-neutral-200/80 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-xs overflow-hidden">
+    <div
+      id="product-tabs"
+      className="scroll-mt-24 rounded-2xl sm:rounded-3xl border border-neutral-200/80 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md shadow-xs overflow-hidden"
+    >
       {/* Tab Navigation Bar (Pill Segmented Control Seperti Gambar Referensi) */}
       <div className="flex border-b border-neutral-200/70 dark:border-neutral-800 bg-neutral-50/60 dark:bg-neutral-950/40 p-2 sm:p-3 gap-2 overflow-x-auto no-scrollbar">
         <button
           type="button"
           onClick={() => setActiveTab('deskripsi')}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 ${
+          className={`flex items-center gap-2 px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
             activeTab === 'deskripsi'
               ? 'bg-[#186049] text-white shadow-xs'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-neutral-800/60'
@@ -97,7 +100,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
         <button
           type="button"
           onClick={() => setActiveTab('spesifikasi')}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 ${
+          className={`flex items-center gap-2 px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
             activeTab === 'spesifikasi'
               ? 'bg-[#186049] text-white shadow-xs'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-neutral-800/60'
@@ -110,7 +113,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
         <button
           type="button"
           onClick={() => setActiveTab('toko')}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 ${
+          className={`flex items-center gap-2 px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm rounded-full font-semibold transition-all cursor-pointer shrink-0 ${
             activeTab === 'toko'
               ? 'bg-[#186049] text-white shadow-xs'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-neutral-800/60'
@@ -122,7 +125,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
       </div>
 
       {/* Tab Contents */}
-      <div className="p-6 sm:p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         {/* =================================================================== */}
         {/* TAB 1: DESKRIPSI PRODUK                                             */}
         {/* =================================================================== */}

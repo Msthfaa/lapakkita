@@ -7,7 +7,9 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, ChevronRight, EyeOff, Store } from 'lucide-react'
+import { ArrowLeft, ChevronRight, EyeOff, MessageCircle, Store } from 'lucide-react'
+import { formatRupiah } from '@/lib/format'
+import { buildWhatsappLink } from '@/lib/whatsapp'
 import type { Metadata } from 'next'
 
 interface DetailPageProps {
@@ -70,8 +72,15 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
     displayProducts = [...displayProducts, ...extra]
   }
 
+  // Link WhatsApp untuk mobile quick action bar
+  const waUrl = buildWhatsappLink(product.no_wa, product.nama, {
+    harga: product.harga,
+    satuan: product.satuan || undefined,
+    kondisiStok: product.kondisi_stok || undefined,
+  })
+
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-24 sm:pt-28 pb-20 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-28 sm:pb-20 space-y-6 sm:space-y-12">
       {/* 1. Tombol Kembali ke Katalog */}
       <div className="flex items-center justify-start text-xs">
         <Link
@@ -133,7 +142,7 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
         </div>
 
         {/* Kolom Kanan: Detail Produk Bersih & Tombol Aksi */}
-        <div className="lg:col-span-7 rounded-3xl border border-neutral-200/80 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md p-6 sm:p-8 shadow-xs">
+        <div className="lg:col-span-7 rounded-2xl sm:rounded-3xl border border-neutral-200/80 dark:border-neutral-800 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md p-4 sm:p-6 lg:p-8 shadow-xs">
           <ProductDetailInfo product={product} isOwner={isOwner} />
         </div>
       </div>
@@ -182,6 +191,39 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
           </div>
         )}
       </section>
+
+      {/* 6. Mobile Sticky Bottom Action Bar */}
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-t border-neutral-200/80 dark:border-neutral-800 px-4 py-3 z-30 flex items-center justify-between gap-3 shadow-lg sm:hidden">
+        <div className="min-w-0">
+          <p className="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium leading-none">Harga</p>
+          <div className="flex items-baseline gap-1 mt-0.5">
+            <span className="text-base font-bold text-[#186049] dark:text-[#5ebd4f] truncate">
+              {formatRupiah(product.harga)}
+            </span>
+            {product.satuan && (
+              <span className="text-[10px] text-neutral-400 truncate">
+                /{product.satuan.toLowerCase().startsWith('per ') ? product.satuan.slice(4) : product.satuan}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {product.is_active || isOwner ? (
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#186049] hover:bg-[#124d3a] text-white font-semibold text-xs shadow-md shadow-[#186049]/20 transition-all active:scale-95 shrink-0"
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span>Pesan WhatsApp</span>
+          </a>
+        ) : (
+          <span className="inline-flex items-center justify-center px-3 py-2 rounded-xl bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 font-medium text-xs shrink-0">
+            Stok Nonaktif
+          </span>
+        )}
+      </div>
     </div>
   )
 }

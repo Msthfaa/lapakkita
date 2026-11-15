@@ -15,6 +15,12 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
   const validImages = (images || []).filter((img) => Boolean(img && img.trim()))
   const [selectedIndex, setSelectedIndex] = useState(0)
 
+  // Touch swipe handling for mobile
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+  const minSwipeDistance = 45
+
   // Pastikan index valid jika images berubah
   const safeIndex = selectedIndex < validImages.length ? selectedIndex : 0
   const activeImage = validImages[safeIndex]
@@ -27,10 +33,34 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
     setSelectedIndex((prev) => (prev < validImages.length - 1 ? prev + 1 : 0))
   }
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return
+    const distance = touchStart - touchEnd
+    if (distance > minSwipeDistance) {
+      handleNext()
+    } else if (distance < -minSwipeDistance) {
+      handlePrev()
+    }
+  }
+
   return (
-    <div className="flex flex-col gap-3.5">
-      {/* Gambar Utama (Aspect Square, Rounded Halus Seperti Gambar Referensi) */}
-      <div className="group relative aspect-square w-full overflow-hidden rounded-3xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+    <div className="flex flex-col gap-2.5 sm:gap-3.5">
+      {/* Gambar Utama (Compact 4:3 on mobile, max 320px high so it doesn't push viewport down) */}
+      <div
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className="group relative aspect-[4/3] sm:aspect-square w-full max-h-[320px] sm:max-h-none overflow-hidden rounded-2xl sm:rounded-3xl border border-neutral-200/80 dark:border-neutral-800/80 bg-white dark:bg-neutral-900 shadow-sm select-none"
+      >
         {activeImage ? (
           <Image
             src={activeImage}
@@ -38,55 +68,74 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
             fill
             priority
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 1024px) 100vw, 50vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-neutral-50 dark:bg-neutral-900 text-neutral-300 dark:text-neutral-600">
-            <ImageIcon className="h-20 w-20 stroke-1" />
+            <ImageIcon className="h-16 w-16 sm:h-20 sm:w-20 stroke-1" />
             <span className="text-xs text-neutral-400">Tidak ada foto produk</span>
           </div>
         )}
 
         {/* Badge Produk Pilihan Hijau */}
         {isFeatured && (
-          <div className="absolute left-4 top-4 flex items-center rounded-full bg-[#186049] px-3 py-1 text-xs font-semibold text-white shadow-md">
+          <div className="absolute left-3 top-3 sm:left-4 sm:top-4 flex items-center rounded-full bg-[#186049] px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-semibold text-white shadow-md">
             Produk Pilihan
           </div>
         )}
 
         {/* Indikator Jumlah Foto */}
         {validImages.length > 1 && (
-          <div className="absolute bottom-4 right-4 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs">
+          <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 rounded-full bg-black/60 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-medium text-white backdrop-blur-xs">
             {safeIndex + 1} / {validImages.length}
           </div>
         )}
 
-        {/* Tombol Navigasi Kiri & Kanan */}
+        {/* Tombol Navigasi Kiri & Kanan (Visible on mobile with opacity-80, hover on desktop) */}
         {validImages.length > 1 && (
           <>
             <button
               type="button"
               onClick={handlePrev}
               aria-label="Foto Sebelumnya"
-              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 dark:bg-neutral-900/80 text-neutral-700 dark:text-neutral-200 shadow-md backdrop-blur-xs transition hover:bg-white dark:hover:bg-neutral-800 hover:scale-105 active:scale-95 cursor-pointer opacity-0 group-hover:opacity-100"
+              className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-white/85 dark:bg-neutral-900/85 text-neutral-800 dark:text-neutral-100 shadow-md backdrop-blur-xs transition hover:bg-white dark:hover:bg-neutral-800 hover:scale-105 active:scale-95 cursor-pointer opacity-80 sm:opacity-0 sm:group-hover:opacity-100"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             <button
               type="button"
               onClick={handleNext}
               aria-label="Foto Berikutnya"
-              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 dark:bg-neutral-900/80 text-neutral-700 dark:text-neutral-200 shadow-md backdrop-blur-xs transition hover:bg-white dark:hover:bg-neutral-800 hover:scale-105 active:scale-95 cursor-pointer opacity-0 group-hover:opacity-100"
+              className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-white/85 dark:bg-neutral-900/85 text-neutral-800 dark:text-neutral-100 shadow-md backdrop-blur-xs transition hover:bg-white dark:hover:bg-neutral-800 hover:scale-105 active:scale-95 cursor-pointer opacity-80 sm:opacity-0 sm:group-hover:opacity-100"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </>
         )}
       </div>
 
-      {/* Baris Thumbnail (Grid sejajar di bawah foto seperti gambar referensi) */}
+      {/* Indikator Titik Navigasi untuk Mobile (< sm) */}
       {validImages.length > 1 && (
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+        <div className="flex sm:hidden justify-center items-center gap-1.5 pt-0.5">
+          {validImages.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => setSelectedIndex(idx)}
+              aria-label={`Foto ke-${idx + 1}`}
+              className={`transition-all rounded-full h-1.5 cursor-pointer ${
+                idx === safeIndex
+                  ? 'w-5 bg-[#186049] dark:bg-[#4A943E]'
+                  : 'w-1.5 bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400'
+              }`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Baris Thumbnail untuk Desktop (>= sm) */}
+      {validImages.length > 1 && (
+        <div className="hidden sm:grid sm:grid-cols-4 gap-3">
           {validImages.slice(0, 4).map((img, idx) => {
             const isActive = idx === safeIndex
             return (
@@ -104,7 +153,7 @@ export function ProductGallery({ images, nama, isFeatured }: ProductGalleryProps
                   src={img}
                   alt={`${nama} thumbnail ${idx + 1}`}
                   fill
-                  sizes="(max-width: 640px) 33vw, 120px"
+                  sizes="120px"
                   className="object-cover"
                 />
               </button>
