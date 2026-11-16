@@ -14,9 +14,11 @@ import {
   Moon,
   LogIn,
   UserPlus,
+  Search,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { LiveSearchModal } from '@/components/live-search-modal'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'motion/react'
 
@@ -50,6 +52,19 @@ export function Navbar({ user, profile }: NavbarProps) {
     isTentangPage ? 'tentang' : isKategoriPage ? 'kategori' : isHomePage ? 'beranda' : ''
   )
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchModalOpen, setSearchModalOpen] = useState(false)
+
+  // Shortcut global (Ctrl+K atau Cmd+K) untuk membuka Spotlight Search Modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setSearchModalOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   useEffect(() => {
     setMounted(true)
@@ -126,7 +141,8 @@ export function Navbar({ user, profile }: NavbarProps) {
   }
 
   return (
-    <header className="fixed top-4 sm:top-6 inset-x-0 z-50 px-4 sm:px-8 lg:px-12 pointer-events-none">
+    <>
+      <header className="fixed top-4 sm:top-6 inset-x-0 z-50 px-4 sm:px-8 lg:px-12 pointer-events-none">
       <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 h-11">
         {/* ========================================================= */}
         {/* 1. BAGIAN KIRI: HANYA LOGO LAPAKKITA                     */}
@@ -209,7 +225,18 @@ export function Navbar({ user, profile }: NavbarProps) {
         {/* 3. BAGIAN KANAN: THEME TOGGLE, AUTH, & BURGER BUTTON      */}
         {/* ========================================================= */}
         <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 shrink-0 z-10 ml-auto">
-          {/* Fitur Lightmode / Darkmode: Berpindah ke kanan menggantikan tombol Search */}
+          {/* Tombol Pencarian Cepat Spotlight (Ctrl+K) */}
+          <button
+            type="button"
+            onClick={() => setSearchModalOpen(true)}
+            className="flex h-11 w-11 items-center justify-center rounded-full glass-btn text-neutral-800 dark:text-neutral-200 hover:text-[#186049] dark:hover:text-white transition-all cursor-pointer active:scale-95 shadow-xs"
+            title="Cari Produk (Ctrl+K)"
+            aria-label="Cari Produk (Ctrl+K)"
+          >
+            <Search className="h-4.5 w-4.5" />
+          </button>
+
+          {/* Fitur Lightmode / Darkmode */}
           <ThemeToggle />
 
           {/* User Logged In State (Tampilan Tablet / Desktop) */}
@@ -348,6 +375,24 @@ export function Navbar({ user, profile }: NavbarProps) {
                     <X className="h-4 w-4" />
                   </button>
                 </div>
+
+                {/* Tombol Simulasi Search Bar di Mobile Menu */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false)
+                    setSearchModalOpen(true)
+                  }}
+                  className="flex w-full items-center justify-between rounded-2xl border border-neutral-200/80 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.05] px-3.5 py-2.5 text-xs text-neutral-500 dark:text-neutral-400 hover:border-[#186049]/40 hover:text-neutral-800 dark:hover:text-neutral-200 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
+                >
+                  <span className="flex items-center gap-2.5">
+                    <Search className="h-4 w-4 text-[#186049] dark:text-[#ECE8AF]" />
+                    <span className="font-medium text-neutral-700 dark:text-neutral-300">Cari produk UMKM...</span>
+                  </span>
+                  <kbd className="inline-flex items-center gap-0.5 rounded-md border border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 text-[10px] font-mono font-medium text-neutral-500 dark:text-neutral-400">
+                    ⌘K
+                  </kbd>
+                </button>
 
                 {/* 1. Navigasi Menu Lengkap */}
                 <div className="flex flex-col space-y-1">
@@ -490,5 +535,12 @@ export function Navbar({ user, profile }: NavbarProps) {
         )}
       </AnimatePresence>
     </header>
+
+    {/* Spotlight Live Search Modal */}
+    <LiveSearchModal
+      isOpen={searchModalOpen}
+      onClose={() => setSearchModalOpen(false)}
+    />
+  </>
   )
 }

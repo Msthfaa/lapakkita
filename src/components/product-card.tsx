@@ -1,5 +1,8 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { formatRupiah } from '@/lib/format'
 import { Store, MapPin, Image as ImageIcon, Layers } from 'lucide-react'
 
@@ -16,12 +19,25 @@ interface ProductCardProps {
     alamat?: string | null
     category?: { nama: string } | null
     region?: { nama: string } | null
-    seller?: { nama: string } | null
+    seller?: { id?: string; nama: string } | null
+    seller_id?: string
   }
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter()
   const photoCount = product.foto_urls?.length || (product.foto_url ? 1 : 0)
+  const sellerId = product.seller?.id || product.seller_id
+  const cleanSellerName = product.seller?.nama
+    ? product.seller.nama.replace(/\s*\(Penjual\)\s*/gi, '').trim()
+    : null
+
+  const handleSellerClick = (e: React.MouseEvent) => {
+    if (!sellerId) return
+    e.preventDefault()
+    e.stopPropagation()
+    router.push(`/toko/${sellerId}`)
+  }
 
   return (
     <Link href={`/produk/${product.id}`} className="group block h-full">
@@ -95,12 +111,30 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </div>
 
-          {(product.seller || product.region || product.alamat) && (
+          {(cleanSellerName || product.region || product.alamat) && (
             <div className="mt-2.5 sm:mt-4 pt-2 sm:pt-3 border-t border-neutral-100 dark:border-neutral-800/60 space-y-1 text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-              {product.seller && (
+              {cleanSellerName && (
                 <div className="flex items-center gap-1 sm:gap-1.5 truncate">
                   <Store className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 text-neutral-400 dark:text-neutral-500" />
-                  <span className="truncate">{product.seller.nama}</span>
+                  {sellerId ? (
+                    <span
+                      role="link"
+                      tabIndex={0}
+                      onClick={handleSellerClick}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          router.push(`/toko/${sellerId}`)
+                        }
+                      }}
+                      className="truncate hover:underline hover:text-[#186049] dark:hover:text-[#ECE8AF] transition-colors cursor-pointer"
+                    >
+                      {cleanSellerName}
+                    </span>
+                  ) : (
+                    <span className="truncate">{cleanSellerName}</span>
+                  )}
                 </div>
               )}
               {(product.region || product.alamat) && (

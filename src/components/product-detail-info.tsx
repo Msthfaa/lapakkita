@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { formatRupiah } from '@/lib/format'
 import { buildWhatsappLink } from '@/lib/whatsapp'
 import { recordWaClickAction } from '@/features/products/actions'
@@ -147,7 +148,16 @@ export function ProductDetailInfo({ product, isOwner }: ProductDetailInfoProps) 
         <span className="text-neutral-300 dark:text-neutral-700">•</span>
         <div className="flex items-center gap-1.5 font-medium text-neutral-800 dark:text-neutral-200">
           <Store className="h-3.5 w-3.5 text-[#186049] dark:text-[#4A943E]" />
-          <span>{cleanSellerName}</span>
+          {product.seller?.id ? (
+            <Link
+              href={`/toko/${product.seller.id}`}
+              className="hover:underline hover:text-[#186049] transition-colors"
+            >
+              {cleanSellerName}
+            </Link>
+          ) : (
+            <span>{cleanSellerName}</span>
+          )}
         </div>
       </div>
 

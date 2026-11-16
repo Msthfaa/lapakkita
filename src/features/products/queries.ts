@@ -491,3 +491,82 @@ export async function getRelatedProducts(categoryId?: number | null, currentProd
     }
   })
 }
+
+/**
+ * Mengambil profil toko publik dan seluruh etalase produk aktif & approved milik penjual.
+ */
+export async function getStoreProfile(sellerId: string) {
+  if (!sellerId) return null
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const supabase = getPublicClient()
+
+      const [profileRes, productsRes, regions] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('id, nama, region_id, alamat, latitude, longitude, no_wa, deskripsi_toko, created_at')
+          .eq('id', sellerId)
+          .single(),
+        supabase
+          .from('products')
+          .select(
+            `
+            *,
+            category:categories(id, nama),
+            seller:profiles(id, nama, region_id, alamat)
+          `
+          )
+          .eq('seller_id', sellerId)
+          .eq('status', 'approved')
+          .eq('is_active', true)
+          .order('created_at', { ascending: false }),
+        getRegions().catch(() => []),
+      ])
+
+      if (profileRes.error || !profileRes.data) {
+        if (attempt < 3 && profileRes.error?.message?.includes('fetch failed')) {
+          await new Promise((r) => setTimeout(r, 200 * attempt))
+          continue
+        }
+        return null
+      }
+
+      const regionMap = new Map((regions || []).map((r) => [r.id, r]))
+      const rawProfile = profileRes.data
+
+      const profile = {
+        ...rawProfile,
+        region: rawProfile.region_id ? regionMap.get(rawProfile.region_id) || null : null,
+      }
+
+      const products = (productsRes.data || []).map((prod) => {
+        const regId = prod.region_id || prod.seller?.region_id || profile.region_id
+        return {
+          ...prod,
+          alamat: prod.alamat || prod.seller?.alamat || profile.alamat || null,
+          region: regId ? regionMap.get(regId) || null : null,
+          seller: prod.seller || {
+            id: profile.id,
+            nama: profile.nama,
+            region_id: profile.region_id,
+            alamat: profile.alamat,
+          },
+        }
+      })
+
+      return {
+        profile,
+        products,
+      }
+    } catch (err: unknown) {
+      if (attempt < 3) {
+        await new Promise((r) => setTimeout(r, 200 * attempt))
+        continue
+      }
+      return null
+    }
+  }
+
+  return null
+}

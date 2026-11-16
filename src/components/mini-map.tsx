@@ -8,18 +8,43 @@ import { Button } from '@/components/ui/button'
 interface MiniMapProps {
   lat?: number | null
   lng?: number | null
+  latitude?: number | null
+  longitude?: number | null
   nama?: string
+  storeName?: string
   alamat?: string | null
+  address?: string | null
   daerah?: string | null
   className?: string
   hideHeader?: boolean
 }
 
-export function MiniMap({ lat, lng, nama, alamat, daerah, className, hideHeader = false }: MiniMapProps) {
+export function MiniMap({
+  lat,
+  lng,
+  latitude,
+  longitude,
+  nama,
+  storeName,
+  alamat,
+  address,
+  daerah,
+  className,
+  hideHeader = false,
+}: MiniMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<any>(null)
 
-  const hasCoords = typeof lat === 'number' && typeof lng === 'number' && !isNaN(lat) && !isNaN(lng)
+  const effectiveLat = latitude !== undefined ? latitude : lat
+  const effectiveLng = longitude !== undefined ? longitude : lng
+  const effectiveNama = storeName !== undefined ? storeName : nama
+  const effectiveAlamat = address !== undefined ? address : alamat
+
+  const hasCoords =
+    typeof effectiveLat === 'number' &&
+    typeof effectiveLng === 'number' &&
+    !isNaN(effectiveLat) &&
+    !isNaN(effectiveLng)
 
   useEffect(() => {
     let isMounted = true
@@ -39,7 +64,7 @@ export function MiniMap({ lat, lng, nama, alamat, daerah, className, hideHeader 
       if (!isMounted || !containerRef.current) return
 
       const map = L.map(containerRef.current, {
-        center: [lat!, lng!],
+        center: [effectiveLat!, effectiveLng!],
         zoom: 15,
         zoomControl: false,
         attributionControl: false,
@@ -50,9 +75,9 @@ export function MiniMap({ lat, lng, nama, alamat, daerah, className, hideHeader 
         maxZoom: 19,
       }).addTo(map)
 
-      const marker = L.marker([lat!, lng!]).addTo(map)
-      if (nama) {
-        marker.bindPopup(`<b>${nama}</b><br/>${alamat || daerah || ''}`).openPopup()
+      const marker = L.marker([effectiveLat!, effectiveLng!]).addTo(map)
+      if (effectiveNama) {
+        marker.bindPopup(`<b>${effectiveNama}</b><br/>${effectiveAlamat || daerah || ''}`).openPopup()
       }
 
       mapRef.current = map
@@ -71,12 +96,12 @@ export function MiniMap({ lat, lng, nama, alamat, daerah, className, hideHeader 
         mapRef.current = null
       }
     }
-  }, [lat, lng, hasCoords, nama, alamat, daerah])
+  }, [effectiveLat, effectiveLng, hasCoords, effectiveNama, effectiveAlamat, daerah])
 
   const googleMapsUrl = hasCoords
-    ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+    ? `https://www.google.com/maps/search/?api=1&query=${effectiveLat},${effectiveLng}`
     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        `${alamat || ''} ${daerah || ''}`.trim() || nama || ''
+        `${effectiveAlamat || ''} ${daerah || ''}`.trim() || effectiveNama || ''
       )}`
 
   return (

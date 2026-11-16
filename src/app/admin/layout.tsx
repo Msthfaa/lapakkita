@@ -3,6 +3,7 @@ import { getAdminStats } from '@/features/admin/queries'
 import { redirect } from 'next/navigation'
 import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { AdminHeader } from '@/components/admin/admin-header'
+import { AdminBottomNav } from '@/components/admin/admin-bottom-nav'
 
 export const metadata = {
   title: 'Panel Administrator - LapakKita',
@@ -40,11 +41,17 @@ export default async function AdminLayout({
         </div>
 
         {/* Main Workspace Area */}
-        <div className="flex-1 w-full min-w-0 space-y-6 sm:space-y-7">
+        <div className="flex-1 w-full min-w-0 space-y-6 sm:space-y-7 pb-24 lg:pb-8">
           <AdminHeader user={user} profile={profile} pendingCount={stats.pendingCount} />
           <main className="w-full">{children}</main>
         </div>
       </div>
+      <AdminBottomNav
+        pendingCount={stats.pendingCount}
+        profileName={profile.nama}
+        userEmail={user.email}
+      />
     </div>
   )
 }
+

@@ -2,49 +2,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ========================================================= */
-/* FONT OPTIMA - OFFICIAL FONT SELURUH WEBSITE SESUAI PERMINTAAN USER */
-/* ========================================================= */
-@font-face {
-  font-family: 'Optima';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Optima'), local('Optima-Regular'), url('https://fonts.cdnfonts.com/s/14439/OPTIMA.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Optima';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Optima Italic'), local('Optima-Italic'), url('https://fonts.cdnfonts.com/s/14439/Optima_Italic.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Optima';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: local('Optima Medium'), local('Optima-Medium'), url('https://fonts.cdnfonts.com/s/14439/Optima Medium.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Optima';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: local('Optima Medium'), local('Optima-Medium'), url('https://fonts.cdnfonts.com/s/14439/Optima Medium.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Optima';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: local('Optima Bold'), local('Optima-Bold'), url('https://fonts.cdnfonts.com/s/14439/OPTIMA_B.woff') format('woff');
-}
-
 /* Palette provided by user:
    1. #D98327 (Ochre / Warm Amber)
    2. #ECE8AF (Vanilla / Soft Cream)
@@ -89,8 +46,8 @@
   --color-brand-cream: var(--brand-cream);
   --color-brand-green: var(--brand-green);
   --color-brand-forest: var(--brand-forest);
-  --font-sans: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-serif), 'DM Serif Display', Georgia, serif;
   --color-pine: #186049;
   --color-leaf: #4A943E;
   --color-amber-gold: #D98327;
@@ -100,7 +57,7 @@
 html {
   scroll-behavior: smooth;
   background-color: #FAF9F5;
-  font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif;
 }
 
 html.dark,
@@ -112,9 +69,12 @@ html.dark,
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 500;
   transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .dark body {
@@ -136,31 +96,16 @@ body {
   color: #ffffff !important;
 }
 
-/* Seluruh elemen teks, heading, button, form menggunakan font Optima */
-*,
-*::before,
-*::after,
+.font-serif {
+  font-family: var(--font-serif), 'DM Serif Display', Georgia, serif !important;
+}
+
+.font-sans,
 button,
 input,
 select,
-textarea,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span,
-a,
-li,
-div {
-  font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-.font-serif,
-.font-sans {
-  font-family: 'Optima', Optima, Candara, 'URW Classico', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+textarea {
+  font-family: var(--font-sans), 'Plus Jakarta Sans', sans-serif !important;
 }
 
 

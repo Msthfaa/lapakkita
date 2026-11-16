@@ -86,9 +86,9 @@ export function AuthScenicBackground({ children, className = '' }: AuthScenicBac
         {/* ========================================================= */}
         {/* TOP-RIGHT: GOLDEN TWINKLING DIAMOND SPARKLES              */}
         {/* ========================================================= */}
-        <div className="absolute top-4 sm:top-8 md:top-10 right-4 sm:right-8 md:right-14 z-[2] flex items-center justify-center">
+        <div className="absolute top-2 sm:top-8 md:top-10 right-2 sm:right-8 md:right-14 z-[2] flex items-center justify-center">
           <svg
-            className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 overflow-visible drop-shadow-[0_2px_14px_rgba(217,131,39,0.38)] dark:drop-shadow-[0_0_20px_rgba(245,158,11,0.6)] transition-all duration-500"
+            className="w-28 h-28 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 overflow-visible drop-shadow-[0_2px_14px_rgba(217,131,39,0.38)] dark:drop-shadow-[0_0_20px_rgba(245,158,11,0.6)] transition-all duration-500"
             viewBox="0 0 200 200"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -220,7 +220,7 @@ export function AuthScenicBackground({ children, className = '' }: AuthScenicBac
         {/* ========================================================= */}
         {/* SCENIC LOWER LANDSCAPE: GREEN HILLS & PEEKING ORNAMENTS   */}
         {/* ========================================================= */}
-        <div className="absolute bottom-0 inset-x-0 w-full h-[26vh] sm:h-[30vh] lg:h-[34vh] min-h-[195px] max-h-[350px] pointer-events-none select-none z-[4]">
+        <div className="absolute bottom-0 inset-x-0 w-full h-[22vh] sm:h-[30vh] lg:h-[34vh] min-h-[170px] max-h-[350px] pointer-events-none select-none z-[4]">
           {/* ------------------------------------------------------- */}
           {/* LAYER 1: BACK ROLLING HILL (Adds atmospheric depth)     */}
           {/* ------------------------------------------------------- */}
@@ -257,7 +257,7 @@ export function AuthScenicBackground({ children, className = '' }: AuthScenicBac
 
           {/* LEFT ORNAMENT GROUP: CUTE BREAD CHARACTER, MILK BOTTLE, KLEPON */}
           <div
-            className="absolute left-[-16px] sm:left-2 md:left-6 lg:left-14 xl:left-20 z-[2] pointer-events-none select-none transition-all duration-700 ease-out origin-bottom-left scale-[0.62] sm:scale-[0.74] md:scale-[0.88] lg:scale-100"
+            className="absolute left-[-24px] sm:left-2 md:left-6 lg:left-14 xl:left-20 z-[2] pointer-events-none select-none transition-all duration-700 ease-out origin-bottom-left scale-[0.48] sm:scale-[0.74] md:scale-[0.88] lg:scale-100"
             style={{ bottom: 'calc(65% - 42px)' }}
           >
             <svg
@@ -494,7 +494,7 @@ export function AuthScenicBackground({ children, className = '' }: AuthScenicBac
 
           {/* RIGHT ORNAMENT GROUP: SAVORY NOODLE/SOTO BOWL, PEDAS SNACK BOX, COFFEE CUP */}
           <div
-            className="absolute right-[-16px] sm:right-2 md:right-6 lg:right-14 xl:right-20 z-[2] pointer-events-none select-none transition-all duration-700 ease-out origin-bottom-right scale-[0.62] sm:scale-[0.74] md:scale-[0.88] lg:scale-100"
+            className="absolute right-[-24px] sm:right-2 md:right-6 lg:right-14 xl:right-20 z-[2] pointer-events-none select-none transition-all duration-700 ease-out origin-bottom-right scale-[0.46] sm:scale-[0.72] md:scale-[0.86] lg:scale-100"
             style={{ bottom: 'calc(65% - 42px)' }}
           >
             <svg
@@ -842,7 +842,7 @@ export function AuthScenicBackground({ children, className = '' }: AuthScenicBac
       {/* ========================================================= */}
       {/* MAIN CENTER CONTENT (CARD / FORM) WITH PROPER Z-INDEX     */}
       {/* ========================================================= */}
-      <main className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-4 pt-16 pb-12 sm:pt-24 sm:pb-20">
+      <main className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-3 sm:px-4 pt-14 pb-12 sm:pt-24 sm:pb-20">
         {children}
       </main>
     </div>

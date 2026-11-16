@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { formatTanggal } from '@/lib/format'
 import { MiniMap } from '@/components/mini-map'
 import {
@@ -13,6 +14,7 @@ import {
   Check,
   ShieldCheck,
   Award,
+  ChevronRight,
 } from 'lucide-react'
 
 interface ProductTabsProps {
@@ -252,7 +254,16 @@ export function ProductTabs({ product }: ProductTabsProps) {
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-base text-neutral-900 dark:text-neutral-100">
-                      {cleanSellerName}
+                      {product.seller?.id ? (
+                        <Link
+                          href={`/toko/${product.seller.id}`}
+                          className="hover:underline hover:text-[#186049] dark:hover:text-[#5ebd4f] transition-colors"
+                        >
+                          {cleanSellerName}
+                        </Link>
+                      ) : (
+                        cleanSellerName
+                      )}
                     </h3>
                     <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 text-[10px] font-semibold text-emerald-800 dark:text-emerald-300">
                       <Check className="h-2.5 w-2.5 stroke-[2.5]" /> Terverifikasi
@@ -269,9 +280,20 @@ export function ProductTabs({ product }: ProductTabsProps) {
                 </div>
               </div>
 
-              <div className="text-xs text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-800 px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-700 self-start sm:self-auto">
-                Mitra Resmi LapakKita
-              </div>
+              {product.seller?.id ? (
+                <Link
+                  href={`/toko/${product.seller.id}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#186049] dark:text-[#5ebd4f] bg-white dark:bg-neutral-850 px-3.5 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors self-start sm:self-auto shadow-2xs"
+                >
+                  <Store className="h-3.5 w-3.5" />
+                  <span>Kunjungi Toko</span>
+                  <ChevronRight className="h-3.5 w-3.5 opacity-70" />
+                </Link>
+              ) : (
+                <div className="text-xs text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-800 px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-700 self-start sm:self-auto">
+                  Mitra Resmi LapakKita
+                </div>
+              )}
             </div>
 
             {/* Peta Mini Interaktif OpenStreetMap */}

@@ -90,3 +90,13 @@ export function buildWhatsappLink(
   pesan += `\n\nMohon informasi ketersediaan stok & proses pemesanannya. Terima kasih!`
   return `https://wa.me/${normalized}?text=${encodeURIComponent(pesan)}`
 }
+
+/**
+ * Menghasilkan URL direct link WhatsApp untuk menghubungi profil toko langsung.
+ */
+export function buildStoreWhatsappLink(nomor: string, namaToko: string): string {
+  const normalized = normalizeWhatsappNumber(nomor) || nomor
+  const pesan = `Halo ${namaToko}, saya melihat etalase toko Anda di LapakKita. Saya ingin bertanya mengenai produk dan pemesanan. Terima kasih!`
+  return `https://wa.me/${normalized}?text=${encodeURIComponent(pesan)}`
+}
+
