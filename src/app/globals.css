@@ -252,24 +252,24 @@ textarea {
 /* GLASSMORPHISM CAPSULE NAVBAR                              */
 /* ========================================================= */
 
-/* Light Mode: Clean White Translucent Glass Capsule */
+/* Light Mode: Clean White Translucent Glass Capsule (Lebih Gemuk & Solid) */
 .glass-pill {
-  background: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 
-    0 12px 30px -4px rgba(0, 0, 0, 0.07),
-    0 4px 10px rgba(0, 0, 0, 0.03);
+    0 16px 36px -6px rgba(0, 0, 0, 0.09),
+    0 4px 12px rgba(0, 0, 0, 0.04);
   color: #186049;
 }
 
-/* Dark Mode: Sleek Charcoal Glass Capsule */
+/* Dark Mode: Sleek Charcoal Glass Capsule (Lebih Gemuk & Solid) */
 html.dark .glass-pill,
 .dark .glass-pill {
-  background: rgba(26, 28, 30, 0.88) !important;
-  backdrop-filter: blur(18px) saturate(190%);
-  -webkit-backdrop-filter: blur(18px) saturate(190%);
+  background: rgba(20, 24, 22, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 
     0 16px 38px -4px rgba(0, 0, 0, 0.8),
@@ -279,13 +279,14 @@ html.dark .glass-pill,
 
 /* Glass Island Button (Search button, Theme toggle) */
 .glass-btn {
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border: 1px solid rgba(0, 0, 0, 0.08);
   color: #186049;
   box-shadow: 
-    0 8px 18px rgba(0, 0, 0, 0.06);
+    0 10px 24px -4px rgba(0, 0, 0, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
 }
 
@@ -298,17 +299,19 @@ html.dark .glass-pill,
 
 html.dark .glass-btn,
 .dark .glass-btn {
-  background: rgba(26, 28, 30, 0.9) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(20, 24, 22, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #ECE8AF;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  box-shadow: 
+    0 12px 28px -4px rgba(0, 0, 0, 0.7),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 html.dark .glass-btn:hover,
 .dark .glass-btn:hover {
-  background: rgba(40, 44, 48, 0.95) !important;
+  background: rgba(30, 36, 33, 0.98) !important;
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -335,6 +338,40 @@ html.dark .glass-active-pill,
   color: #ffffff !important;
   font-weight: 700 !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================================= */
+/* NAVBAR FULL-WIDTH SCROLL BLUR VEIL                        */
+/* ========================================================= */
+.navbar-blur-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6.75rem; /* ~108px, generously covers the plumper navbar */
+  pointer-events: none;
+  z-index: 40;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  mask-image: linear-gradient(to bottom, black 65%, rgba(0, 0, 0, 0.85) 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, rgba(0, 0, 0, 0.85) 85%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 249, 245, 0.95) 0%,
+    rgba(250, 249, 245, 0.82) 65%,
+    rgba(250, 249, 245, 0) 100%
+  );
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark .navbar-blur-veil,
+.dark .navbar-blur-veil {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.82) 65%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 /* Hide scrollbars */
@@ -504,3 +541,29 @@ html.dark .glass-active-pill,
   background: linear-gradient(90deg, #4A943E, #186049) !important;
   height: 4px !important;
 }
+
+/* ============================================================
+   View Transitions API for Theme Toggle (Circular Ripple)
+   ============================================================ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+

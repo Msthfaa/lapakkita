@@ -175,7 +175,7 @@ export function ProductDetailInfo({ product, isOwner }: ProductDetailInfoProps) 
 
       {/* 5. Sekilas Produk / Deskripsi Ringkas */}
       {product.deskripsi && (
-        <div className="rounded-2xl bg-neutral-50/80 dark:bg-neutral-850/60 border border-neutral-200/60 dark:border-neutral-800/70 p-3 sm:p-3.5 space-y-1.5">
+        <div className="rounded-2xl bg-neutral-50/80 dark:bg-neutral-900/80 border border-neutral-200/60 dark:border-neutral-800/80 p-3 sm:p-3.5 space-y-1.5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
               Sekilas Produk
@@ -250,7 +250,7 @@ export function ProductDetailInfo({ product, isOwner }: ProductDetailInfoProps) 
 
       {/* 8. Tombol Aksi Utama (Pesan via WhatsApp Hijau Solid Lebar) */}
       {!product.is_active && !isOwner ? (
-        <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-850 p-3.5 sm:p-4 text-center space-y-1">
+        <div className="rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-3.5 sm:p-4 text-center space-y-1">
           <p className="font-semibold text-neutral-800 dark:text-neutral-200 text-xs sm:text-sm">
             Pemesanan Ditutup Sementara
           </p>

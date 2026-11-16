@@ -16,11 +16,13 @@ import {
   UserPlus,
   Search,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useSyncExternalStore } from 'react'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LiveSearchModal } from '@/components/live-search-modal'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'motion/react'
+
+const emptySubscribe = () => () => {}
 
 interface NavbarProps {
   user: { email?: string; id: string } | null
@@ -37,12 +39,7 @@ const NAV_ITEMS = [
 export function Navbar({ user, profile }: NavbarProps) {
   const pathname = usePathname()
   const { theme, resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  // Sembunyikan navbar di halaman admin
-  if (pathname?.startsWith('/admin')) {
-    return null
-  }
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false)
 
   const isHomePage = pathname === '/'
   const isKategoriPage = pathname?.startsWith('/kategori')
@@ -66,9 +63,6 @@ export function Navbar({ user, profile }: NavbarProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const isDark = mounted && (resolvedTheme === 'dark' || theme === 'dark')
   const isSeller = profile?.role === 'seller'
@@ -140,10 +134,21 @@ export function Navbar({ user, profile }: NavbarProps) {
     }
   }
 
+  // Sembunyikan navbar di halaman admin
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   return (
     <>
+      {/* Full-width Top Blur Veil: Smoothly blurs and dissolves all page content passing behind the navbar */}
+      <div
+        aria-hidden="true"
+        className="navbar-blur-veil opacity-100"
+      />
+
       <header className="fixed top-4 sm:top-6 inset-x-0 z-50 px-4 sm:px-8 lg:px-12 pointer-events-none">
-      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 h-11">
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 h-13 sm:h-14">
         {/* ========================================================= */}
         {/* 1. BAGIAN KIRI: HANYA LOGO LAPAKKITA                     */}
         {/* ========================================================= */}
@@ -158,7 +163,7 @@ export function Navbar({ user, profile }: NavbarProps) {
                 setActiveTab('beranda')
               }
             }}
-            className="group flex h-11 items-center rounded-full glass-pill px-4 transition-transform duration-200 hover:scale-[1.02] active:scale-95"
+            className="group flex h-13 sm:h-14 items-center rounded-full glass-pill px-5 sm:px-6 transition-transform duration-200 hover:scale-[1.02] active:scale-95"
           >
             <Image
               src="/logo.png"
@@ -166,7 +171,7 @@ export function Navbar({ user, profile }: NavbarProps) {
               width={956}
               height={214}
               priority
-              className="h-6 sm:h-6.5 w-auto block dark:hidden object-contain select-none"
+              className="h-7 sm:h-8 w-auto block dark:hidden object-contain select-none"
             />
             <Image
               src="/logo-dark.png"
@@ -174,7 +179,7 @@ export function Navbar({ user, profile }: NavbarProps) {
               width={956}
               height={214}
               priority
-              className="h-6 sm:h-6.5 w-auto hidden dark:block object-contain select-none"
+              className="h-7 sm:h-8 w-auto hidden dark:block object-contain select-none"
             />
           </Link>
         </div>
@@ -183,15 +188,15 @@ export function Navbar({ user, profile }: NavbarProps) {
         {/* 2. BAGIAN TENGAH: NAVBAR LENGKAP PADA LAYAR BESAR (DESKTOP) */}
         {/* ========================================================= */}
         <div className="pointer-events-auto hidden lg:flex absolute left-1/2 -translate-x-1/2 top-0 items-center justify-center z-10">
-          <nav className="flex h-11 items-center rounded-full glass-pill p-1.5 gap-1 shadow-2xl">
+          <nav className="flex h-13 sm:h-14 items-center rounded-full glass-pill p-1.5 sm:p-2 gap-1.5 sm:gap-2 px-2 sm:px-3 shadow-xl">
             {NAV_ITEMS.map((item) => {
               const isActive = activeTab === item.id
               const isHashOnHome = isHomePage && (item.href === '/' || item.href === '/#unggulan')
 
-              const buttonClass = `h-8 px-4 flex items-center justify-center text-xs sm:text-sm rounded-full transition-all duration-200 cursor-pointer select-none leading-none ${
+              const buttonClass = `h-10 sm:h-11 px-5 sm:px-6 flex items-center justify-center text-sm sm:text-[15px] font-bold rounded-full transition-all duration-200 cursor-pointer select-none leading-none ${
                 isActive
                   ? 'bg-gradient-to-r from-[#186049] to-[#257d5a] !text-white font-bold shadow-md'
-                  : 'text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white font-semibold hover:bg-black/5 dark:hover:bg-white/10'
+                  : 'text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white font-bold hover:bg-black/5 dark:hover:bg-white/10'
               }`
 
               if (isHashOnHome) {
@@ -229,11 +234,11 @@ export function Navbar({ user, profile }: NavbarProps) {
           <button
             type="button"
             onClick={() => setSearchModalOpen(true)}
-            className="flex h-11 w-11 items-center justify-center rounded-full glass-btn text-neutral-800 dark:text-neutral-200 hover:text-[#186049] dark:hover:text-white transition-all cursor-pointer active:scale-95 shadow-xs"
+            className="flex h-13 w-13 sm:h-14 sm:w-14 items-center justify-center rounded-full glass-btn text-neutral-800 dark:text-neutral-200 hover:text-[#186049] dark:hover:text-white transition-all cursor-pointer active:scale-95 shadow-xs"
             title="Cari Produk (Ctrl+K)"
             aria-label="Cari Produk (Ctrl+K)"
           >
-            <Search className="h-4.5 w-4.5" />
+            <Search className="h-5 w-5" />
           </button>
 
           {/* Fitur Lightmode / Darkmode */}
@@ -241,14 +246,14 @@ export function Navbar({ user, profile }: NavbarProps) {
 
           {/* User Logged In State (Tampilan Tablet / Desktop) */}
           {user ? (
-            <div className="hidden sm:flex h-11 items-center gap-1.5 rounded-full glass-pill p-1.5">
+            <div className="hidden sm:flex h-13 sm:h-14 items-center gap-1.5 rounded-full glass-pill p-1.5 sm:p-2 px-2 sm:px-3">
               {isSeller && (
                 <Link
                   href="/dashboard"
                   prefetch={true}
-                  className="flex h-8 items-center gap-1.5 text-xs font-semibold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors px-3 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                  className="flex h-10 sm:h-11 items-center gap-1.5 text-xs sm:text-sm font-bold text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white transition-colors px-3.5 sm:px-4 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
                 >
-                  <LayoutDashboard className="h-3.5 w-3.5" />
+                  <LayoutDashboard className="h-4 w-4" />
                   <span className="hidden md:inline">Dashboard</span>
                 </Link>
               )}
@@ -257,9 +262,9 @@ export function Navbar({ user, profile }: NavbarProps) {
                 <Link
                   href="/admin"
                   prefetch={true}
-                  className="flex h-8 items-center gap-1 text-xs font-bold text-[#186049] dark:text-white bg-[#186049]/15 dark:bg-white/10 border border-[#186049]/20 dark:border-white/20 transition-colors px-3 rounded-full hover:scale-105"
+                  className="flex h-10 sm:h-11 items-center gap-1 text-xs sm:text-sm font-bold text-[#186049] dark:text-white bg-[#186049]/15 dark:bg-white/10 border border-[#186049]/20 dark:border-white/20 transition-colors px-3.5 sm:px-4 rounded-full hover:scale-105"
                 >
-                  <ShieldCheck className="h-3.5 w-3.5 text-[#186049] dark:text-white" />
+                  <ShieldCheck className="h-4 w-4 text-[#186049] dark:text-white" />
                   <span className="hidden md:inline">Admin</span>
                 </Link>
               )}
@@ -267,19 +272,19 @@ export function Navbar({ user, profile }: NavbarProps) {
               <form action={signOutAction} className="inline-flex items-center">
                 <button
                   type="submit"
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                  className="flex h-10 sm:h-11 w-10 sm:w-11 items-center justify-center rounded-full text-neutral-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
                   title="Keluar"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="h-4.5 w-4.5" />
                 </button>
               </form>
             </div>
           ) : (
             /* User Not Logged In State (Tampilan Tablet / Desktop) */
-            <div className="hidden sm:flex h-11 items-center gap-1 rounded-full glass-pill p-1.5">
+            <div className="hidden sm:flex h-13 sm:h-14 items-center gap-1.5 rounded-full glass-pill p-1.5 sm:p-2 px-2 sm:px-3">
               <Link
                 href="/masuk"
-                className={`h-8 px-3.5 flex items-center justify-center text-xs font-semibold rounded-full transition-colors ${
+                className={`h-10 sm:h-11 px-3.5 sm:px-4 flex items-center justify-center text-xs sm:text-sm font-bold rounded-full transition-colors ${
                   pathname === '/masuk'
                     ? 'bg-[#186049]/15 text-[#186049] dark:text-white font-bold'
                     : 'text-neutral-800 hover:text-[#186049] dark:text-neutral-200 dark:hover:text-white'
@@ -289,7 +294,7 @@ export function Navbar({ user, profile }: NavbarProps) {
               </Link>
               <Link
                 href="/daftar"
-                className={`flex h-8 px-4 items-center justify-center rounded-full text-xs font-semibold shadow-xs transition-all hover:scale-105 active:scale-95 ${
+                className={`flex h-10 sm:h-11 px-4 sm:px-5 items-center justify-center rounded-full text-xs sm:text-sm font-bold shadow-xs transition-all hover:scale-105 active:scale-95 ${
                   pathname === '/daftar'
                     ? 'bg-[#186049] text-white ring-2 ring-[#4A943E]'
                     : 'bg-[#186049] hover:bg-[#124b39] text-white'
@@ -304,11 +309,11 @@ export function Navbar({ user, profile }: NavbarProps) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden flex h-11 w-11 items-center justify-center rounded-full glass-btn text-neutral-800 dark:text-neutral-200 hover:text-[#186049] dark:hover:text-white transition-all cursor-pointer active:scale-95 shadow-xs"
+            className="lg:hidden flex h-13 w-13 sm:h-14 sm:w-14 items-center justify-center rounded-full glass-btn text-neutral-800 dark:text-neutral-200 hover:text-[#186049] dark:hover:text-white transition-all cursor-pointer active:scale-95 shadow-xs"
             aria-label="Buka menu navigasi"
             title="Menu Navigasi"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-5.5 w-5.5" /> : <Menu className="h-5.5 w-5.5" />}
           </button>
         </div>
       </div>
@@ -335,7 +340,7 @@ export function Navbar({ user, profile }: NavbarProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -14, scale: 0.97 }}
               transition={{ duration: 0.22, ease: 'easeOut' }}
-              className="pointer-events-auto absolute top-16 inset-x-4 sm:inset-x-8 max-w-md mx-auto z-50 rounded-3xl glass-pill p-5 lg:hidden shadow-2xl border border-neutral-200/80 dark:border-white/10 select-none"
+              className="pointer-events-auto absolute top-20 sm:top-24 inset-x-4 sm:inset-x-8 max-w-md mx-auto z-50 rounded-3xl glass-pill p-5 lg:hidden shadow-2xl border border-neutral-200/80 dark:border-white/10 select-none"
             >
               <div className="flex flex-col space-y-4">
                 {/* Header Menu */}

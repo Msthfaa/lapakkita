@@ -5,7 +5,7 @@ export default function PublicLoading() {
       <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 backdrop-blur-md p-8 sm:p-12 space-y-4 shadow-xs">
         <div className="h-6 w-32 rounded-full bg-emerald-100/70 dark:bg-emerald-950/40" />
         <div className="h-10 w-3/4 max-w-lg rounded-xl bg-neutral-200/80 dark:bg-neutral-800" />
-        <div className="h-5 w-2/3 max-w-md rounded-lg bg-neutral-100 dark:bg-neutral-850" />
+        <div className="h-5 w-2/3 max-w-md rounded-lg bg-neutral-100 dark:bg-neutral-800" />
       </div>
 
       {/* Search & Filter Bar Shimmer */}

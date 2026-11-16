@@ -1,6 +1,9 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export interface AuthScenicBackgroundProps {
   children: React.ReactNode
@@ -838,6 +841,20 @@ export function AuthScenicBackground({ children, className = '' }: AuthScenicBac
           </div>
         </div>
       </div>
+
+      {/* ========================================================= */}
+      {/* TOP FLOATING UTILITY BAR (BACK TO HOME & THEME TOGGLE)    */}
+      {/* ========================================================= */}
+      <header className="absolute top-4 sm:top-6 inset-x-0 px-4 sm:px-8 max-w-7xl mx-auto flex items-center justify-between z-20 pointer-events-auto">
+        <Link
+          href="/"
+          className="group inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-white/80 dark:bg-neutral-900/80 hover:bg-white dark:hover:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs sm:text-sm font-semibold backdrop-blur-md shadow-2xs transition-all hover:scale-[1.02] active:scale-95"
+        >
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 text-[#186049] dark:text-[#4A943E]" />
+          <span>Kembali ke Beranda</span>
+        </Link>
+        <ThemeToggle />
+      </header>
 
       {/* ========================================================= */}
       {/* MAIN CENTER CONTENT (CARD / FORM) WITH PROPER Z-INDEX     */}

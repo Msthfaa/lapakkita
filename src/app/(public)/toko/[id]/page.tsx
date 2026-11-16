@@ -85,7 +85,7 @@ export default async function StoreProfilePage({ params }: StorePageProps) {
               <span>Kembali ke Katalog</span>
             </Link>
 
-            <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400 bg-white/70 dark:bg-neutral-850/70 border border-neutral-200/60 dark:border-neutral-700/60 px-3 py-1 rounded-full backdrop-blur-xs">
+            <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400 bg-white/70 dark:bg-neutral-900/70 border border-neutral-200/60 dark:border-neutral-800/80 px-3 py-1 rounded-full backdrop-blur-xs">
               Profil Toko UMKM
             </span>
           </div>

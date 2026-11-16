@@ -98,7 +98,7 @@ export default async function ProductDetailPage({ params }: DetailPageProps) {
           className={`rounded-2xl border p-4 text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs ${
             isOwner
               ? 'border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200'
-              : 'border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-850 text-neutral-800 dark:text-neutral-200'
+              : 'border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200'
           }`}
         >
           <div className="flex items-start gap-3">

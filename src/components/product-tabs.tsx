@@ -283,7 +283,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
               {product.seller?.id ? (
                 <Link
                   href={`/toko/${product.seller.id}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#186049] dark:text-[#5ebd4f] bg-white dark:bg-neutral-850 px-3.5 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors self-start sm:self-auto shadow-2xs"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#186049] dark:text-[#5ebd4f] bg-white dark:bg-neutral-800 px-3.5 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors self-start sm:self-auto shadow-2xs"
                 >
                   <Store className="h-3.5 w-3.5" />
                   <span>Kunjungi Toko</span>

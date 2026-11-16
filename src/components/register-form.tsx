@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterInput } from '@/features/auth/schema'
@@ -80,17 +81,30 @@ export function RegisterForm({ regions }: RegisterFormProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-[#0E3D2F] dark:bg-[#0A2D23] rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-10 md:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] border border-white/20 backdrop-blur-md text-white transition-all">
-      {/* Header */}
-      <div className="text-center space-y-2.5 sm:space-y-3 pb-4 sm:pb-6">
-        <div className="mx-auto flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-white/15 text-white shadow-inner border border-white/20">
-          <Store className="h-6 w-6 sm:h-8 sm:w-8 text-[#ECE8AF]" />
+      {/* Header with LapakKita Logo */}
+      <div className="text-center space-y-3 sm:space-y-4 pb-4 sm:pb-6">
+        <div className="flex justify-center">
+          <Link
+            href="/"
+            title="Kembali ke Beranda LapakKita"
+            className="group inline-flex items-center justify-center px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 hover:border-white/35 backdrop-blur-md shadow-inner transition-all duration-300 hover:scale-[1.02] active:scale-95"
+          >
+            <Image
+              src="/logo-dark.png"
+              alt="LapakKita"
+              width={956}
+              height={214}
+              priority
+              className="h-7 sm:h-9 md:h-10 w-auto object-contain select-none drop-shadow-md"
+            />
+          </Link>
         </div>
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white font-serif">
-            Daftar Penjual UMKM
+            Daftar Penjual LapakKita
           </h1>
           <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm md:text-base text-[#ECE8AF] font-medium max-w-lg mx-auto">
-            Buka lapak digital Anda, tentukan lokasi toko di peta, dan hubungkan langsung dengan pembeli lokal via WhatsApp.
+            Buka lapak digital Anda, tentukan titik lokasi toko di peta, dan hubungkan langsung dengan pembeli via WhatsApp.
           </p>
         </div>
       </div>

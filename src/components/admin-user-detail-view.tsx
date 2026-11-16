@@ -284,7 +284,7 @@ export function AdminUserDetailView({
           asChild
           variant="ghost"
           size="sm"
-          className="text-neutral-600 hover:text-neutral-900 gap-1.5"
+          className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white gap-1.5"
         >
           <Link href="/admin/users">
             <ArrowLeft className="h-4 w-4" />
@@ -376,16 +376,16 @@ export function AdminUserDetailView({
       {user.role === 'admin' ? (
         /* ================= TAMPILAN KHUSUS ADMINISTRATOR ================= */
         <div className="space-y-6">
-          <div className="rounded-xl border border-purple-200 bg-purple-50/60 p-6 shadow-xs">
+          <div className="rounded-xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/60 dark:bg-purple-950/20 p-6 shadow-xs">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-600 text-white shadow-xs">
                 <Shield className="h-6 w-6" />
               </div>
               <div className="space-y-1.5">
-                <h3 className="text-lg font-bold text-purple-950">
+                <h3 className="text-lg font-bold text-purple-950 dark:text-purple-200">
                   Akun Administrator Sistem
                 </h3>
-                <p className="text-sm text-purple-900/80 leading-relaxed max-w-3xl">
+                <p className="text-sm text-purple-900/80 dark:text-purple-300/80 leading-relaxed max-w-3xl">
                   Pengguna ini memegang hak akses administrator platform. <strong>Akun administrator tidak memiliki katalog produk, iklan, ataupun aktivitas jual-beli.</strong> Seluruh transaksi dan pendaftaran produk UMKM hanya dilakukan oleh akun dengan peran <strong>Penjual UMKM</strong>.
                 </p>
               </div>
@@ -394,36 +394,36 @@ export function AdminUserDetailView({
 
           {/* Kartu Ringkasan Otoritas & Tanggung Jawab */}
           <div>
-            <h3 className="text-base font-bold text-neutral-900 mb-3">
+            <h3 className="text-base font-bold text-neutral-900 dark:text-white mb-3">
               Otoritas & Hak Akses Administrator
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-xs space-y-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-sm">
+              <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-xs space-y-2">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold text-sm">
                   01
                 </div>
-                <h4 className="font-bold text-neutral-900 text-sm">Moderasi & Kurasi Produk</h4>
-                <p className="text-xs text-neutral-500 leading-relaxed">
+                <h4 className="font-bold text-neutral-900 dark:text-white text-sm">Moderasi & Kurasi Produk</h4>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                   Meninjau seluruh pengajuan produk UMKM, menyetujui produk layak tayang ke publik, atau menolak dengan catatan alasan perbaikan bagi penjual.
                 </p>
               </div>
 
-              <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-xs space-y-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-700 font-bold text-sm">
+              <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-xs space-y-2">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-bold text-sm">
                   02
                 </div>
-                <h4 className="font-bold text-neutral-900 text-sm">Master Kategori & Daerah</h4>
-                <p className="text-xs text-neutral-500 leading-relaxed">
+                <h4 className="font-bold text-neutral-900 dark:text-white text-sm">Master Kategori & Daerah</h4>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                   Mengelola dan memperbarui daftar kategori usaha serta wilayah/daerah operasional UMKM yang tersedia untuk calon pembeli.
                 </p>
               </div>
 
-              <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-xs space-y-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-100 text-purple-700 font-bold text-sm">
+              <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-xs space-y-2">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 font-bold text-sm">
                   03
                 </div>
-                <h4 className="font-bold text-neutral-900 text-sm">Manajemen Pengguna</h4>
-                <p className="text-xs text-neutral-500 leading-relaxed">
+                <h4 className="font-bold text-neutral-900 dark:text-white text-sm">Manajemen Pengguna</h4>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                   Memantau seluruh akun pengguna terdaftar, mengubah role hak akses, serta menghapus akun yang tidak aktif atau menyalahi aturan.
                 </p>
               </div>
@@ -435,49 +435,49 @@ export function AdminUserDetailView({
         <>
           {/* 5 Kartu Metrik Jualan Penjual */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-xs">
+            <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-neutral-500">Total Produk</span>
-                <Package className="h-4 w-4 text-neutral-400" />
+                <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">Total Produk</span>
+                <Package className="h-4 w-4 text-neutral-400 dark:text-neutral-500" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-neutral-900">{stats.totalProducts}</div>
-              <p className="mt-0.5 text-[11px] text-neutral-400">Semua jualan</p>
+              <div className="mt-2 text-2xl font-bold text-neutral-900 dark:text-white">{stats.totalProducts}</div>
+              <p className="mt-0.5 text-[11px] text-neutral-400 dark:text-neutral-500">Semua jualan</p>
             </div>
 
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-xs">
+            <div className="rounded-xl border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50/40 dark:bg-emerald-950/20 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-emerald-800">Disetujui</span>
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">Disetujui</span>
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-emerald-950">{stats.approvedCount}</div>
-              <p className="mt-0.5 text-[11px] text-emerald-700">Tampil di publik</p>
+              <div className="mt-2 text-2xl font-bold text-emerald-950 dark:text-emerald-200">{stats.approvedCount}</div>
+              <p className="mt-0.5 text-[11px] text-emerald-700 dark:text-emerald-400">Tampil di publik</p>
             </div>
 
-            <div className="rounded-xl border border-amber-200 bg-amber-50/40 p-4 shadow-xs">
+            <div className="rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/40 dark:bg-amber-950/20 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-amber-800">Menunggu</span>
-                <Clock className="h-4 w-4 text-amber-600" />
+                <span className="text-xs font-semibold text-amber-800 dark:text-amber-300">Menunggu</span>
+                <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-amber-950">{stats.pendingCount}</div>
-              <p className="mt-0.5 text-[11px] text-amber-700">Perlu ditinjau</p>
+              <div className="mt-2 text-2xl font-bold text-amber-950 dark:text-amber-200">{stats.pendingCount}</div>
+              <p className="mt-0.5 text-[11px] text-amber-700 dark:text-amber-400">Perlu ditinjau</p>
             </div>
 
-            <div className="rounded-xl border border-rose-200 bg-rose-50/40 p-4 shadow-xs">
+            <div className="rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50/40 dark:bg-rose-950/20 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-rose-800">Ditolak</span>
-                <XCircle className="h-4 w-4 text-rose-600" />
+                <span className="text-xs font-semibold text-rose-800 dark:text-rose-300">Ditolak</span>
+                <XCircle className="h-4 w-4 text-rose-600 dark:text-rose-400" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-rose-950">{stats.rejectedCount}</div>
-              <p className="mt-0.5 text-[11px] text-rose-700">Revisi penjual</p>
+              <div className="mt-2 text-2xl font-bold text-rose-950 dark:text-rose-200">{stats.rejectedCount}</div>
+              <p className="mt-0.5 text-[11px] text-rose-700 dark:text-rose-400">Revisi penjual</p>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 rounded-xl border border-blue-200 bg-blue-50/40 p-4 shadow-xs">
+            <div className="col-span-2 sm:col-span-1 rounded-xl border border-blue-200 dark:border-blue-900/40 bg-blue-50/40 dark:bg-blue-950/20 p-4 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-blue-800">Klik WhatsApp</span>
-                <MessageCircle className="h-4 w-4 text-blue-600" />
+                <span className="text-xs font-semibold text-blue-800 dark:text-blue-300">Klik WhatsApp</span>
+                <MessageCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               </div>
-              <div className="mt-2 text-2xl font-bold text-blue-950">{stats.totalClicks}</div>
-              <p className="mt-0.5 text-[11px] text-blue-700">Total minat pembeli</p>
+              <div className="mt-2 text-2xl font-bold text-blue-950 dark:text-blue-200">{stats.totalClicks}</div>
+              <p className="mt-0.5 text-[11px] text-blue-700 dark:text-blue-400">Total minat pembeli</p>
             </div>
           </div>
 
@@ -485,23 +485,23 @@ export function AdminUserDetailView({
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-bold text-neutral-900">
+                <h2 className="text-lg font-bold text-neutral-900 dark:text-white">
                   Daftar Produk Jualan Milik {user.nama}
                 </h2>
-                <p className="text-xs text-neutral-500 mt-0.5">
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
                   Pantau seluruh produk yang didaftarkan oleh penjual ini beserta status moderasi dan performanya.
                 </p>
               </div>
 
               {/* Filter Tab Status Produk */}
-              <div className="flex items-center gap-1.5 rounded-lg bg-neutral-100 p-1 self-start sm:self-auto">
+              <div className="flex items-center gap-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-900 p-1 self-start sm:self-auto border border-transparent dark:border-neutral-800">
                 <button
                   type="button"
                   onClick={() => setActiveTab('all')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'all'
-                      ? 'bg-white text-neutral-900 shadow-xs'
-                      : 'text-neutral-600 hover:text-neutral-900'
+                      ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
+                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
                   }`}
                 >
                   Semua ({stats.totalProducts})
@@ -511,8 +511,8 @@ export function AdminUserDetailView({
                   onClick={() => setActiveTab('approved')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'approved'
-                      ? 'bg-white text-emerald-800 shadow-xs'
-                      : 'text-neutral-600 hover:text-neutral-900'
+                      ? 'bg-white dark:bg-neutral-800 text-emerald-800 dark:text-emerald-400 shadow-xs'
+                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
                   }`}
                 >
                   Disetujui ({stats.approvedCount})
@@ -522,8 +522,8 @@ export function AdminUserDetailView({
                   onClick={() => setActiveTab('pending')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'pending'
-                      ? 'bg-white text-amber-800 shadow-xs'
-                      : 'text-neutral-600 hover:text-neutral-900'
+                      ? 'bg-white dark:bg-neutral-800 text-amber-800 dark:text-amber-400 shadow-xs'
+                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
                   }`}
                 >
                   Pending ({stats.pendingCount})
@@ -533,8 +533,8 @@ export function AdminUserDetailView({
                   onClick={() => setActiveTab('rejected')}
                   className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-colors cursor-pointer ${
                     activeTab === 'rejected'
-                      ? 'bg-white text-rose-800 shadow-xs'
-                      : 'text-neutral-600 hover:text-neutral-900'
+                      ? 'bg-white dark:bg-neutral-800 text-rose-800 dark:text-rose-400 shadow-xs'
+                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
                   }`}
                 >
                   Ditolak ({stats.rejectedCount})
@@ -544,14 +544,14 @@ export function AdminUserDetailView({
 
             {/* Empty State Produk */}
             {filteredProducts.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-neutral-300 bg-white p-12 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 text-neutral-400">
+              <div className="rounded-xl border border-dashed border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-12 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500">
                   <Package className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 text-base font-semibold text-neutral-800">
+                <h3 className="mt-4 text-base font-semibold text-neutral-800 dark:text-neutral-200">
                   Tidak Ada Produk pada Kategori Ini
                 </h3>
-                <p className="mt-1 text-sm text-neutral-500">
+                <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                   {stats.totalProducts === 0
                     ? 'Penjual ini belum mendaftarkan produk apapun di LapakKita.'
                     : 'Tidak ada produk yang memiliki status ini.'}
@@ -564,11 +564,11 @@ export function AdminUserDetailView({
                   return (
                     <div
                       key={product.id}
-                      className="flex flex-col rounded-xl border border-neutral-200 bg-white p-4 shadow-xs hover:border-neutral-300 transition-all"
+                      className="flex flex-col rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition-all"
                     >
                       <div className="flex gap-4">
                         {/* Foto Produk */}
-                        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-neutral-100 border border-neutral-200">
+                        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
                           {product.foto_url ? (
                             <Image
                               src={product.foto_url}
@@ -578,7 +578,7 @@ export function AdminUserDetailView({
                               className="object-cover"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center text-neutral-400">
+                            <div className="flex h-full w-full items-center justify-center text-neutral-400 dark:text-neutral-500">
                               <ImageIcon className="h-8 w-8" />
                             </div>
                           )}
@@ -595,47 +595,47 @@ export function AdminUserDetailView({
                                 </span>
                               )}
                               {product.kondisi_stok === 'pre_order' && (
-                                <span className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-medium">
+                                <span className="text-[10px] bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded font-medium border border-transparent dark:border-blue-900/40">
                                   PO
                                 </span>
                               )}
                               {product.kondisi_stok === 'stok_terbatas' && (
-                                <span className="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-medium">
+                                <span className="text-[10px] bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded font-medium border border-transparent dark:border-amber-900/40">
                                   Stok Terbatas
                                 </span>
                               )}
                             </div>
-                            <span className="flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                            <span className="flex items-center gap-1 text-[11px] font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded">
                               <MessageCircle className="h-3 w-3" />
                               {product.wa_clicks_count} klik
                             </span>
                           </div>
 
-                          <h3 className="mt-1.5 font-bold text-neutral-900 truncate" title={product.nama}>
+                          <h3 className="mt-1.5 font-bold text-neutral-900 dark:text-white truncate" title={product.nama}>
                             {product.nama}
                           </h3>
 
                           <div className="mt-1 flex items-baseline gap-1">
-                            <span className="text-base font-extrabold text-emerald-700">
+                            <span className="text-base font-extrabold text-emerald-700 dark:text-emerald-400">
                               {formatRupiah(product.harga)}
                             </span>
                             {product.satuan && (
-                              <span className="text-xs font-normal text-neutral-500">
+                              <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">
                                 / {product.satuan}
                               </span>
                             )}
                           </div>
 
-                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500">
+                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                             {product.category && (
-                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 px-1.5 py-0.5">
-                                <Tag className="h-3 w-3 text-neutral-400" />
+                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 text-neutral-600 dark:text-neutral-300">
+                                <Tag className="h-3 w-3 text-neutral-400 dark:text-neutral-500" />
                                 {product.category.nama}
                               </span>
                             )}
                             {product.region && (
-                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 px-1.5 py-0.5">
-                                <MapPin className="h-3 w-3 text-neutral-400" />
+                              <span className="inline-flex items-center gap-1 rounded bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 text-neutral-600 dark:text-neutral-300">
+                                <MapPin className="h-3 w-3 text-neutral-400 dark:text-neutral-500" />
                                 {product.region.nama}
                               </span>
                             )}
@@ -645,19 +645,19 @@ export function AdminUserDetailView({
 
                       {/* Alasan Tolak jika Rejected */}
                       {product.status === 'rejected' && product.alasan_tolak && (
-                        <div className="mt-3 rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-xs text-rose-900">
+                        <div className="mt-3 rounded-lg border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/30 p-2.5 text-xs text-rose-900 dark:text-rose-200">
                           <span className="font-semibold">Alasan Penolakan: </span>
                           {product.alasan_tolak}
                         </div>
                       )}
 
                       {/* Footer Aksi Produk */}
-                      <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between gap-2">
+                      <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between gap-2">
                         <Button
                           asChild
                           variant="ghost"
                           size="sm"
-                          className="text-xs text-neutral-600 hover:text-neutral-900 h-8 px-2"
+                          className="text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white h-8 px-2"
                         >
                           <Link href={`/produk/${product.id}`} target="_blank">
                             Lihat di Etalase
@@ -676,7 +676,7 @@ export function AdminUserDetailView({
                                 setRejectDialogProduct(product)
                                 setAlasanTolak('')
                               }}
-                              className="h-8 text-xs bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200"
+                              className="h-8 text-xs bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200 dark:border-rose-800 cursor-pointer"
                             >
                               <X className="mr-1 h-3.5 w-3.5" />
                               Tolak
@@ -686,7 +686,7 @@ export function AdminUserDetailView({
                               size="sm"
                               disabled={isLoading}
                               onClick={() => handleApprove(product.id, product.nama)}
-                              className="h-8 text-xs bg-[#186049] hover:bg-[#124b39] text-white rounded-xl"
+                              className="h-8 text-xs bg-[#186049] hover:bg-[#124b39] text-white rounded-xl cursor-pointer"
                             >
                               {isLoading ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
