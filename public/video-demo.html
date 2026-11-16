@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LapakKita — Video Demo Motion Graphics (1080p 60FPS)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+    body {
+      background: #0a0f0d; color: #fff;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px; overflow-x: hidden;
+    }
+
+    .studio-wrapper {
+      position: relative; width: 100%; max-width: 1280px;
+      aspect-ratio: 16 / 9; background: #0a0f0d;
+      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
+      border-radius: 12px; overflow: hidden;
+    }
+
+    #stage {
+      position: absolute; top: 0; left: 0; width: 1920px; height: 1080px;
+      transform-origin: top left; overflow: hidden;
+      background: #0a0f0d;
+    }
+
+    /* Ambient glow */
+    .bg-glow {
+      position: absolute; border-radius: 50%; filter: blur(120px);
+      pointer-events: none; opacity: 0.06;
+    }
+
+    /* Scene layers */
+    .scene {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transform: scale(0.96);
+      transition: opacity 0.8s cubic-bezier(0.25,1,0.5,1), transform 0.8s cubic-bezier(0.25,1,0.5,1);
+    }
+    .scene.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+
+    /* Staggered children */
+    .scene .anim-child {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.25,1,0.5,1), transform 0.7s cubic-bezier(0.25,1,0.5,1);
+    }
+    .scene.active .anim-child { opacity: 1; transform: translateY(0); }
+    .scene.active .anim-child:nth-child(1) { transition-delay: 0.05s; }
+    .scene.active .anim-child:nth-child(2) { transition-delay: 0.2s; }
+    .scene.active .anim-child:nth-child(3) { transition-delay: 0.4s; }
+    .scene.active .anim-child:nth-child(4) { transition-delay: 0.6s; }
+    .scene.active .anim-child:nth-child(5) { transition-delay: 0.8s; }
+    .scene.active .anim-child:nth-child(6) { transition-delay: 1.0s; }
+
+    /* Slide variants */
+    .scene .anim-slide-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.9s cubic-bezier(0.25,1,0.5,1), transform 0.9s cubic-bezier(0.25,1,0.5,1); }
+    .scene.active .anim-slide-left { opacity: 1; transform: translateX(0); transition-delay: 0.5s; }
+    .scene .anim-slide-right { opacity: 0; transform: translateX(50px); transition: opacity 0.9s cubic-bezier(0.25,1,0.5,1), transform 0.9s cubic-bezier(0.25,1,0.5,1); }
+    .scene.active .anim-slide-right { opacity: 1; transform: translateX(0); transition-delay: 0.8s; }
+    .scene .anim-scale { opacity: 0; transform: scale(0.9); transition: opacity 0.9s cubic-bezier(0.25,1,0.5,1), transform 0.9s cubic-bezier(0.25,1,0.5,1); }
+    .scene.active .anim-scale { opacity: 1; transform: scale(1); transition-delay: 0.5s; }
+
+    /* Badge */
+    .pill-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 24px; border-radius: 999px;
+      font-size: 16px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 14px;
+      backdrop-filter: blur(10px);
+    }
+    .badge-forest { background: rgba(74,148,62,0.15); color: #4A943E; border: 1px solid rgba(74,148,62,0.2); }
+    .badge-amber { background: rgba(217,131,39,0.12); color: #D98327; border: 1px solid rgba(217,131,39,0.2); }
+    .badge-green-wa { background: rgba(37,211,102,0.12); color: #25D366; border: 1px solid rgba(37,211,102,0.2); }
+
+    .headline { font-family: 'DM Serif Display', Georgia, serif; font-size: 48px; line-height: 1.2; text-align: center; max-width: 950px; margin-bottom: 24px; }
+    .headline .accent-green { color: #4A943E; }
+    .headline .accent-wa { color: #25D366; }
+    .headline .accent-amber { color: #D98327; }
+
+    /* Laptop mockup */
+    .laptop-frame {
+      position: relative; width: 980px;
+    }
+    .laptop-bezel {
+      background: linear-gradient(145deg, #2a2a2e 0%, #1a1a1e 100%);
+      border-radius: 18px 18px 2px 2px; padding: 14px 14px 0 14px;
+      box-shadow: 0 40px 100px -20px rgba(24,96,73,0.25), 0 0 0 1px rgba(255,255,255,0.08);
+      position: relative;
+    }
+    .laptop-cam {
+      position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+      width: 6px; height: 6px; border-radius: 50%; background: #333; border: 1px solid #444;
+    }
+    .laptop-screen { width: 100%; aspect-ratio: 16/9; border-radius: 8px 8px 0 0; overflow: hidden; }
+    .laptop-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .laptop-base {
+      width: 110%; height: 18px; margin-left: -5%;
+      background: linear-gradient(to bottom, #555 0%, #3a3a3e 40%, #2a2a2e 100%);
+      border-radius: 0 0 12px 12px; position: relative;
+    }
+    .laptop-base::after {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 140px; height: 6px; background: #444; border-radius: 0 0 6px 6px;
+    }
+
+    /* Ultra Phone mockup — flagship titanium styling */
+    .phone-frame {
+      width: 320px; height: 660px;
+      background: linear-gradient(150deg, #2c2d33 0%, #1c1d22 100%);
+      border-radius: 46px; padding: 12px; position: relative;
+      box-shadow: 0 35px 90px -15px rgba(0,0,0,0.7), 0 0 50px -10px rgba(37,211,102,0.25), 0 0 0 2px rgba(255,255,255,0.12);
+    }
+    /* Side physical buttons */
+    .phone-frame::before {
+      content: ''; position: absolute; left: -3px; top: 90px; width: 3px; height: 30px;
+      background: #484b54; border-radius: 2px 0 0 2px;
+      box-shadow: 0 45px 0 0 #484b54, 0 105px 0 0 #484b54;
+    }
+    .phone-frame::after {
+      content: ''; position: absolute; right: -3px; top: 145px; width: 3px; height: 70px;
+      background: #484b54; border-radius: 0 2px 2px 0;
+    }
+    .phone-island {
+      position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      width: 94px; height: 24px; background: #000; border-radius: 12px; z-index: 25;
+      display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .phone-cam-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: radial-gradient(circle, #2d4566 20%, #0d1522 80%);
+      box-shadow: 0 0 2px rgba(255,255,255,0.3);
+    }
+    .phone-status-time {
+      position: absolute; top: 12px; left: 22px;
+      font-size: 12px; font-weight: 700; color: #fff;
+      font-family: system-ui, sans-serif; z-index: 25; letter-spacing: -0.2px;
+    }
+    .phone-status-icons {
+      position: absolute; top: 14px; right: 22px;
+      display: flex; align-items: center; gap: 5px; z-index: 25;
+    }
+    .phone-screen {
+      width: 100%; height: 100%; border-radius: 36px; overflow: hidden;
+      background: #0a0f0d; position: relative;
+    }
+    .phone-screen img {
+      width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;
+    }
+    .phone-glare {
+      position: absolute; inset: 0; pointer-events: none; z-index: 20;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%);
+    }
+    .phone-home-indicator {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      width: 110px; height: 4px; background: rgba(255,255,255,0.7);
+      border-radius: 999px; z-index: 25;
+    }
+
+    /* Counter card */
+    .counter-card {
+      background: rgba(255,255,255,0.04); backdrop-filter: blur(16px);
+      border-radius: 24px; padding: 36px 32px; text-align: center;
+      border: 1px solid rgba(217,131,39,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      min-width: 220px;
+    }
+
+    /* Subtitle */
+    .subtitle-bar {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%) translateY(0);
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(16px);
+      padding: 14px 36px; border-radius: 14px;
+      color: #fff; font-size: 24px; font-weight: 500;
+      text-align: center; max-width: 1300px;
+      border: 1px solid rgba(255,255,255,0.08);
+      z-index: 500; letter-spacing: 0.2px; line-height: 1.4;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    /* Timecode */
+    .timecode {
+      position: absolute; top: 32px; right: 40px; z-index: 100;
+      background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+      padding: 8px 20px; border-radius: 999px;
+      font-size: 15px; font-weight: 600; letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Logo scene */
+    .logo-scene-content { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .logo-img { height: 100px; width: auto; transition: opacity 1.5s ease, transform 1.5s ease, filter 1.5s ease; }
+    .logo-tagline {
+      font-size: 22px; font-weight: 500; color: rgba(255,255,255,0.4);
+      letter-spacing: 4px; text-transform: uppercase;
+      transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
+    }
+    .logo-url { font-size: 18px; font-weight: 600; color: #4A943E; transition: opacity 1s ease 0.8s, transform 1s ease 0.8s; }
+
+    /* Controls */
+    .controls-panel {
+      width: 100%; max-width: 1280px;
+      background: #111916; border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 16px 24px; margin-top: 18px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .timeline-row { display: flex; align-items: center; gap: 16px; }
+    .progress-bar { flex: 1; height: 8px; background: #1a2522; border-radius: 4px; cursor: pointer; position: relative; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #186049, #4A943E, #D98327); width: 0%; border-radius: 4px; transition: width 0.05s linear; }
+    .time-label { font-family: monospace; font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.4); min-width: 110px; }
+    .btn-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .btn-group { display: flex; align-items: center; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 700;
+      border: none; cursor: pointer; transition: all 0.2s ease; color: #fff;
+    }
+    .btn-primary { background: #186049; }
+    .btn-primary:hover { background: #14523e; }
+    .btn-secondary { background: #1a2522; color: #94a3b8; }
+    .btn-secondary:hover { background: #243330; }
+    .btn-record { background: #D98327; box-shadow: 0 4px 14px rgba(217,131,39,0.4); }
+    .btn-record:hover { background: #b56c1e; }
+    .scene-nav { display: flex; gap: 6px; }
+    .scene-btn {
+      background: #1a2522; border: 1px solid rgba(255,255,255,0.06); color: #94a3b8;
+      padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .scene-btn.active { background: #186049; color: #fff; border-color: #4A943E; }
+  </style>
+</head>
+<body>
+
+  <!-- Studio Audio Element (Indonesian Neural Voice) -->
+  <audio id="audio-player" src="/demo_audio_track.mp3" preload="auto"></audio>
+
+  <div class="studio-wrapper">
+    <div id="stage">
+      <!-- Ambient glows -->
+      <div class="bg-glow" style="width:600px;height:600px;top:-100px;left:20%;background:#4A943E;"></div>
+      <div class="bg-glow" style="width:600px;height:600px;bottom:-100px;right:20%;background:#D98327;"></div>
+
+      <!-- Timecode -->
+      <div class="timecode" id="timecode">00:00 / 01:08</div>
+
+      <!-- ═══ SCENE 0: LOGO INTRO (0–3.5s) ═══ -->
+      <div class="scene" id="scene-0">
+        <div class="logo-scene-content">
+          <img src="/logo-dark.png" alt="LapakKita" class="logo-img anim-child" />
+          <div class="logo-tagline anim-child">Etalase Digital UMKM Lokal</div>
+        </div>
+      </div>
+
+      <!-- ═══ SCENE 1: BERANDA & MASALAH (3.5–17.5s) ═══ -->
+      <div class="scene" id="scene-1">
+        <div class="pill-badge badge-forest anim-child">BERANDA LAPAKKITA</div>
+        <h1 class="headline anim-child">
+          Karya Anak Bangsa, Kualitas Juara,
+          <span class="accent-green">Harga Bersahaja</span>
+        </h1>
+        <div class="laptop-frame anim-scale">
+          <div class="laptop-bezel">
+            <div class="laptop-cam"></div>
+            <div class="laptop-screen"><img src="/demo-screenshots/homepage.png" alt="Homepage" /></div>
+          </div>
+          <div class="laptop-base"></div>
+        </div>
+      </div>
+
+      <!-- ═══ SCENE 2: KURASI & VERIFIKASI (17.5–32.0s) ═══ -->
+      <div class="scene" id="scene-2">
+        <div class="pill-badge badge-forest anim-child">FITUR 01 — KURASI & VERIFIKASI ADMIN</div>
+        <h1 class="headline anim-child">
+          Setiap Produk Diverifikasi
+          <span class="accent-green">Langsung oleh Tim Admin</span>
+        </h1>
+        <div style="display:flex;gap:40px;align-items:center;">
+          <div class="laptop-frame anim-slide-left" style="width:620px;">
+            <div class="laptop-bezel" style="box-shadow:0 40px 100px -20px rgba(74,148,62,0.35),0 0 0 1px rgba(255,255,255,0.08);">
+              <div class="laptop-cam"></div>
+              <div class="laptop-screen"><img src="/demo-screenshots/katalog.png" alt="Katalog" /></div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+          <div class="phone-frame anim-slide-right">
+            <div class="phone-island"><div class="phone-cam-dot"></div></div>
+            <div class="phone-status-time">09:41</div>
+            <div class="phone-screen">
+              <img src="/demo-screenshots/mobile-product.png" alt="Detail Produk Mobile" />
+              <div class="phone-glare"></div>
+              <div class="phone-home-indicator"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SCENE 3: WHATSAPP ORDER (32.0–41.5s) ═══ -->
+      <div class="scene" id="scene-3">
+        <div class="pill-badge badge-green-wa anim-child">FITUR 02 — DIRECT WHATSAPP ORDER</div>
+        <h1 class="headline anim-child">
+          Satu Klik Langsung
+          <span class="accent-wa">Terhubung ke WhatsApp Penjual</span>
+        </h1>
+        <div style="display:flex;align-items:center;gap:60px;">
+          <div class="phone-frame anim-slide-left">
+            <div class="phone-island"><div class="phone-cam-dot"></div></div>
+            <div class="phone-status-time">09:41</div>
+            <div class="phone-screen">
+              <img src="/demo-screenshots/mobile-whatsapp.png" alt="WhatsApp Order Mobile" />
+              <div class="phone-glare"></div>
+              <div class="phone-home-indicator"></div>
+            </div>
+          </div>
+          <div class="anim-child" style="color:#25D366;transition-delay:1.0s;display:flex;align-items:center;"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          <div class="laptop-frame anim-slide-right" style="width:680px;">
+            <div class="laptop-bezel" style="box-shadow:0 40px 100px -20px rgba(37,211,102,0.3),0 0 0 1px rgba(255,255,255,0.08);">
+              <div class="laptop-cam"></div>
+              <div class="laptop-screen"><img src="/demo-screenshots/product-whatsapp.png" alt="Pesan via WA" /></div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SCENE 4: DASHBOARD (41.5–50.5s) ═══ -->
+      <div class="scene" id="scene-4">
+        <div class="pill-badge badge-amber anim-child">FITUR 03 — DASHBOARD MANDIRI</div>
+        <h1 class="headline anim-child">
+          Upload Mudah &amp;
+          <span class="accent-amber">Pantau Minat Pelanggan Real-Time</span>
+        </h1>
+        <div style="display:flex;align-items:center;gap:40px;">
+          <div class="laptop-frame anim-slide-left" style="width:780px;">
+            <div class="laptop-bezel" style="box-shadow:0 40px 100px -20px rgba(217,131,39,0.3),0 0 0 1px rgba(255,255,255,0.08);">
+              <div class="laptop-cam"></div>
+              <div class="laptop-screen"><img src="/demo-screenshots/tentang.png" alt="Tentang LapakKita" /></div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+          <div class="counter-card anim-slide-right">
+            <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:8px;">Minat Pembeli</div>
+            <div id="counter-clicks" style="font-size:64px;font-weight:900;color:#D98327;font-family:monospace;line-height:1;">148</div>
+            <div style="margin-top:12px;font-size:13px;font-weight:700;color:#4A943E;background:rgba(74,148,62,0.1);padding:6px 16px;border-radius:999px;">💬 Klik WhatsApp</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SCENE 5: CTA (50.5–63.5s) ═══ -->
+      <div class="scene" id="scene-5">
+        <div class="pill-badge badge-forest anim-child" style="font-size:18px;padding:10px 28px;letter-spacing:1.5px;">DARI UMKM UNTUK INDONESIA</div>
+        <h1 class="headline anim-child" style="font-size:64px;margin-bottom:12px;">
+          Saatnya Produk Lokalmu<br /><span class="accent-green">Naik Kelas!</span>
+        </h1>
+        <p class="anim-child" style="font-size:22px;color:rgba(255,255,255,0.5);margin-bottom:40px;text-align:center;max-width:700px;">
+          Pajang tokomu sekarang, raih kepercayaan ribuan pelanggan tanpa biaya perantara.
+        </p>
+        <div class="anim-child" style="background:rgba(255,255,255,0.04);backdrop-filter:blur(16px);padding:20px 56px;border-radius:20px;border:2px solid rgba(74,148,62,0.3);display:flex;align-items:center;gap:16px;margin-bottom:28px;box-shadow:0 20px 60px rgba(24,96,73,0.2);">
+          <span style="font-size:36px;">🌐</span>
+          <span style="font-size:36px;font-weight:900;color:#4A943E;letter-spacing:-0.5px;">www.lapakkita.my.id</span>
+        </div>
+        <div class="anim-child" style="background:linear-gradient(135deg,#D98327,#c47320);color:#fff;font-size:26px;font-weight:800;padding:20px 52px;border-radius:16px;box-shadow:0 16px 48px rgba(217,131,39,0.4);">
+          Daftarkan Usahamu Gratis Sekarang! 🚀
+        </div>
+      </div>
+
+      <!-- ═══ SCENE 6: LOGO OUTRO (63.5–68.0s) ═══ -->
+      <div class="scene" id="scene-6">
+        <div class="logo-scene-content">
+          <img src="/logo-dark.png" alt="LapakKita" class="logo-img anim-child" />
+          <div class="logo-tagline anim-child">Etalase Digital UMKM Lokal Terpercaya</div>
+          <div class="logo-url anim-child">www.lapakkita.my.id</div>
+        </div>
+      </div>
+
+      <!-- Subtitle -->
+      <div class="subtitle-bar" id="subtitle-display">&nbsp;</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls-panel">
+    <div class="timeline-row">
+      <div class="time-label" id="time-display">00:00 / 01:08</div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btn-play">▶ Putar Demo</button>
+        <button class="btn btn-secondary" id="btn-reset">🔄 Dari Awal</button>
+        <a href="/lapakita_video_demo_1080p.mp4" download="LapakKita_Video_Demo_1080p.mp4" class="btn btn-record" style="text-decoration:none;">
+          ⬇ Download Video MP4 (1080p)
+        </a>
+      </div>
+      <div class="scene-nav" id="scene-nav">
+        <button class="scene-btn" data-time="0">Logo</button>
+        <button class="scene-btn" data-time="3.5">Beranda</button>
+        <button class="scene-btn" data-time="17.5">Kurasi</button>
+        <button class="scene-btn" data-time="32.0">WhatsApp</button>
+        <button class="scene-btn" data-time="41.5">Dashboard</button>
+        <button class="scene-btn" data-time="50.5">CTA</button>
+        <button class="scene-btn" data-time="63.5">Outro</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const TOTAL_DURATION = 68.0;
+  const SCENES_TIMES = [
+    { time: 0.0, end: 3.5 },
+    { time: 3.5, end: 17.5 },
+    { time: 17.5, end: 32.0 },
+    { time: 32.0, end: 41.5 },
+    { time: 41.5, end: 50.5 },
+    { time: 50.5, end: 63.5 },
+    { time: 63.5, end: 68.0 }
+  ];
+
+  const subtitles = [
+    { start: 3.5, end: 9.5, text: 'Punya produk UMKM jempolan, tapi bingung cara pasarinnya ke pelanggan yang tepat?' },
+    { start: 10.0, end: 17.0, text: 'Jualan di status medsos cepat tenggelam, pembeli ragu, dan biaya platform bikin boncos!' },
+    { start: 17.5, end: 23.5, text: 'Kini hadir LapakKita — rumah digital produk UMKM lokal terpercaya.' },
+    { start: 24.0, end: 31.5, text: 'Fitur pertama: Kurasi dan Verifikasi Admin. Menjamin setiap produk asli dan bebas penipuan.' },
+    { start: 32.5, end: 41.0, text: 'Fitur kedua: Direct WhatsApp Order. Satu klik langsung chat penjual, tanpa biaya perantara!' },
+    { start: 42.0, end: 50.2, text: 'Fitur ketiga: Dashboard Mandiri. Upload foto produk dan pantau minat pembeli secara real-time.' },
+    { start: 51.0, end: 56.2, text: 'Saatnya produk lokalmu naik kelas dan dipercaya lebih banyak pelanggan!' },
+    { start: 56.5, end: 63.2, text: 'Kunjungi www.lapakkita.my.id — Daftarkan usahamu gratis hari ini!' }
+  ];
+
+  let currentTime = 0;
+  let isPlaying = false;
+
+  const stage = document.getElementById('stage');
+  const scenes = document.querySelectorAll('.scene');
+  const subtitleEl = document.getElementById('subtitle-display');
+  const timecodeEl = document.getElementById('timecode');
+  const timeDisplay = document.getElementById('time-display');
+  const progressFill = document.getElementById('progress-fill');
+  const counterEl = document.getElementById('counter-clicks');
+  const audioEl = document.getElementById('audio-player');
+
+  // Responsive scale
+  function resizeStage() {
+    const wrapper = document.querySelector('.studio-wrapper');
+    stage.style.transform = `scale(${wrapper.clientWidth / 1920})`;
+  }
+  resizeStage();
+  window.addEventListener('resize', resizeStage);
+
+  // Update scene
+  let lastSceneIdx = -1;
+  function updateScene(t) {
+    let idx = 0;
+    for (let i = SCENES_TIMES.length - 1; i >= 0; i--) {
+      if (t >= SCENES_TIMES[i].time) { idx = i; break; }
+    }
+
+    scenes.forEach((sc, i) => sc.classList.toggle('active', i === idx));
+
+    if (idx !== lastSceneIdx) {
+      lastSceneIdx = idx;
+      document.querySelectorAll('.scene-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
+    }
+
+    // Dynamic Counter
+    if (idx === 4 && counterEl) {
+      const progress = Math.min(1, Math.max(0, (t - 41.5) / 5.0));
+      counterEl.innerText = Math.floor(40 + progress * 108);
+    }
+
+    // Subtitle
+    const sub = subtitles.find(s => t >= s.start && t < s.end);
+    if (sub) {
+      subtitleEl.innerText = sub.text;
+      subtitleEl.style.opacity = '1';
+      subtitleEl.style.transform = 'translateX(-50%) translateY(0)';
+    } else {
+      subtitleEl.style.opacity = '0';
+      subtitleEl.style.transform = 'translateX(-50%) translateY(16px)';
+    }
+
+    // Timecode
+    const m = String(Math.floor(t / 60)).padStart(2, '0');
+    const s = String(Math.floor(t % 60)).padStart(2, '0');
+    timecodeEl.innerText = `${m}:${s} / 01:08`;
+    timeDisplay.innerText = `${m}:${s} / 01:08`;
+    progressFill.style.width = `${(t / TOTAL_DURATION) * 100}%`;
+  }
+
+  // Animation loop
+  let lastTimestamp = null;
+  function animLoop(timestamp) {
+    if (!lastTimestamp) lastTimestamp = timestamp;
+    const delta = (timestamp - lastTimestamp) / 1000;
+    lastTimestamp = timestamp;
+
+    if (isPlaying) {
+      if (audioEl && !audioEl.paused && audioEl.currentTime > 0) {
+        currentTime = audioEl.currentTime;
+        if (currentTime >= TOTAL_DURATION) {
+          currentTime = TOTAL_DURATION;
+          isPlaying = false;
+          audioEl.pause();
+          document.getElementById('btn-play').innerText = '▶ Putar Demo';
+        }
+      } else {
+        currentTime += delta;
+        if (currentTime >= TOTAL_DURATION) {
+          currentTime = TOTAL_DURATION;
+          isPlaying = false;
+          document.getElementById('btn-play').innerText = '▶ Putar Demo';
+        }
+      }
+      updateScene(currentTime);
+    }
+    requestAnimationFrame(animLoop);
+  }
+  requestAnimationFrame(animLoop);
+  updateScene(0);
+
+  // Controls
+  document.getElementById('btn-play').addEventListener('click', () => {
+    if (!isPlaying && currentTime >= TOTAL_DURATION) {
+      currentTime = 0;
+      if (audioEl) audioEl.currentTime = 0;
+    }
+    isPlaying = !isPlaying;
+    document.getElementById('btn-play').innerText = isPlaying ? '⏸ Jeda' : '▶ Putar Demo';
+    if (isPlaying) {
+      audioEl.play().catch(() => {});
+    } else {
+      audioEl.pause();
+    }
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    currentTime = 0;
+    isPlaying = false;
+    document.getElementById('btn-play').innerText = '▶ Putar Demo';
+    if (audioEl) {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+    }
+    updateScene(0);
+  });
+
+  document.getElementById('progress-bar').addEventListener('click', (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    currentTime = ((e.clientX - rect.left) / rect.width) * TOTAL_DURATION;
+    if (audioEl) audioEl.currentTime = currentTime;
+    updateScene(currentTime);
+  });
+
+  document.querySelectorAll('.scene-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentTime = parseFloat(btn.dataset.time);
+      if (audioEl) audioEl.currentTime = currentTime;
+      updateScene(currentTime);
+    });
+  });
+</script>
+</body>
+</html>

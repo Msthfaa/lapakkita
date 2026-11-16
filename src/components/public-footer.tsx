@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/constants'
 
 export function PublicFooter() {
@@ -13,9 +14,18 @@ export function PublicFooter() {
 
   return (
     <footer className="border-t border-[#186049]/10 dark:border-[#186049]/20 bg-transparent py-8 text-center text-xs text-neutral-600 dark:text-neutral-400 transition-colors duration-300">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-2">
         <p>
           &copy; 2026 <strong className="font-semibold text-[#186049] dark:text-white">{SITE_NAME}</strong> &mdash; {SITE_TAGLINE}. Platform etalase promosi UMKM lokal.
+        </p>
+        <p className="text-neutral-500 dark:text-neutral-400">
+          <Link href="/demo-video" className="inline-flex items-center gap-1 hover:text-[#186049] dark:hover:text-[#4A943E] hover:underline font-medium transition-colors">
+            <span>🎬 Tonton Video Demo Motion Graphics</span>
+          </Link>
+          <span className="mx-2">&bull;</span>
+          <a href="https://www.lapakkita.my.id" target="_blank" rel="noreferrer" className="hover:underline">
+            lapakkita.my.id
+          </a>
         </p>
       </div>
     </footer>
